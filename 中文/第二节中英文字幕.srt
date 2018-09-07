@@ -1,0 +1,1076 @@
+0
+00:00:01,300 --> 00:00:03,400
+大家好，我是jon galloway 我是jeff fritz
+hi I'm jon galloway and I'm jeff fritz 
+
+1
+00:00:04,080 --> 00:00:06,300
+我们在深入研究ASP.NET Core
+So we're digging into ASP.NET Core
+
+2
+00:00:06,400 --> 00:00:09,700
+你将会向我们展示ASP.NET Core配置。
+and you're going to be showing us ASP.NET Core configuration.
+
+3
+00:00:10,200 --> 00:00:10,530
+是的
+yeah
+
+4
+00:00:10,500 --> 00:00:13,700
+我可以用不同的方式配置我的应用程序。
+what are the different ways that I can configure my application. 
+
+5
+00:00:14,000 --> 00:00:16,100
+我想要控制的东西太多了
+there's so much that I want to be able to control about
+
+6
+00:00:16,100 --> 00:00:18,500
+它是如何开始运行的。
+how it starts how it runs. 
+
+7
+00:00:18,500 --> 00:00:23,300
+我希望能够从应用程序的不同位置访问这些配置设置。
+and I want to be able to access those configuration settings from different places in my application.
+
+8
+00:00:23,850 --> 00:00:25,560
+我有什么选择？我能用它做什么？
+What are my options there?  what can I do with it ?
+
+9
+00:00:25,890 --> 00:00:26,370
+好了，
+all right,
+
+10
+00:00:26,700 --> 00:00:29,100
+让我们在我的机器上看一看
+So let's take a look here  on my machine
+
+11
+00:00:30,200 --> 00:00:32,800
+我已经配置了一些东西
+I've got a couple of things already configured 
+
+12
+00:00:32,800 --> 00:00:43,200
+我从一个示例应用开始，它是一个使用razor页面的ASP.NET应用程序
+ I've started with a sample application  it was a ASP.NET application using razor pages
+
+13
+00:00:43,200 --> 00:00:46,900
+我在这里写了一些东西
+and I've got a couple of things written out here that I want to show you,
+
+14
+00:00:47,300 --> 00:00:53,600
+首先，如果我想要获取MyConfiguration并拥有强类型配置类，
+first-off is if I want to actually grab MyConfiguration  and have that strongly  typed configuration class,
+
+
+
+15
+00:00:53,900 --> 00:00:59,900
+我可以写一个类，一个普通的类，有一个普通的CLR类
+I can write a class ， a normal class with a plain old CLR class here
+
+16
+00:01:00,300 --> 00:01:04,100
+我将在这个配置类中提供两个属性。
+and and I'm going to provide two properties inside of this configuration class.
+
+17
+00:01:04,500 --> 00:01:07,080
+我要指定菜单栏背景色
+I'm going to specify my menu bar background color
+
+18
+00:01:07,300 --> 00:01:11,900
+然后就像我想在我的应用程序中设置菜单栏的文本颜色一样。
+and then like the text color  that I want to set for my menu bar in my application.
+
+19
+00:01:12,090 --> 00:01:12,390
+好的
+okay
+
+20
+00:01:12,700 --> 00:01:21,500
+这个类很简单，它使用的是默认属性值，我可以设置为黑色背景的白色文本
+so this class it's  pretty simple ,it's using  default  property values ,so that I can  set that I went a black background  with white text
+
+21
+00:01:22,000 --> 00:01:25,800
+在我可以在startup类中配置它
+and inside of my startup class I can configure that 
+
+22
+00:01:26,100 --> 00:01:35,600
+根据我的应用程序中可用的配置，使用Services.configure方法而不是配置Services方法
+based on the configuration that's available in my application  by using this Services.configure method  instead of my configure Services  method
+
+23
+00:01:36,200 --> 00:01:39,100
+我将配置一个MyConfiguration类
+I'm going to configure a MyConfiguration class 
+
+24
+00:01:39,100 --> 00:01:45,400
+使用MyConfiguration中标记为My-configuration集合的部分
+
+using the section from MyConfiguration that's labeled from My-configuration collection 
+
+25
+00:01:45,400 --> 00:01:49,100
+称为MyConfiguration
+ called MyConfiguration
+
+26
+00:01:49,100 --> 00:01:52,200
+现在在我的appsettings.json中
+so right now inside of my appsettings.json
+
+27
+00:01:52,290 --> 00:01:54,900
+没有myconfiguration部分
+I don't have a my configuration section.
+
+28
+00:01:55,600 --> 00:02:00,500
+所以让我用这些设置运行应用程序
+so when I run this application right now with these settings. 
+
+29
+00:02:00,900 --> 00:02:04,200
+输入dotnet  run
+let me just dotnet  run that 
+
+30
+00:02:08,200 --> 00:02:13,500
+我将复制这个位置，转到我的浏览器，
+and I will copy this location  and go over  to my browser, 
+
+31
+00:02:14,300 --> 00:02:22,100
+我将在这里浏览一下firefox，让我们把它粘贴进来，你会看到我得到了一个配置示例信息。
+I will go over firefox here and let's paste that in  and you'll see that I get a Configuration sample information. 
+
+32
+00:02:22,300 --> 00:02:25,600
+这是我在我的页面中间写的东西
+this is the stuff that I wrote into the middle of my page 
+
+33
+00:02:25,950 --> 00:02:27,210
+我的页眉是黑色的。
+my header is black.
+
+34
+00:02:27,300 --> 00:02:30,400
+我有一些信息被丢弃在页脚上。
+I've got some information being dumped out on the footer. 
+
+35
+00:02:31,200 --> 00:02:35,400
+现在让我们看一下，我是如何将我的Myconfiguration信息输入到这个页面的
+now let's take a look at ，how I'm getting Myconfiguration information into this page
+
+36
+00:02:35,800 --> 00:02:40,000
+让我回到我的代码，转到这个页面上
+let me go  back to my code I'll go over to the pages
+
+37
+00:02:40,410 --> 00:02:42,360
+我想给你们看一下布局。
+and I want to show you the layout.
+
+38
+00:02:44,000 --> 00:02:52,200
+现在，布局我正在注入configuration 对象。 我还要注入Myconfiguration选项
+now ，the layout I'm injecting  the configuration object. and I'm  also going to inject  Myconfiguration options 
+
+39
+00:02:52,500 --> 00:02:58,000
+所以Myconfiguration类实际上是由IOptions对象包装的
+so that Myconfiguration class is actually being wrapped by an   IOptions object 
+
+40
+00:02:58,500 --> 00:03:05,100
+还可以返回填充任何配置信息的Myconfiguration类
+and I can get back Myconfiguration class  fully populated with whatever configuration information.
+
+41
+00:03:05,100 --> 00:03:09,700
+它通过访问MyConfigOptions.value读取
+ it read by accessing MyConfigOptions.value
+
+42
+00:03:10,700 --> 00:03:17,200
+然后让这个演示变得更有趣，这样你就能看到我们如何在代码中使用配置。
+and then to make this demo a little bit interesting so that you can see how we're using configuration  inside of code. 
+
+43
+00:03:17,500 --> 00:03:22,200
+我用导航条颜色来呼应菜单背景颜色
+I'm just echoing the menu background colour  from my nav bar color 
+
+44
+00:03:22,600 --> 00:03:29,300
+呼应文本颜色，并在我的布局里，在我的CSS中，的这些项目都很重要
+
+and i am echoing the text color and making both of those items important in my CSS here inside of my layout
+
+45
+00:03:29,600 --> 00:03:33,000
+现在，这可以是应用程序的连接字符串。
+now. this could be a  connection string for your application. 
+
+46
+00:03:33,200 --> 00:03:39,300
+也可以是客户ID访问信息来访问第三方提供程序
+this could be client ID access information to access a third-party provider 
+
+47
+00:03:39,600 --> 00:03:42,090
+也许它有点像SendGrid或Twitter，
+maybe it's something like a SendGrid or Twitter,
+
+48
+00:03:42,330 --> 00:03:45,240
+这些可以在你的配置文件中配置
+those things can be configured in your configuration
+
+49
+00:03:45,300 --> 00:03:50,900
+在代码的其他地方，将它们放入像这样的强类型类中。
+and used elsewhere in your code by  putting them into a  strongly typed class like this. 
+
+50
+00:03:51,500 --> 00:03:59,000
+我想展示的最后一点是环境变量是从我的应用程序中加载的，默认情况下，
+the last thing that I want to show is the environment variables are being loaded up from my application   and  by default, 
+
+51
+00:03:59,800 --> 00:04:05,900
+像windows计算机名称环境变量之类的东西被添加到我的配置中。
+things like the windows computer name environment variable  is being added to my configuration. 
+
+52
+00:04:06,200 --> 00:04:09,400
+我可以在这里看到，在这里JEFFS-YOGA 。
+and I can see that here in the footer jeff's yoga. 
+
+53
+00:04:09,720 --> 00:04:11,190
+这是我的机器的名字
+that's the name of my machine
+
+54
+00:04:11,600 --> 00:04:18,800
+我通过使用这个索引器来获取那个配置信息并把它写在页面上。
+I'm accessing that by using this indexer  to grab that configuration piece of information  and write it out to the page. 
+
+55
+00:04:19,900 --> 00:04:22,900
+但是现在让我们开始改变一些东西。
+but now let's let's start  changing things up a little bit. 
+
+56
+00:04:23,300 --> 00:04:25,600
+我们知道，我们从app.settings中读取数据。
+we know that we read from app.settings. 
+
+57
+00:04:25,700 --> 00:04:31,800
+因此，让我们编写Myconfiguration部分。
+so let's write a section into app.settings for Myconfiguration.  
+
+58
+00:04:33,210 --> 00:04:34,440
+这是json
+this is json 
+
+59
+00:04:34,400 --> 00:04:37,300
+我在这里添加一个json组
+so I will add a  json group here 
+
+60
+00:04:37,700 --> 00:04:40,800
+有 MenubarBgcolor
+and we will have MenubarBgcolor
+
+61
+00:04:41,600 --> 00:04:45,800
+我们会指定，让背景变成绿色
+and we will specify， let's start I want to make the background  green 
+
+62
+00:04:46,500 --> 00:04:49,000
+然后是菜单栏的颜色
+and then my menu bar color 
+
+63
+00:04:49,799 --> 00:04:50,849
+文本颜色。
+the text color.
+
+64
+00:04:51,569 --> 00:04:53,039
+让我们把它变成黑色。
+let's make it black.
+
+65
+00:04:53,879 --> 00:04:54,569
+好吧
+all right
+
+66
+00:04:55,289 --> 00:04:56,789
+确保我把逗号放在这里。
+make sure I put that comma in there.
+
+67
+00:04:57,209 --> 00:04:59,729
+现在我有了正确格式的app.settings.
+so now I have properly formatted app.settings.
+
+68
+00:05:00,509 --> 00:05:01,529
+我到这里来
+I'll go over here
+
+69
+00:05:02,000 --> 00:05:06,700
+我将重新启动我的应用程序这样我们就可以加载新的配置
+and I will restart my application so that we load up that new configuration 
+
+70
+00:05:08,609 --> 00:05:10,649
+我将刷新我的页面。
+and I'll refresh my page.
+
+71
+00:05:12,800 --> 00:05:16,000
+当然，我的页眉从黑色文字变成了绿色。
+and of course my header turns green with black text. 
+
+72
+00:05:16,200 --> 00:05:19,100
+因为我读取了appsettings.json的设置
+because now I'm reading settings from appsettings.json
+
+73
+00:05:20,000 --> 00:05:25,400
+但实际上我们在ASP.NET Core应用程序中默认设置了配置
+but we actually have configuration by default inside of our ASP.NET Core application 
+
+74
+00:05:25,600 --> 00:05:29,800
+它将读取appsettings.environment.json
+that will read an appsettings.environmentname.json
+
+75
+00:05:29,900 --> 00:05:33,300
+我们可以覆盖appsettings内的任何东西。
+and we can override  whatever is inside of appsettings. 
+
+76
+00:05:33,539 --> 00:05:36,269
+这是配置层次结构中的下一步。
+this is the next step in our configuration hierarchy.
+
+77
+00:05:36,359 --> 00:05:40,889
+这很有用，因为这是部署到服务器上的主要应用程序设置
+So that's really useful because I can say like this is my main app settings that I'm going to be deploying to my server
+ 
+
+78
+00:05:40,900 --> 00:05:47,400
+但是当我在开发的时候，我想要覆盖一些设置，不是所有的设置，但可能只是其中的一些。
+but when I'm in development I want to override  some of those settings not all of them but maybe just a few of them. 
+
+79
+00:05:47,639 --> 00:05:48,659
+也许只有几个。
+maybe just a few.
+
+80
+00:05:48,800 --> 00:05:55,600
+所以我要把MyConfiguration部分复制到我的appsettings.Development.json文件中
+so I'm going to copy out this MyConfiguration section go over into my appsettings.Development.json file
+
+81
+00:05:55,700 --> 00:06:01,900
+这是在visual studio中默认生成的文件。
+this is the default file that  we provide for you when you're building inside of  visual studio. 
+
+82
+00:06:02,300 --> 00:06:06,500
+我想把我的菜单背景颜色改成紫色。
+and I want to change my  menu  background color to purple. 
+
+83
+00:06:07,000 --> 00:06:10,500
+让我们把这个浅灰色，这样我们就能读了。
+and let's make this light gray so that we can still read. 
+
+84
+00:06:11,789 --> 00:06:13,439
+让我重新启动应用程序
+let me restart my application
+
+85
+00:06:18,200 --> 00:06:21,100
+现在我将浏览我的应用程序。
+and I'll browse to my application now. 
+
+86
+00:06:22,300 --> 00:06:24,200
+现在我得到了紫色的背景，
+and now I get the purple background, 
+
+87
+00:06:24,500 --> 00:06:32,400
+所以绿色和黑色文本的配置仍然存在，但是这个是第二个加载的
+so the configuration for the green with  black text  is still there  but this one is loaded  second. 
+
+88
+00:06:32,600 --> 00:06:36,500
+所以这个会覆盖其他的配置
+so this one will overlay that other  configuration.
+
+89
+00:06:37,500 --> 00:06:43,000
+现在我提到了一些东西，比如twitter密码或连接字符串，它们可能对你很重要。
+now I mentioned things like  twitter passwords or connection strings that might be important to you. 
+
+90
+00:06:43,300 --> 00:06:47,200
+我们知道，我们谈了一些关于把这些放到用户的密码中，
+we know and we talked a little bit about putting those into user secrets,
+
+91
+00:06:47,500 --> 00:06:51,400
+用户密码是下一个配置选项
+user secrets are a configuration option that's loaded next
+
+92
+00:06:51,700 --> 00:06:55,300
+它不应该存在于我们项目文件中。
+and it should live in a file that's outside of our projects. 
+
+93
+00:06:55,828 --> 00:06:58,378
+我将右键点击visual studio中的项目。
+so I'm going to right click on my project here in visual studio.
+
+94
+00:06:58,500 --> 00:07:01,100
+我想要选择管理用户机密
+and  I'm want to choose Manage User Secrets 
+
+95
+00:07:01,408 --> 00:07:04,798
+我得到了一个empty.json文件，叫做ssecrets.json
+and I get an empty.json on file called ssecrets.json
+
+
+96
+00:07:06,100 --> 00:07:08,400
+我要在这里粘贴我的配置
+I'm going to paste in my configuration here
+
+97
+00:07:08,668 --> 00:07:10,198
+让我们稍微改变一下。
+let's change this up a little bit.
+
+98
+00:07:10,498 --> 00:07:12,268
+这是我的安全信息。
+this is my secure information.
+
+99
+00:07:12,500 --> 00:07:16,600
+所以我要把背景色变成红色，菜单栏是白色的。
+so I will make the background color red and the menu bar color white. 
+
+100
+00:07:16,978 --> 00:07:19,678
+我还有其他的配置设置
+I still have my other configuration settings out there
+
+101
+00:07:20,000 --> 00:07:22,100
+但我增加了用户的机密
+but I've added  user secrets. 
+
+102
+00:07:22,400 --> 00:07:25,700
+如果存在用户机密，这些就会被加载
+these will be loaded if there are user secrets present 
+
+103
+00:07:26,188 --> 00:07:27,808
+我们处于开发模式。
+and we are in development mode.
+
+104
+00:07:28,500 --> 00:07:31,400
+现在刷新一下的页面
+so now I'll go back to my page and I'll refresh. 
+
+105
+00:07:32,400 --> 00:07:34,700
+现在我得到了红色的白色文本。
+and now I get the red with white text. 
+
+106
+00:07:35,098 --> 00:07:37,408
+所以我有三种不同的配置
+so I've got three different configurations coming in
+
+107
+00:07:37,600 --> 00:07:44,500
+这是它们相互重叠并依次改变MyConfiguration。
+and this is the order in which their overriding each other  and changing MyConfiguration. 
+
+108
+00:07:44,700 --> 00:07:52,700
+好的，所以区别只是为了确保我得到了appsettings.Development和secrets之间的区别
+Okay, so the difference just to make sure I  got it the difference between the appsettings.Development and secrets
+
+109
+00:07:53,000 --> 00:07:58,700
+appsettingsDevelopment包含在代码中我可能会检查源代码控制之类的，对吗？
+appsettingsDevelopment is  included in the code that I may be checking into source control that kind of thing ，right
+
+110
+00:07:58,917 --> 00:07:59,367
+是的
+yes
+
+111
+00:07:59,400 --> 00:08:03,800
+还有其他地方的用户机密，保存在磁盘上的其他地方，
+and user secrets that's somewhere else，that's kept somewhere else on disk, 
+
+112
+00:08:04,137 --> 00:08:06,537
+你不应该把它检查到源代码控制中，
+you shouldn't be checking it into source control, 
+
+113
+00:08:06,837 --> 00:08:10,857
+你不希望人们在源代码控制里面能够看到你的机密
+you don't want folks to be able to see your passwords and things inside of source control,
+
+114
+00:08:11,007 --> 00:08:11,277
+好的，
+okay,
+
+115
+00:08:11,600 --> 00:08:15,000
+但是在这个例子中，为了说明这是在一个不同的地方
+but in this case, just to  illustrate that this is in a different place 
+
+116
+00:08:15,087 --> 00:08:17,277
+我只是改变了导航条的颜色。
+I'm just changing the color of the navigation bar.
+
+117
+00:08:17,397 --> 00:08:17,697
+很好。
+Great ok.
+
+118
+00:08:18,000 --> 00:08:24,200
+下一件事，我们看到它在加载环境变量，比如我的计算机名，在页脚。
+so the next thing where we saw that it's loading the environment  variables like my computer named  there in the footer. 
+
+119
+00:08:24,400 --> 00:08:29,800
+我可以访问和发送环境变量来覆盖这些不同的设置
+I can access and sending  environment variables to overwrite those different settings 
+
+120
+00:08:30,200 --> 00:08:39,400
+检查一下我的环境中可能会有一些设置环境变量的东西
+so check this out I might have  in my environment.   something that will setup environment variables  
+
+121
+00:08:39,500 --> 00:08:43,700
+就像MyConfiguration_MenubarBgColor是黄色的
+like MyConfiguration_MenubarBgColor   is yellow 
+
+122
+00:08:44,000 --> 00:08:46,400
+MenubarColor是黑色的。
+MenubarColor color is black. 
+
+123
+00:08:46,700 --> 00:08:51,900
+这些环境设置是操作人员可以在服务器上设置的
+and these environment settings are things that are operations folks can set up on the server 
+
+124
+00:08:52,200 --> 00:08:54,800
+或者通过某种类似这样的脚本文件，
+either by having some sort of a script file like this, 
+
+125
+00:08:55,137 --> 00:08:57,868
+也可能是在他们的windows配置中设置的
+or maybe they set it up right in their windows configuration
+
+126
+00:08:58,500 --> 00:09:03,800
+或者在web服务启动时，在linux中的不同服务配置中。
+or in different service configurations  in linux  as the web service is starting up. 
+
+127
+00:09:04,500 --> 00:09:09,300
+所以我要回到控制台窗口
+so I'm going to go back  to my console window here  
+
+128
+00:09:09,600 --> 00:09:12,700
+我将运行这个设置环境命令。
+and I'm going to run this  set  environment command. 
+
+129
+00:09:13,888 --> 00:09:16,978
+它有一些额外的空间
+it's got a couple extra spaces in there that it's not happy about.
+
+130
+00:09:17,500 --> 00:09:21,300
+我把这些设置复制到这里。
+let me just copy these settings in there we go. 
+
+131
+00:09:22,100 --> 00:09:26,900
+现在，请注意配置设置是分层的。
+now, notice  that configuration setting  is hierarchical. 
+
+132
+00:09:27,700 --> 00:09:35,200
+那么我们如何定义配置层次结构，以及其中的这些项
+so how do we define that hierarchy  that we're setting  my configuration and then these items inside of it
+
+133
+00:09:35,200 --> 00:09:45,000
+你可以通过在我们想要配置的配置键的每个部分之间使用一个双下划线分隔它们
+ you separate them by using a double underscore  between each one of the pieces  of that configuration key we want to configure   
+
+134
+00:09:45,688 --> 00:09:47,668
+所以我再次运行，
+so I'll dotnet run again,
+
+135
+00:09:48,538 --> 00:09:51,358
+而这一次，有了这些环境变量，
+and this time with those environment variables in place,
+
+136
+00:09:51,600 --> 00:09:56,200
+我应该看到一个黄色的页眉和黑色的字。
+I should see a yellow  navigation bar  with black text. 
+
+137
+00:09:56,600 --> 00:09:59,400
+因为它来自于我的环境变量设置。
+because it's coming from my environment variable settings. 
+
+138
+00:09:59,900 --> 00:10:03,100
+这在azure app服务上也很强大
+and this is also really powerful on azure app service 
+
+139
+00:10:03,400 --> 00:10:11,000
+因为我们在azure上有这个控制台，您可以看到为我的应用程序专门配置的所有环境变量。
+because we have that console on azure where you see all the environment variables that are being configured specifically for my application.  
+
+140
+00:10:11,300 --> 00:10:16,800
+我可以在azure上添加MyConfiguration_MenubarBgColor
+and I can add-in in this case MyConfiguration_MenubarBgColor on azure 
+
+141
+00:10:17,000 --> 00:10:19,100
+并适当地设置这些设置。
+and set those settings appropriately. 
+
+142
+00:10:19,300 --> 00:10:23,000
+现在，最后为你们展示的是
+and now ， there's one final place I want to show you 
+
+143
+00:10:23,000 --> 00:10:29,600
+您可以添加配置来覆盖环境变量，这是堆栈中的最后一件事。
+that you can add configuration  to override things  environment variables  is the last thing in the stack. 
+
+144
+00:10:29,900 --> 00:10:38,000
+这是在ASP.NETCore 内部配置的，IIS有它们自己的配置设置
+that's being configured  inside of ASP.NET Core. IIS has their own configuration settings 
+
+145
+00:10:38,279 --> 00:10:40,919
+它们将从web配置中加载。
+that they will load up from within web config.
+
+146
+00:10:41,279 --> 00:10:43,889
+当我的应用程序在IIS中运行时
+when my application is running inside of IIS
+
+147
+00:10:44,300 --> 00:10:50,200
+所以windows上的互联网信息服务器使用了ASP.NET Core模块，它的web配置是这样的。
+so the internet information server on windows  uses something called the ASP.NET Core module and it has a web configured that looks like this. 
+
+148
+00:10:50,300 --> 00:10:54,900
+它有一个网页配置，当它运行我的应用程序时，
+and it has a web config that looks like this  when it runs my application, 
+
+149
+00:10:56,100 --> 00:11:01,100
+我可以在这里放一个环境变量条目
+I can place inside of here, an entry for Environment Variables 
+
+150
+00:11:01,400 --> 00:11:09,000
+这是专门针对这个进程的，它运行的是我们的kestrel web服务器，用于ASP.NET核心
+that are specific just to this process that were hosting that's running our kestrel web server， for ASP.NET Core
+
+151
+00:11:09,509 --> 00:11:11,759
+所以我要添加一个环境变量。
+so I will add an environment variable.
+
+152
+00:11:12,400 --> 00:11:19,800
+我将使用之前的相同的名字，MyConfiguration_MenubarBgColor 
+and I'm going to use those same names that I had before. MyConfiguration_MenubarBgColor 
+
+153
+00:11:20,549 --> 00:11:23,309
+我将指定环境变量的值。
+and I'll specify the value of the environment variable.
+
+154
+00:11:23,759 --> 00:11:24,899
+让我们把它变成天蓝色
+let's make it skyblue
+
+155
+00:11:26,000 --> 00:11:28,800
+我将创建一个环境变量。
+I'll create one more environment variable. 
+
+156
+00:11:29,800 --> 00:11:34,400
+这是MyConfiguration_MenubarColor
+this is MyConfiguration_MenubarColor
+
+157
+00:11:35,600 --> 00:11:38,500
+这次我们要把它变成黑色。
+and this time we're going to make that black. 
+
+158
+00:11:39,149 --> 00:11:39,539
+好了，
+all right,
+
+159
+00:11:40,600 --> 00:11:46,500
+现在，如果我在我的控制台窗口中重新启动
+so now， if I restart over here inside of my console window 
+
+160
+00:11:48,449 --> 00:11:50,519
+现在回到浏览器
+and I'm going to browse back to my application
+
+161
+00:11:52,200 --> 00:11:55,300
+这次我还是得到了黄色和黑色
+this time  I still get the yellow and black 
+
+162
+00:11:56,039 --> 00:11:57,239
+我得到了黄色和黑色
+and I get the yellow and black
+
+163
+00:11:57,419 --> 00:11:59,579
+因为我在kestrel里面运行
+because I'm running inside of kestrel
+
+164
+00:11:59,789 --> 00:12:01,619
+不是在IIS里面
+not inside of IIS
+
+165
+00:12:02,400 --> 00:12:05,000
+让我再回顾一遍，
+so let me go back one more time, 
+
+166
+00:12:05,639 --> 00:12:07,559
+我要运行这个
+I'm going to run this
+
+167
+00:12:07,700 --> 00:12:10,400
+使用IIS Express
+using IIS Express
+
+168
+00:12:10,469 --> 00:12:13,979
+它读取我的web配置并解析这些环境变量
+so it reads my web configuration parses these environment variables
+
+169
+00:12:14,309 --> 00:12:17,039
+对于托管的.Net进程
+for the  .Net process that its hosting
+
+170
+00:12:17,500 --> 00:12:20,300
+因此，我将启动IIS express实例。
+so I'll launched the IIS express instance. 
+
+171
+00:12:20,700 --> 00:12:31,900
+它将使用我写的我的web.config，启动我的浏览器，现在我得到了天蓝色的导航
+it's going to use my web.config that I wrote. starting my browser  and now I get the sky-blue  with black. 
+
+172
+00:12:32,400 --> 00:12:36,420
+我已经为web服务器编写了一个专门的配置
+so I've written a configuration specifically for the web server to use
+
+173
+00:12:37,170 --> 00:12:38,970
+它被解析并添加进来
+its being parsed and added in
+
+174
+00:12:39,300 --> 00:12:45,400
+如果你想对IIS做一些特定的事情就会给你一个层次的配置
+that gives you a level of configuration if you want to do something specific to IIS
+
+175
+00:12:45,400 --> 00:12:50,400
+只在这个过程中，因为您不想与其他进程共享这些环境变量。
+only for this process  because you don't want to share those environment variables with other processes.  
+
+176
+00:12:50,670 --> 00:12:52,650
+可能在共享的主机环境中
+perhaps in a shared hosting environment
+
+177
+00:12:53,370 --> 00:12:53,700
+对的
+right
+
+178
+00:12:54,200 --> 00:12:58,100
+但我们有各种不同的选择。
+but we have  all these different options we can work with. 
+
+179
+00:12:58,530 --> 00:12:58,890
+好的
+ok
+
+180
+00:12:59,800 --> 00:13:01,000
+回顾一下，
+so to recap, 
+
+181
+00:13:01,140 --> 00:13:03,780
+我们为应用程序设置配置
+we set configuration for our application
+
+182
+00:13:04,000 --> 00:13:06,300
+从六个不同的地方
+from half a dozen different places 
+
+183
+00:13:06,500 --> 00:13:12,400
+在这个开发案例中有appsettings.json.appsettings与environmentname.json
+where there was appsettings.json. appsettings with the environmentname.json in this case development, 
+
+184
+00:13:12,690 --> 00:13:14,940
+但我也可以写一个应用程序。
+but I could also write an appsetting.staging
+
+185
+00:13:15,100 --> 00:13:21,500
+如果我有特定于我的登录环境的配置信息，我希望我的测试人员能够使用它。
+if I have configuration information that's specific to my staging environment that I want my testers to be able to work with. 
+
+186
+00:13:21,900 --> 00:13:24,400
+我也可以有应用程序设置，json
+I can also have app settings production.json 
+
+187
+00:13:24,690 --> 00:13:28,140
+DevOps人员在生产空间的上部进行管理
+that my DevOps folks manage in the upper in the production space
+
+188
+00:13:28,770 --> 00:13:30,210
+我可以设置环境变量。
+I can set environment variables.
+
+189
+00:13:30,400 --> 00:13:34,700
+我可以用用户的机密来隐藏在开发机器上的东西
+I can use user secrets to hide things on just the development machine 
+
+190
+00:13:35,100 --> 00:13:40,300
+这些环境变量可以在web服务器进程中专门为web服务器设置。
+and those environment variables can be set specifically for the web server in the web server process. 
+
+191
+00:13:40,711 --> 00:13:43,291
+它有很大的灵活性和很多选择。
+it's a lot of flexibility and a lot of options.
+
+192
+00:13:43,800 --> 00:13:46,300
+我已经通过页面上的配置访问了
+I've accessed by configuration on my page 
+
+193
+00:13:46,600 --> 00:13:52,100
+两者都有一个索引器，通过计算机名或在配置对象的内部
+both with an indexer ， by saying computer name，  inside of the configuration object  
+
+194
+00:13:52,500 --> 00:13:56,800
+通过创建配置强类型类
+and but also by creating that my configuration strongly typed class 
+
+195
+00:13:57,061 --> 00:14:00,091
+有一些属性可以用来找到它
+that had properties to find for those things inside of it.
+
+196
+00:14:00,751 --> 00:14:01,801
+很酷的东西
+pretty cool stuff
+
+197
+00:14:02,100 --> 00:14:04,900
+你知道一些我认为很有价值的东西。
+you know some things that you showed that I think are really worthwhile. 
+
+198
+00:14:05,100 --> 00:14:12,600
+一个是我有很大的灵活性，所以当我在开发的时候，我可以说这就是我想要在生产工作方式和本地工作方式。
+one is I've got a lot of flexibility so as I'm developing I can say this is how I want to work in production and this is how I want to work locally and all that. 
+
+199
+00:14:12,961 --> 00:14:13,831
+另一件事是
+another thing as
+
+200
+00:14:13,800 --> 00:14:22,300
+它使安全变得更容易，并且不意外地检查我的密码，以及密码进入源代码控制中
+it makes it a lot easier to be secure and not accidentally checking my  you know passwords since and secrets into source control 
+
+201
+00:14:22,300 --> 00:14:25,600
+因为在我开发的时候，我可以把它放在本地
+because of things like  I can put locally when I develop I can
+
+202
+00:14:25,600 --> 00:14:27,600
+把这些放到我的用户机密中
+put those in my user secrets
+
+203
+00:14:27,700 --> 00:14:33,300
+在生产中，在azure上我可以创建环境变量
+and in production say on azure I can create those as environment settings environment variables are I can create those 
+
+204
+00:14:33,600 --> 00:14:37,000
+你知道，在我的服务器中，设置为环境变量。
+you know in whatever my server is set those up as environment variables. 
+
+205
+00:14:37,000 --> 00:14:39,000
+你知道的更好
+it's a much better you know
+
+206
+00:14:39,092 --> 00:14:43,142
+它会让你远离那些你不想让你不愿意分享的东西
+it kind of pushes you away from putting those things you don't want to accidentally share
+
+207
+00:14:43,202 --> 00:14:44,822
+让我更容易保护它们
+makes it easier for me to keep them
+
+208
+00:14:45,062 --> 00:14:48,122
+在您的环境和生产环境中也是本地的。
+locally in your environment and in your production environments as well.
+
+209
+00:14:48,200 --> 00:14:50,900
+它非常灵活和强大。
+it's very very flexible and powerful.  
+
+210
+00:14:51,000 --> 00:14:55,100
+当你开始使用其他工具比如docker时，你也可以使用同样的东西
+you can use those same things when you start using other tools like docker containers 
+
+211
+00:14:55,502 --> 00:14:58,262
+我们也可以以这种方式注入我们的环境变量。
+we can inject our environment variables that way as well.
+
+212
+00:14:58,400 --> 00:14:59,600
+很酷的东西。
+great cool stuff. 
+
+213
+00:15:00,500 --> 00:15:04,200
+感谢您的加入，希望您能在ASP.NETCore 继续观看更多的视频。
+thanks for joining us， hope you'll stick around for some more videos on ASP.NET Core.
+
