@@ -1,0 +1,2314 @@
+0
+00:00:01,050 --> 00:00:02,040
+我是john dalloway
+I am john dalloway
+
+1
+00:00:02,220 --> 00:00:03,180
+我是geoff ricketts，
+and I'm geoff ricketts,
+
+2
+00:00:03,690 --> 00:00:05,820
+我们将在这节课中讨论
+so we're going to be talking in this session about
+
+3
+00:00:05,970 --> 00:00:09,270
+中间件自定义中间件深入到中间件内部
+middleware custom middleware digging into some middleware internals
+
+4
+00:00:09,360 --> 00:00:09,660
+是的
+yeah
+
+5
+00:00:09,690 --> 00:00:10,830
+中间件就像是一种游戏
+middleware feels like a game
+
+6
+00:00:10,860 --> 00:00:11,910
+时髦词
+of buzzword
+
+7
+00:00:12,000 --> 00:00:12,480
+确实如此
+it does
+
+8
+00:00:12,780 --> 00:00:13,260
+你知道，
+you know,
+
+9
+00:00:13,830 --> 00:00:17,430
+但是当我越来越的深入了解他的peanut core时我意识到
+but once I started digging into his peanut core more and more I realize
+
+10
+00:00:17,400 --> 00:00:20,000
+所有的东西都是中间件，真的很强大
+everything's middleware and that's where all the real power is
+
+11
+00:00:20,000 --> 00:00:25,400
+你知道所有可配置的事情，比如配置认证 你所知道的路由，
+ you know everything you configure authentication and we see all the you know routing,
+
+12
+00:00:26,250 --> 00:00:28,500
+这就是所有事情都联系在一起的地方
+that's where everything's wired up in
+
+13
+00:00:28,530 --> 00:00:29,940
+很酷的一点是，
+the cool thing with that is,
+
+14
+00:00:30,300 --> 00:00:33,100
+您可以插入中间件
+you can plug-in the middleware
+
+15
+00:00:33,100 --> 00:00:34,200
+有很多原因，但其中一个是
+ is great for a lot of reasons but one is
+
+16
+00:00:34,410 --> 00:00:36,870
+你可以插入到这个堆栈，你可以说
+you can plug into this stack right and so you can say
+
+17
+00:00:37,110 --> 00:00:41,250
+在这个前面或这后面添加我的中间件，我可以完全控制它
+add my middleware after this one before this one I can completely control it
+
+18
+00:00:41,280 --> 00:00:42,240
+我可以调试它
+I can debug it
+
+19
+00:00:43,230 --> 00:00:44,250
+我可以自己写
+and I can write my own
+
+20
+00:00:44,460 --> 00:00:45,060
+当然。
+absolutely.
+
+21
+00:00:45,390 --> 00:00:46,920
+让我们看一看写一些中间件
+let's take a look at writing some of word.
+
+22
+00:00:47,040 --> 00:00:47,490
+好吧
+all right
+
+23
+00:00:47,940 --> 00:00:49,230
+在我的机器上。
+so here on my machine.
+
+24
+00:00:49,800 --> 00:00:53,800
+我有一个空的asp.net core 程序
+I have a empty asp,net core application
+
+
+25
+00:00:53,880 --> 00:00:57,000
+这只是在这一点上配置了一些基础
+that just has some of the basics configured at this point.
+
+26
+00:00:57,510 --> 00:01:00,330
+好吧，我的起始课上没有任何改动，
+ok there's nothing going on in my startup class,
+
+27
+00:01:01,020 --> 00:01:01,410
+并且
+and
+
+28
+00:01:01,400 --> 00:01:03,900
+现在我有一个配置方法
+I have a configure method here tonight
+
+29
+00:01:03,900 --> 00:01:05,800
+我正在访问日志工厂
+I am accessing the logger factory,
+
+30
+00:01:05,820 --> 00:01:08,010
+这样我就可以创建一个日志记录器了。
+just so that I can create a logger.
+
+31
+00:01:08,280 --> 00:01:10,470
+所以它可以开始与我的日志进行交互
+so it can start to interact with my log
+
+32
+00:01:10,500 --> 00:01:12,180
+当我在构建我的应用程序时。
+as I'm building my application.
+
+33
+00:01:12,810 --> 00:01:14,100
+我之前做过的另一件事
+the one other thing that I've done
+
+34
+00:01:14,490 --> 00:01:16,230
+我已经进入我的项目了。
+is I've gone into my project.
+
+35
+00:01:16,800 --> 00:01:22,800
+就像我在视频中做的关于授权的视频一样
+and just like I did when we worked on our video about authorization
+
+36
+00:01:22,920 --> 00:01:25,050
+我已经激活了dotnet watcher
+I've activated the dotnet watcher
+
+37
+00:01:25,200 --> 00:01:26,490
+在我的应用程序中
+inside of my application
+
+38
+00:01:26,700 --> 00:01:34,000
+通过添加一行DotNetCliToolReference Include  microsoft dot net watcher tools version=2.0
+by adding this line DotNetCliToolReference Include microsoft dot net watcher tools version=2.0
+
+39
+00:01:34,000 --> 00:01:42,000
+这将让在我的C#代码中有改动时都重新运行我的应用程序
+and this will let me rerun my application every time there's a c sharp change inside my code that I save
+
+40
+00:01:42,330 --> 00:01:42,660
+好的
+okay
+
+41
+00:01:43,000 --> 00:01:45,200
+如果我现在运行这个应用程序。
+so if I run this application right now.
+
+42
+00:01:48,700 --> 00:01:51,100
+我输入dotnet watch run.
+I'll say dot net watch run.
+
+43
+00:01:51,150 --> 00:01:54,870
+这将运行我的应用程序并开始观察它以确保
+so this will run my application and start watching it to make sure
+
+44
+00:01:55,260 --> 00:01:57,540
+如果有任何变化，它会重新启动，
+that it restarts if there are any changes,
+
+45
+00:01:58,300 --> 00:02:02,400
+它在监听这个位置的运行，
+and there it is it's running in its listening on this location,
+
+46
+00:02:02,760 --> 00:02:04,200
+我将复制它
+so I will copy that
+
+47
+00:02:04,710 --> 00:02:06,600
+我将到我的浏览器，
+and I'll come over here to my browser,
+
+48
+00:02:06,930 --> 00:02:08,400
+导航到那个位置
+navigate to that location
+
+49
+00:02:08,430 --> 00:02:09,510
+然后我就得到
+and I just get
+
+50
+00:02:10,320 --> 00:02:11,130
+hello world,
+hello world,
+
+51
+00:02:11,310 --> 00:02:11,640
+好的，
+okay,
+
+52
+00:02:12,150 --> 00:02:13,680
+现在我得到了hello world
+now I get hello world 
+
+53
+00:02:14,040 --> 00:02:15,720
+因为在这个配置方法中
+because in this configure method
+
+54
+00:02:15,700 --> 00:02:20,700
+我在这里配置我的中间件，最后这个应用程序运行
+where I configure my middleware. the last thing that happens is this app run
+
+55
+00:02:21,240 --> 00:02:21,840
+并且
+and
+
+56
+00:02:22,500 --> 00:02:26,600
+无论上下文是什么，我们都要将内容类型改为HTML
+whatever the context is， we're going to change the content type to HTML
+
+57
+00:02:26,970 --> 00:02:28,620
+我们将输出hello world。
+and we're going to output hello world.
+
+58
+00:02:29,070 --> 00:02:29,700
+这是
+so this is
+
+59
+00:02:29,700 --> 00:02:34,600
+这实际上是非常疯狂的你只需要几行代码就可以浏览网页
+this is actually pretty crazy you've got in just a few lines of code you're  surfing web requests
+
+60
+00:02:34,890 --> 00:02:37,140
+我用html服务web请求。
+I'm serving web request with html.
+
+61
+00:02:37,500 --> 00:02:43,200
+但是我想指出的是这行运行语句是一个终端中间件，
+but what I want to point out here is this run statement is a terminating piece of Middleware,
+
+62
+00:02:43,300 --> 00:02:50,000
+好的，在这之后我们实际上不会传递到另一个项目
+OK, We don't actually pass on to another item after this occurs
+
+63
+00:02:50,500 --> 00:02:53,200
+好了，这是链条的末端什么也没有发生
+OK, This is the end of the chain nothing more happens
+
+64
+00:02:53,400 --> 00:02:57,400
+这是我们在使用MVC时所看到的
+and this is typically what we'll see when we see that use MVC
+
+65
+00:02:57,750 --> 00:03:00,570
+在我们的中间件内部，这是一个终端
+inside of our Middleware,right that's a terminating piece
+
+66
+00:03:00,700 --> 00:03:06,200
+尽管它在使用的是MVC
+even though it's using， the phrase use， it use MVC
+
+67
+00:03:06,200 --> 00:03:09,500
+你可以继续做一些事情
+you could continue on have something after it but
+
+68
+00:03:09,700 --> 00:03:13,100
+按照惯例，在这之后没有任何事情发生，
+by convention run says there's nothing that occurs after this,
+
+69
+00:03:13,200 --> 00:03:15,200
+这就是它的最后，好吧，
+This is the end of it, OK,
+
+70
+00:03:15,600 --> 00:03:18,200
+这是终止，
+So this is terminating,
+
+71
+00:03:18,200 --> 00:03:28,100
+还有一些其他的东西比如app.usestaticfiles，好的，这将会传递到控制
+now other ones that we have other things like app.useStaticFiles，Alright So this will pass on control 
+
+72
+00:03:28,400 --> 00:03:32,100
+如果有些东西不知道如何回应，
+if there are things that it doesn't know how to respond to,
+
+73
+00:03:32,200 --> 00:03:37,100
+所以，如果有人提出了请求一个在磁盘上的静态文件，
+So, if somebody's made a request for what it finds is a static file on disk,
+
+74
+00:03:37,400 --> 00:03:40,500
+它将处理静态文件和停止处理，
+it'll serve that static file and stop processing,
+
+75
+00:03:41,000 --> 00:03:44,300
+在运行语句之前，我把它放在这里很重要，
+And it's important that I put that in before the run statement,
+
+76
+00:03:44,730 --> 00:03:46,530
+因为我想确保
+because I want to make sure that
+
+77
+00:03:46,980 --> 00:03:48,840
+我们并不是总能得到一个hello world
+we don't always get a hello world
+
+78
+00:03:49,000 --> 00:03:53,100
+当我为我的请求服务时，我有一个index.html，我把它写到磁盘上，
+When I serve my request now I have an Index.HTML that I wrote to disk,
+
+79
+00:03:53,400 --> 00:03:56,000
+它只从index.html中显示Hello，
+that just says Hello from index html,
+
+80
+00:03:56,100 --> 00:04:01,100
+如果我浏览到/index.html
+If I browse to slash index.html
+
+81
+00:04:01,470 --> 00:04:03,240
+我从index.html中得到hello
+I get hello from index.html,
+
+82
+00:04:03,700 --> 00:04:05,700
+如果我不去那个页面
+if I don't go to that page
+
+83
+00:04:05,900 --> 00:04:08,500
+如果我去别的地方
+if I go somewhere else
+
+84
+00:04:08,900 --> 00:04:12,400
+我仍然能得到Hello World 所以你说的顺序真的很重要
+I still get Hello World  so that order like you're saying really matters
+
+85
+00:04:12,500 --> 00:04:16,500
+因为如果在use MVC后，它将为提供你的静态文件 
+because if that serves you static files was after the use MVC
+
+86
+00:04:16,900 --> 00:04:20,300
+让我们试试，我要用Alt+Down来移动它
+let's try yeah I'm going to move it down using Alt+Down
+
+87
+00:04:20,400 --> 00:04:23,500
+把它放在我的run语句之后，
+and put it after my run statement,
+
+88
+00:04:24,120 --> 00:04:25,740
+现在让我们回到浏览器。
+so now let me go back to the browser.
+
+89
+00:04:26,700 --> 00:04:30,700
+它会输出Hello World尽管我已经请求了index.html
+and it says Hello World even though I've requested index.html
+
+90
+00:04:30,800 --> 00:04:34,200
+那是因为它知道是提供 index.html，
+that's because it knows to serve index.html,
+
+
+91
+00:04:34,400 --> 00:04:39,400
+在它指定终端后它会输出 hello world
+After it specifies that terminating endpoint where it saying hello world
+
+92
+00:04:39,500 --> 00:04:46,000
+这给了我很大的权力和灵活性来说这就是我想要的使用中间件的顺序
+So that gives me a lot of power and flexibility to say this is exactly the order of how I want my middleware process 
+
+93
+00:04:46,000 --> 00:04:46,800
+当然。
+absolutely.
+
+94
+00:04:47,300 --> 00:04:59,500
+好了，现在我们回到这里，我要做的是，我要用app.usestaticfile,
+Alright, so now let's go back over here and that's， I'll do app.usestaticfile,
+
+95
+00:04:59,600 --> 00:05:06,700
+好了，现在我可以开始写我自己的use语句来做其他事情
+There we go. now I can start to write my own use statements here to do other things
+
+96
+00:05:06,700 --> 00:05:09,800
+做对我的管道很重要的事情
+do other things that are important with my pipeline
+
+97
+00:05:09,900 --> 00:05:11,200
+我的请求管道，
+ my request pipeline,
+
+98
+00:05:11,400 --> 00:05:14,200
+让我们来做一些实际的事情
+So let's do something here where we'll actually
+
+99
+00:05:14,400 --> 00:05:17,400
+将环境信息输出到我们的日志
+output the environment information to our log
+
+100
+00:05:17,500 --> 00:05:23,400
+所以我要写应用app.use  可以在这里放一个匿名函数
+So I will write app dot use and I can put an anonymous statement in here,
+
+101
+00:05:23,669 --> 00:05:27,299
+这样它就会在每个请求后执行
+so that it actually goes through and executes this on every request
+
+102
+00:05:27,400 --> 00:05:31,600
+好的，我们需要使用的格式是async
+Okay! So the format we need to use is async
+
+103
+00:05:32,100 --> 00:05:36,300
+一些上下文，然后是next =>
+some context and then a next pointer
+
+104
+00:05:36,500 --> 00:05:39,900
+我们要求的下一个功能是什么，
+to what's going to be the next feature that we request,
+
+105
+00:05:42,000 --> 00:05:48,500
+好了，现在我可以直接和管道进行交互了，
+Alright! And now I can interact with the pipeline directly as it's being walked through,
+
+106
+00:05:48,700 --> 00:05:48,700
+我将写入日志记录器，日志信息
+so I will say logger,log information
+
+107
+00:05:49,229 --> 00:05:51,779
+所以我说logger.loginformation.
+so I will say log dot log information.
+
+108
+00:05:51,800 --> 00:06:02,400
+我可以说beginning request in this EnvironmentName
+and I can say beginning request in this EnvironmentName
+
+109
+00:06:02,800 --> 00:06:08,000
+好的，这就会把信息记录下来
+OK   all right， and that'll log that information out for me
+
+110
+00:06:08,200 --> 00:06:15,100
+当有一个请求时，我编译完成后，我将请求这个页面
+when there's a request， so my compile is finished， I'll request this page
+
+111
+00:06:15,200 --> 00:06:19,100
+实际上它并没有返回任何东西，
+and it actually didn't return anything,
+
+112
+00:06:19,139 --> 00:06:21,989
+但是我得到了我的开始请求声明
+But I'm getting my beginning request statement written out,
+
+113
+00:06:22,000 --> 00:06:24,400
+为什么它没有返回任何东西？
+Why didn't it return anything?
+
+114
+00:06:24,700 --> 00:06:30,500
+因为我的use语句是通过HTTP上下文传递信息的
+Because my use statement here is being passed in information by HTTP context
+
+115
+00:06:30,500 --> 00:06:34,000
+这是被执行的，
+that's being executed, 
+
+116
+00:06:34,049 --> 00:06:35,369
+所以你需要告诉它，
+so you actually need to tell it,
+
+117
+00:06:36,200 --> 00:06:38,900
+做下一件事，好，我们来完成他，
+Go to the next thing. okay, so let's do that,
+
+118
+00:06:39,200 --> 00:06:45,500
+现在我可以说，await nex( )，它将执行管道中的下一个项目。
+So now I can say  await next and it'll execute the next item in the pipeline.
+
+
+119
+00:06:46,228 --> 00:06:47,458
+我保存一下
+so I'll save that
+
+120
+00:06:48,629 --> 00:06:51,178
+我要确保它在这里重新启动
+I'll make sure that it finishes restarting here
+
+121
+00:06:51,808 --> 00:06:53,038
+让我回到浏览器
+let me come back to my browser 
+
+122
+00:06:53,278 --> 00:06:53,878
+现在
+and now
+
+123
+00:06:53,908 --> 00:06:55,078
+当我请求这个的时候
+when I request this
+
+124
+00:06:55,318 --> 00:06:56,968
+我从index.html中得到hello
+I get hello from index html
+
+125
+00:06:57,178 --> 00:06:59,278
+因为这是管道的下一部分
+because that's the next piece in the pipeline
+
+126
+00:06:59,500 --> 00:07:03,900
+如果我在我的日志中查看，我得到了 “beginning requests in development”
+and if I look over here in my log， I get beginning requests in development
+
+127
+00:07:04,000 --> 00:07:06,300
+然后我看到它提供了静态文件
+and then I see it served the static file
+
+128
+00:07:06,538 --> 00:07:06,898
+很好
+great
+
+129
+00:07:06,958 --> 00:07:07,438
+现在我可以说，等下它会执行
+So now I can say  await next and it'll execute the
+
+
+130
+00:07:07,400 --> 00:07:12,800
+我们插入了一些信息，并我们处理静态文件
+So we've inserted some information and we're processing that static file
+
+131
+00:07:12,958 --> 00:07:14,638
+然后我们再往前走一步，
+and then we go one step further,
+
+132
+00:07:14,998 --> 00:07:16,498
+下一个语句
+that next statement
+
+133
+00:07:16,978 --> 00:07:19,678
+正在被执行，我仍然可以执行其他的事情。
+is being executed and I can still execute other things.
+
+134
+00:07:20,100 --> 00:07:23,400
+在其他事情结束后，
+after those other things finish,
+
+135
+00:07:23,548 --> 00:07:25,648
+这让我有了更大的灵活性
+So that gives me the flexibility to say
+
+136
+00:07:25,800 --> 00:07:29,500
+调用这个——调用这个你完成了中间件的执行
+call that-- call this you complete executing the middleware
+
+137
+00:07:29,600 --> 00:07:31,600
+但我想要最后的决定权，
+but I want the final say after that,
+
+138
+00:07:31,700 --> 00:07:32,500
+当然。
+absolutely.
+
+139
+00:07:32,500 --> 00:07:34,500
+如果我在这里设置一个计时器呢
+so what if I set up a timer here 
+
+140
+00:07:35,068 --> 00:07:36,178
+当我做完了，
+and when I'm done,
+
+141
+00:07:36,200 --> 00:07:41,000
+我可以说logger.loginformation
+I can say logger.loginformation
+
+142
+00:07:41,008 --> 00:07:41,668
+就是这样
+there it is
+
+143
+00:07:42,478 --> 00:07:43,618
+我可以说。
+and I can say.
+
+144
+00:07:44,038 --> 00:07:45,868
+当你在打字的时候
+and as you're typing that you're using 
+
+145
+00:07:46,200 --> 00:07:49,300
+最近添加到C#的字符串插值特性
+the string interpolation feature which was added to C sharp recently
+
+146
+00:07:49,400 --> 00:07:52,200
+我真的很喜欢这是一开始的美元符号
+I really like that that's the dollar sign at the beginning
+
+147
+00:07:53,600 --> 00:07:57,200
+然后是花括号它允许将代码插入到字符串中，
+and then the curly braces and it allows inserting code into a string,
+
+148
+00:07:57,200 --> 00:08:00,000
+将代码插入到字符串中，是的，我可以格式化我的字符串
+inserting code into a string. Yeah, I can format my string
+
+149
+00:08:00,028 --> 00:08:03,118
+不需要使用那些基于整数的格式化语句。
+without having to use those integer based formatting statements.
+
+150
+00:08:03,688 --> 00:08:04,558
+所以我要
+so I'm just going to
+
+151
+00:08:04,888 --> 00:08:08,008
+输出关于完成请求需要多长时间的信息，
+output the information about how long it took to complete the request,
+
+152
+00:08:08,700 --> 00:08:13,800
+我将验证我的应用程序已经完成了重建和重新启动
+so I'll verify that my application has finished rebuilding and restarting over here
+
+153
+00:08:14,458 --> 00:08:16,318
+我将再次请求我的页面
+and I'll request my page again
+
+154
+00:08:17,368 --> 00:08:18,598
+如果我看一下我的日志。
+if I look at my log.
+
+155
+00:08:18,958 --> 00:08:20,038
+你可以看到这里
+you can see here
+
+156
+00:08:20,878 --> 00:08:22,408
+在开发中开始请求，
+beginning request in development,
+
+157
+00:08:22,738 --> 00:08:24,418
+它服务于静态文件。
+it served the static file.
+
+158
+00:08:24,478 --> 00:08:25,588
+它没有被修改
+it wasn't modified
+
+159
+00:08:25,888 --> 00:08:28,048
+在9毫秒内完成了请求。
+completed the request in nine milliseconds.
+
+160
+00:08:28,300 --> 00:08:34,700
+现在我已经得到了所有这些信息，我可以插入和操作我的请求
+So I've got all this information now that I'm able to insert and manipulate around my requests
+
+161
+00:08:34,800 --> 00:08:38,300
+通过在这里写一小段中间件。
+by writing a little piece of middleware right here.
+
+162
+00:08:38,487 --> 00:08:41,938
+这是一个use语句
+Now that's a used statement 
+
+163
+00:08:42,100 --> 00:08:44,800
+使用的是context 和next item把他传递到了控制器
+the used has takes the context and the next item  so it passes on control  
+
+164
+00:08:45,057 --> 00:08:47,248
+最终结束了中间件
+and I effectively end up wrapping the middleware
+
+165
+00:08:47,400 --> 00:08:50,800
+我可以在它跳转回来的时候执行
+and I'm able to execute things as it comes back up
+
+166
+00:08:51,000 --> 00:08:55,000
+并取消请求，因为这已经完成了。
+and unwinds the request because these other things have completed.
+
+167
+00:08:55,800 --> 00:08:59,800
+现在，我可以在这里做其他的事情，比如映射
+Now, I can do other things in here like mapping
+
+168
+00:09:00,200 --> 00:09:03,400
+现在映射是我想要分支请求的时候
+now mapping is when I want to branch the requests
+
+169
+00:09:03,500 --> 00:09:07,800
+当某件事发生的时候我会做一些不同的事情
+I'm going to do something different when a certain thing occurs
+
+170
+00:09:07,900 --> 00:09:12,600
+当我遇到一个确定的标准时，当我满足某个条件的时候
+all right when I meet a certain， when I meet a certain criteria
+
+171
+00:09:12,700 --> 00:09:18,600
+好的，最简单的格式是匹配一条路径
+okay, so the simplest format of this is to match a path
+
+172
+00:09:18,800 --> 00:09:22,400
+所以我可以匹配一些简单的东西
+so I could match something as simple as contacts
+
+173
+00:09:22,500 --> 00:09:24,700
+如果有人请求联系页面
+if somebody requests the contacts page 
+
+174
+00:09:25,168 --> 00:09:27,329
+你想做什么你想做什么
+what do you want to do what do you want that
+
+175
+00:09:28,109 --> 00:09:29,909
+对于类似的使用或运行语句。
+to a similar type of use or run statement.
+
+176
+00:09:30,100 --> 00:09:33,000
+对于类似的使用或运行语句。
+to a similar type of use or run statement.
+
+177
+00:09:33,149 --> 00:09:34,169
+我们来做一下。
+so let's do that.
+
+178
+00:09:34,400 --> 00:09:38,700
+我将把它传递给一个 run语句
+I will pass on to a run statement
+
+179
+00:09:38,700 --> 00:09:49,200
+这一次我说，async context，这里有另一个打印
+and I will say async context and this time， there's another print there
+
+180
+00:09:49,300 --> 00:09:53,600
+这次我只说等待上下文响应
+this time I'll just say await context response
+
+181
+00:09:54,000 --> 00:09:59,900
+右边是你的联系人
+right asynchronously here are your contacts right
+
+182
+00:09:59,900 --> 00:10:01,400
+也许我有一些代码
+and perhaps I have some code
+
+183
+00:10:01,700 --> 00:10:04,600
+这将输出一些联系信息。
+that is going to output some contact information.
+
+184
+00:10:04,700 --> 00:10:05,000
+好的，
+okay,
+
+185
+00:10:05,200 --> 00:10:08,500
+但实际上，在这里，我在底层与这个请求进行交互
+but I'm really at a low level here interacting with that request
+
+186
+00:10:08,500 --> 00:10:10,500
+对一个非常具体的
+responding to a very specific
+
+187
+00:10:10,600 --> 00:10:14,600
+请求，是的，非常具体的格式
+request. Yeah, very specific format and
+
+188
+00:10:14,600 --> 00:10:18,200
+这里没有mvc，没有razor视图没有控制器，
+right there's no mvc here there's no razor views no controllers,
+
+189
+00:10:18,510 --> 00:10:21,960
+我直接在http请求中编写代码。
+I'm writing code directly against that http request.
+
+190
+00:10:22,100 --> 00:10:24,300
+好的，现在如果我来这里
+ Okay, so now if I come in  here
+
+191
+00:10:24,500 --> 00:10:27,800
+我仍然可以请求index.html，我得到index.html
+I can still request index.html, and I get index.html
+
+192
+00:10:27,900 --> 00:10:34,800
+但是我有一个关于/联系人的映射声明。
+but I have that map statement for /Contacts.
+
+193
+00:10:34,800 --> 00:10:36,400
+所以如果我去contacts
+So if I go to contacts,
+
+194
+00:10:36,400 --> 00:10:37,200
+我得到了这个，好的，对。
+I get that occurring. OK, right.
+
+195
+00:10:37,200 --> 00:10:39,900
+如果我去别的地方，如果我说联系人
+If I go somewhere else if I say contacts
+
+196
+00:10:40,000 --> 00:10:43,000
+对于Jon来说，它在别的地方，
+for Jon it's somewhere else,
+
+197
+00:10:43,600 --> 00:10:44,700
+一直到这个过程
+it falls all the way down to that run
+
+198
+00:10:45,150 --> 00:10:46,320
+它输出 hello world。
+where it says hello world.
+
+199
+00:10:46,470 --> 00:10:46,770
+好的
+ok
+
+200
+00:10:47,500 --> 00:10:51,800
+现在我已经映射并跳转过来，因为我有匹配的路径
+So now I've mapped and jumped off because I have path that matches
+
+201
+00:10:51,800 --> 00:10:53,900
+我还可以在这里添加其他条件。
+I can add other conditions in there too.
+
+202
+00:10:54,600 --> 00:10:56,600
+看看这个，我们再看一遍
+So check this out. Let's go over
+
+203
+00:10:56,700 --> 00:10:58,500
+我想在这里再加一个检查，
+I want to add one more check in here,
+
+204
+00:10:59,000 --> 00:11:02,600
+我可以使用 app.Map when( )
+I can say app.Map when
+
+205
+00:11:02,700 --> 00:11:05,200
+我可以在这里检查一个特定的条件。
+and I can check for a specific condition here.
+
+206
+00:11:05,600 --> 00:11:08,000
+所以我要讲一下我的上下文
+So I'm going to take my context
+
+207
+00:11:08,100 --> 00:11:14,400
+我将写入context Request.Headers
+and I'm going to say context Request.Headers
+
+208
+00:11:14,700 --> 00:11:16,600
+让我们检查一下我的user-agent
+and let's check my user agent
+
+209
+00:11:17,850 --> 00:11:20,370
+因为也许我想对不同的浏览器有不同的表现，
+because maybe I want to behave differently for different browsers,
+
+210
+00:11:22,200 --> 00:11:28,400
+我可以用contains（Firefox） 
+and I can say if that contains Firefox,
+
+211
+00:11:30,870 --> 00:11:32,880
+好了，我想指定其他的东西来做。
+alright, I want to specify something else to do.
+
+212
+00:11:33,100 --> 00:11:36,000
+让我们创建一个火狐路由方法
+So let's create a Firefox Route method
+
+213
+00:11:36,500 --> 00:11:39,600
+我创建这个方法
+to call and I will create that method for me
+
+214
+00:11:41,400 --> 00:11:43,800
+我将向下滚动到这个。
+and I'll scroll down to that.
+
+215
+00:11:44,100 --> 00:11:46,700
+这就接收到IApplicationBuilder
+So this receives an IApplicationBuilder
+
+216
+00:11:47,700 --> 00:11:50,600
+我把它重命名为app，所以它看起来和我们的其他东西一样
+I'll rename it to app, so it looks like those other things that we have
+
+217
+00:11:50,900 --> 00:11:55,000
+在这个方法中，我可以做其他我想做的事情，
+and in this method now I can actually do those other things that  I would want to do,
+
+218
+00:11:55,800 --> 00:11:59,500
+所以我们用app.Run（）
+ So let's say app.Run
+
+219
+00:11:59,500 --> 00:12:02,900
+我要再一次使用上下文环境，
+and once again I'll do context,
+
+220
+00:12:02,900 --> 00:12:12,000
+当你输入的时候，你会想到的一个问题是你把它重构到另一个
+as you're typing that one thing that comes to mind with this is because you're refactoring this out to another
+
+221
+00:12:12,000 --> 00:12:15,400
+在整个中间件列表中
+ out of that whole long list of MiddleWare
+
+222
+00:12:15,400 --> 00:12:20,500
+你把它重构到另一个方法我甚至可以把它放到另一个程序中
+you're refactoring it to another method and I could potentially even put this in another assembly
+
+223
+00:12:20,600 --> 00:12:22,700
+我可以把它放在Nuget包里或者别的什么，对吧。
+ I could put it in a Nuget package or whatever ，right.
+
+224
+00:12:22,900 --> 00:12:25,700
+剧透警告！这就是我们接下来要做的。
+Spoiler alert! That's what we're going next.
+
+
+225
+00:12:26,400 --> 00:12:29,700
+好的，让我们看看这里我需要async
+Right, let's see I need async here
+
+226
+00:12:31,700 --> 00:12:34,800
+等着不要去那里，等着完成，
+and await doesn't go there, await goes over,
+
+227
+00:12:36,700 --> 00:12:39,900
+这里，好了，现在我保存一下。
+ here. Alright, so now I'll save that.
+
+228
+00:12:40,141 --> 00:12:42,961
+看一下这个发生的顺序。
+So looking at the order in which this occurs.
+
+229
+00:12:43,352 --> 00:12:43,682
+对的
+right
+
+230
+00:12:43,700 --> 00:12:45,800
+所以如果有人访问contacts，
+ So if somebody goes to contacts,
+
+231
+00:12:45,800 --> 00:12:48,900
+我们要异步写入 here are your contacts.
+we're going to write asynchronously here are your contacts
+
+232
+00:12:48,900 --> 00:12:51,700
+如果他们使用火狐，
+If they go somewhere else and they're using Firefox,
+
+233
+00:12:52,382 --> 00:12:54,272
+我们要写Hello Firefox，好的。
+we're going to write out Hello Firefox. Alright.
+
+234
+00:12:54,452 --> 00:12:54,812
+好吧
+right,
+
+235
+00:12:55,300 --> 00:12:57,900
+所以我要去/联系，
+So I'll go to /contacts,
+
+236
+00:12:58,562 --> 00:12:59,642
+这是你的联系人。
+here are your contacts.
+
+237
+00:12:59,942 --> 00:13:01,742
+所以现在我要去别的地方。
+so now I'll go somewhere else.
+
+238
+00:13:04,802 --> 00:13:06,062
+我得到了hello world。
+I'm getting hello world.
+
+239
+00:13:06,272 --> 00:13:07,562
+我做错了什么。
+what did I do wrong there.
+
+240
+00:13:09,300 --> 00:13:13,300
+但是这已经发生。让我回去，让我们连接调试器
+So here's what's going on, let me back up and let's attach the debugger 
+
+241
+00:13:13,300 --> 00:13:15,500
+看看这里到底发生了什么。
+ and  look at and look at what exactly is going on here.
+
+242
+00:13:15,782 --> 00:13:17,042
+所以我要停止这个。
+so I'm going to stop this.
+
+243
+00:13:18,300 --> 00:13:22,500
+停止我的监视 ，跳转到我的代码
+I'll stop my watch and I'm going to go over to my code
+
+244
+00:13:22,600 --> 00:13:26,500
+现在，如果我在MapWhen 语句上放一个断点
+and now if I put a break point here on this MapWhen statement
+
+245
+00:13:26,500 --> 00:13:35,200
+好的， MapWhen 语句实际上只有点击下一步时才被执行
+ OK, the MapWhen is actually only executed when it comes down and hits that during configuration.
+
+246
+00:13:35,792 --> 00:13:41,732
+当应用程序启动时，对吧，当这个配置启动后，就会对其进行调试
+when the application is starting up basically. Right! When this configuration has that startup， has debug them
+
+247
+00:13:41,762 --> 00:13:44,492
+因为它不会显示每个请求，完全正确！
+ because it doesn't show per request. Exactly!
+
+248
+00:13:44,700 --> 00:13:48,900
+让我在这个我要点击的这个地方放一个调试点，
+So let me put a debug point in this one that I'm hitting,
+
+249
+00:13:49,500 --> 00:13:52,300
+好的，现在我可以检查一下这个header
+OK， and now I can inspect and take a look at that header
+
+250
+00:13:52,532 --> 00:13:54,572
+现在让我开始我的中间件示例。
+so now let me start my middleware sample.
+
+251
+00:13:54,782 --> 00:13:56,822
+这次我要用Chrome来浏览。
+and I'm going browse to it this time with Chrome.
+
+
+252
+00:13:57,062 --> 00:13:59,703
+所以我可以看一看这里发生了什么。
+So I can take a look and see what's going on here.
+
+253
+00:14:00,100 --> 00:14:02,200
+好吧，只是用稍微不同的视角。
+OK, Just with the slightly different perspective.
+
+254
+00:14:02,523 --> 00:14:05,553
+现在我在 MapWhen上点了个断点
+see now I hit the breakpoint on my MapWhen statement
+
+255
+00:14:05,800 --> 00:14:11,700
+因为我在配置它实际的Firefox路径还没有被触发，
+because I'm configuring it the actual Firefox route isn't triggered yet,
+
+256
+00:14:11,700 --> 00:14:15,300
+好的，我点击继续，它会逐步完成
+alright. So I will click continue and it steps through
+
+257
+00:14:15,900 --> 00:14:23,600
+现在因为它在请求它，我在这里打断了检查响应类型行
+and now because it's requesting it， I'm breaking at the actual lines here where I'm checking the response type
+
+258
+00:14:24,500 --> 00:14:29,800
+现在让我们检查一下User-Agent header
+So now let's check my User-Agent header
+
+259
+00:14:30,000 --> 00:14:33,200
+如果我找到出错的地方
+so if I look at oops wrong place 
+
+260
+00:14:33,300 --> 00:14:39,600
+Context. Requests. Headers。一旦你输入了这个，你就可以放大
+Context. Requests. Headers. And once you type this you can zoom in right.
+
+261
+00:14:39,900 --> 00:14:49,900
+好的，让我展示一下，看看这个
+yes， let me do that in just a few seconds and I show that ，check this out
+
+262
+00:14:49,900 --> 00:14:52,400
+标题实际上是一个集合。
+ The headers is actually a collection.
+
+263
+00:14:52,700 --> 00:14:55,200
+哦，我需要看一下集合中的第一项
+oh, so I need to look at the first item in the collection
+
+264
+00:14:55,400 --> 00:15:03,200
+检查这个字符串，好的，如果我用 [0]
+and inspect that string, alright. So if I did say [0]
+
+265
+00:15:03,200 --> 00:15:06,200
+跟踪，检查
+track no.check it
+
+266
+00:15:06,200 --> 00:15:07,700
+对First()求值，
+evaluate it for me if I said First(),
+
+267
+00:15:08,000 --> 00:15:11,500
+还是不要让我在这个窗口中遍历这个
+still not going to let me traverse that here inside this window
+
+268
+00:15:11,854 --> 00:15:13,804
+我来修改一下代码
+so let me fix my code here
+
+269
+00:15:14,600 --> 00:15:17,600
+因此，我将把它改为First（）。包含（“Firefox”）
+so I will change this to say First( ).Contains("Firefox") 
+
+270
+00:15:20,700 --> 00:15:23,700
+然后我们会切换到火狐浏览器
+then we'll route over to my firefox rout
+
+271
+00:15:24,200 --> 00:15:25,500
+有道理。
+Makes sense OK.
+
+272
+00:15:25,500 --> 00:15:33,000
+让我重新运行一次
+So let me rerun this one more time
+
+273
+00:15:33,000 --> 00:15:36,300
+你是在Chrome中运行还是选择你的浏览器
+and are you running in Chrome or I guess you can pick your browser
+
+274
+00:15:36,300 --> 00:15:37,800
+让我从chrome开始，好的
+Let me start in chrome. Okay
+
+275
+00:15:38,600 --> 00:15:42,700
+现在这是在运行，我停在 Hello World！这里
+so now this is running and I'm stopped here at my Hello World!
+
+276
+00:15:44,500 --> 00:15:49,500
+在Chrome的内部，我得到了Hello World！
+and that runs in inside of Chrome, I get Hello World!
+
+277
+00:15:49,800 --> 00:15:52,400
+好的，让我回到火狐浏览器
+Okay. Let me go back over to Firefox
+
+278
+00:15:52,900 --> 00:15:55,700
+我将请求那个位置，然后我得到了Hello Firefox。
+and I'll request that location and I get Hello Firefox. 
+
+279
+00:15:55,700 --> 00:15:56,500
+哦，太好了！
+oh nice !
+
+280
+00:15:56,615 --> 00:15:56,945
+好的
+okay
+
+281
+00:15:57,065 --> 00:16:00,035
+我通过检查用户代理字符串来检测浏览器
+ so I've detected the browser by checking the user agent string
+
+
+282
+00:16:00,200 --> 00:16:04,800
+我已经映射过了，已经在中间件中处理过这些
+and I've mapped I've said go do this instead inside of my middleware
+
+283
+00:16:04,800 --> 00:16:08,000
+好的，还有我见过一些比这更大的图片
+ Okay so some bigger picture things that I'm seeing out of this one
+
+284
+00:16:08,200 --> 00:16:14,200
+你这样做是基于头的，所以在这个例子中你可以检测user agent，你可以检测任何类型的header
+you did that based on headers. so in this case you were detecting the user agent ， but you could detect any kind of header there
+
+285
+00:16:14,200 --> 00:16:16,100
+当然，所有关于请求的内容
+ absolutely, anything else about the request
+
+286
+00:16:16,200 --> 00:16:21,200
+另一件我认为很酷的事情是我们不应该交叉的，那就是你可以调试它们。
+another thing that I think is really cool that we shouldn't like just cross ever is that you can debug them.
+
+287
+00:16:21,425 --> 00:16:26,165
+这实际上是一些代码，你可以进入，你可以设置断点，你可以与它们交互。
+so this is actually bits of code and you can go in and you can set break points and you can interact with them.
+
+288
+00:16:26,300 --> 00:16:32,700
+你也可以是有条件的东西比如，如果我在开发中如果我是对的，不管它是什么
+you could also is that conditional things that say if I'm in development do this if I'm right and this whatever it is write
+
+289
+00:16:32,700 --> 00:16:33,200
+当然
+ absolutely
+
+290
+00:16:33,300 --> 00:16:35,100
+让我们实际写一下
+so let's do that, let's actually write
+
+291
+00:16:35,300 --> 00:16:41,200
+把我们的例子再进一步讲一讲，我要停止这个
+take our sample here one step further I'm going to stop this and 
+
+292
+00:16:41,200 --> 00:16:44,600
+让我们把这些移到另一个类中
+let's actually move some of this out into another class
+
+293
+00:16:45,000 --> 00:16:52,900
+看看我们如何使用相同类型的方法来使用静态文件，
+and and see how we can use that same type of the way we get the use static files,
+
+294
+00:16:52,900 --> 00:17:02,400
+让我们看看，我们是否可以在这里快速构建语法，围绕我们为环境信息所做的一些信息
+let's see if we can build that syntax here pretty quickly around some of that information we're doing for our environment information
+
+295
+00:17:02,976 --> 00:17:05,526
+所以我能做的是，我可以在这里写另一个类
+So what I can do is I can write another class here
+
+296
+00:17:06,700 --> 00:17:12,300
+我把它命名为 EnvironmentMiddleware.
+and I will call it EnvironmentMiddleware.
+
+297
+00:17:12,400 --> 00:17:18,800
+让我们开始创建一个类，public class EnvironmentMiddleware  
+So let's start creating a class here, public class EnvironmentMiddleware  
+
+298
+00:17:18,900 --> 00:17:23,600
+关于中间件的问题是它不是一个抽象类或者你正在实现的接口
+now the thing about middleware is it's not an abstract class or an interface that you're implementing
+
+299
+00:17:24,100 --> 00:17:29,300
+你实际上实现了一个很重要的调用方法
+you're actually implementing one method that's important and that's the invoke method
+
+300
+00:17:29,300 --> 00:17:33,600
+让我们创建public async Task Invoke
+So let's create public async Task Invoke
+
+301
+00:17:34,300 --> 00:17:38,800
+Invoke接受一个HTTP上下文我们把它命名为context
+and Invoke takes an HTTP context and we'll just call it context
+
+302
+00:17:39,906 --> 00:17:41,886
+我要把我的缩放移到这里。
+I'm going to move my zoom here.
+
+303
+00:17:43,746 --> 00:17:44,106
+再见
+good bye
+
+304
+00:17:44,900 --> 00:17:49,100
+现在对于我的环境，我记录环境信息的方式
+Now for my environment the way I was logging information about the environment 
+
+305
+00:17:49,200 --> 00:17:56,800
+我想在管道和托管环境中传递下一个委托的信息
+I want to pass in information about the next delegate is coming along in the pipeline and the hosting environment
+
+306
+00:17:56,800 --> 00:18:00,800
+让我用ctor片段创建一个构造函数
+So let me create a constructor using the ctor snippet 
+
+307
+00:18:01,300 --> 00:18:07,500
+我将接收到RequestDelegate，通常叫做是next
+and I will receive the RequestDelegate. typically called next by convention
+
+
+308
+00:18:07,900 --> 00:18:11,700
+然后是关于托管环境的信息
+and then information about the hosting environment that were operating in
+
+309
+00:18:12,000 --> 00:18:18,400
+让我把下一个委托保存到一个私有字段中
+so let me save that next delegate into a private field here
+
+310
+00:18:18,786 --> 00:18:20,736
+我将为它创建一个只读字段
+I'll create a read only field for that
+
+311
+00:18:21,500 --> 00:18:27,600
+然后把我的环境信息保存到另一个只读字段中
+and then I'll save off my environment information into another read only field
+
+312
+00:18:28,536 --> 00:18:28,956
+Cool
+Cool
+
+313
+00:18:30,000 --> 00:18:34,300
+在我的调用中，我可以做几乎和我之前做的一样的事情
+Now inside of my Invoke I can do almost the exact same things I was doing before
+
+314
+00:18:35,100 --> 00:18:43,100
+在这个方法中，我直接把它复制粘贴到这里，
+here in this method so let me just copy this directly and paste it in here now,
+
+315
+00:18:44,200 --> 00:18:48,500
+我没有那个日志记录器
+I don't have that logger available to me
+
+316
+00:18:48,500 --> 00:18:59,900
+让我们稍微改变一下让它对那些没有访问它的人更有互动性并且能够看到日志
+so let's change this just a little bit and make it a little bit more interactive for folks that aren't accessing this from and being able to see the log
+
+317
+00:19:00,200 --> 00:19:07,100
+我可以这样写  context Response.Headers.Add
+I can say something like context Response.Headers.Add
+
+318
+00:19:07,600 --> 00:19:13,800
+然后让我添加关于我的HostingEnvironmentName的信息
+and then let me add information about my HostingEnvironmentName
+
+319
+00:19:14,600 --> 00:19:16,700
+这是一个字符串的集合。
+and then that's a collection of strings.
+
+320
+00:19:17,200 --> 00:19:20,400
+所以，是的，新的字符串值我要做的
+So yep new string values what I'm going to do
+
+321
+00:19:21,800 --> 00:19:26,500
+一个匿名类型和and EnvironmentName
+an anonymous type there and EnvironmentName
+
+322
+00:19:27,400 --> 00:19:31,100
+好了，我只是把环境名添加到一个新标题中
+all right so I'm just adding that environment name as a new header
+
+323
+00:19:31,300 --> 00:19:34,600
+自定义标头这就是为什么这里有X
+the custom header that's why has that X there 
+
+
+324
+00:19:34,600 --> 00:19:40,300
+接下来是这个，我没有logger
+and next it's this now I don't have a logger
+
+325
+00:19:40,700 --> 00:19:46,600
+但如果我能做到，那岂不是太好了
+but wouldn't it be great if I could
+
+326
+00:19:46,900 --> 00:19:49,700
+哦，我还没有把context传给下一个请求
+oops! I haven't pass in the context to my next request
+
+327
+00:19:49,700 --> 00:19:50,200
+我们需要把它传递下去
+ we need to pass that on
+
+328
+00:19:50,200 --> 00:19:50,500
+是的
+yeah  
+
+329
+00:19:50,500 --> 00:19:56,100
+所以在这条线上的下一个人可以接收并与之互动
+so that the next folks in the line that are listening can receive and interact with that
+
+330
+00:19:56,107 --> 00:19:56,977
+因为我没有把它写在日志上
+Since I'm not putting this on the log
+
+331
+00:19:59,737 --> 00:20:02,047
+我想把它放到一个页面上如果它是html
+I want to put this on a page if it's html
+
+332
+00:20:02,707 --> 00:20:03,127
+我们来快速检查一下
+So let's just do a quick check and say
+
+333
+00:20:03,100 --> 00:20:05,100
+让我们快速地说一下
+let's just do a quick track and say
+
+334
+00:20:08,500 --> 00:20:13,900
+如果我的Environment ==development
+if my  Environment Name equals development
+
+335
+00:20:14,000 --> 00:20:18,100
+是的，我也可以通过说ISDevelopment来做到这一点
+right and I can also do that by saying ISDevelopment 
+
+336
+00:20:18,100 --> 00:20:28,500
+好的，我的context.Response.ContentType==text/html
+okay， and my context.Response.ContentType equals text/html
+
+
+337
+00:20:29,400 --> 00:20:37,200
+哦，我们还需要确保ContentType不是空的
+Oh! we also need to make sure that ContentType isn't null
+
+338
+00:20:38,100 --> 00:20:40,400
+我把它格式化一下
+So let me format that a little bit
+
+339
+00:20:41,900 --> 00:20:45,000
+好的，如果它不是空的，如果它是text/html
+Alright, so if it's not null if it is text/html
+
+340
+00:20:45,000 --> 00:20:54,800
+我们把它写出来让我们在HTML的结尾写上context.Response.writeAsync
+we're writing out then let's add on to the end of our HTML by saying context.Response.writeAsync
+
+341
+00:20:54,900 --> 00:21:17,700
+我将添加一个段落，其中有一些字符串插值，From ｛Env_｝EnvironmentName｝ in ｛timer ElapsedMilliseconds｝  
+and I'll just add a paragraph with some string interpolation that says from EnvironmentName in and then let's complete my timer ElapsedMilliseconds.   
+
+342
+00:21:17,700 --> 00:21:17,900
+这很酷，所以你要修改一个html响应
+this is really cool so you are modifying an html response  
+
+343
+00:21:17,948 --> 00:21:20,018
+是的，通过编写一些自定义中间件
+yes  by writing a little bit of custom middleware
+
+344
+00:21:20,108 --> 00:21:20,828
+当然
+absolutely
+
+345
+00:21:21,400 --> 00:21:23,900
+好了，我已经把它写在这里了
+Alright so I've written that into the mix here
+
+346
+00:21:25,100 --> 00:21:28,500
+这是一个异步调用所以我们应该等待它
+that's an async call so we should await it
+
+347
+00:21:28,500 --> 00:21:32,500
+好了，就是这样，这就触发了
+there we go and that's it. So this is going to trigger
+
+
+348
+00:21:32,600 --> 00:21:34,700
+在这之后，
+after this next statement,
+
+349
+00:21:34,700 --> 00:21:35,200
+好吧
+all right
+
+350
+00:21:35,900 --> 00:21:43,100
+让我重新运行一次
+So let me rerun this one more time
+
+351
+00:21:43,100 --> 00:21:45,300
+我将在chrome中运行这个
+ and I'll run this in chrome
+
+352
+00:21:46,418 --> 00:21:47,678
+我得到了我的hello world。
+I get my hello world.
+
+353
+00:21:48,758 --> 00:21:51,429
+现在让我们看一下我们的头信息
+and let's take a look now at our Header Information
+
+354
+00:21:51,819 --> 00:21:52,809
+它又回来了。
+that's coming back.
+
+355
+00:21:53,900 --> 00:21:57,000
+当我查看本地主机时，我将进行一次刷新。
+I'll do a refresh so when I look at Localhost.
+
+356
+00:22:04,200 --> 00:22:08,200
+所以我还没有Header，因为我没有刷新这个页面。
+So I don't have my Header yet, that's because I didn't hard refresh this page.
+
+357
+00:22:10,179 --> 00:22:11,769
+它仍然在寻找缓存的内容
+It's still looking at what's cached 
+
+
+358
+00:22:12,279 --> 00:22:13,899
+所以我要点击本地主机
+so I'll click back on local host
+
+359
+00:22:14,900 --> 00:22:18,900
+现在，它还没有出来，
+and now， it's not coming out,
+
+360
+00:22:19,179 --> 00:22:21,219
+我写了所有的类为什么它不出来
+I wrote all that class why isn't it coming out
+
+361
+00:22:21,519 --> 00:22:23,199
+你需要把它添加到管道中
+you actually have to add it into the pipeline
+
+362
+00:22:23,259 --> 00:22:24,249
+哈哈
+now ha ha.
+
+363
+00:22:27,100 --> 00:22:30,700
+我们如何将它添加到管道中，我们有这个use语句
+so how we add that into the pipeline， well， we have this using statement
+
+364
+00:22:32,589 --> 00:22:33,009
+这里的使用语句
+this use statement here 
+
+365
+00:22:34,100 --> 00:22:38,300
+这是垃圾，我们把它移到了别处，我们可以用app.UseMiddleware
+that's trash now we've moved it somewhere else， we can say app. UseMiddleware
+
+366
+00:22:39,600 --> 00:22:41,900
+然后我想把它变成泛型类型
+and then I like to pass into generic type here yeah
+
+367
+00:22:42,099 --> 00:22:42,399
+请说
+yep
+
+368
+00:22:42,800 --> 00:22:44,300
+EnvironmentMiddleware
+EnvironmentMiddleware
+
+369
+00:22:45,399 --> 00:22:45,669
+好的
+okay
+
+370
+00:22:46,629 --> 00:22:48,069
+好的，那么通过这个语句
+okay. So with that statement 
+
+371
+00:22:48,129 --> 00:22:48,999
+让我们重新运行。
+let's rerun.
+
+372
+00:22:49,200 --> 00:22:53,100
+这是我们的管道它被调用了，它被引用了
+and now that's in our pipeline it's being called， it's being referenced
+
+373
+00:22:53,400 --> 00:22:58,400
+当我们工作的时候，它打印了From Development in 22ms
+as we work through and now it says From Development in 22ms
+
+374
+00:22:58,400 --> 00:23:01,900
+如果我看一下我的请求
+and if I look at my requests
+
+375
+00:23:02,900 --> 00:23:06,700
+这是我的header X-EnvironmentName,.Development
+there is my Header X-EnvironmentName,.Development.
+
+376
+00:23:06,700 --> 00:23:07,900
+它为我写了出来
+and its written out for me
+
+377
+00:23:08,230 --> 00:23:10,450
+它也被写进了这个HTML页面。
+and it's also written into this HTML page.
+
+378
+00:23:10,800 --> 00:23:15,900
+它也没有写在这里
+It's also not being written over here 
+
+379
+00:23:16,200 --> 00:23:25,300
+我们的页面中发生的是，是的，中间件正在被调用但是静态文件被清除了
+what's going on in our page is yes that middleware is being called but that static file clears out
+
+380
+00:23:25,600 --> 00:23:28,600
+只返回它的内容。
+and only returns its Content.
+
+381
+00:23:28,600 --> 00:23:37,200
+所以发生的事情是回溯到或阻止
+So the things that would have occurred， right， coming back up or blocked 
+
+382
+00:23:37,200 --> 00:23:41,900
+因为它说我已经完成了标题的响应
+because it says I'm done the response has completed that Header 
+
+383
+00:23:41,900 --> 00:23:48,600
+在下一次调用之前，它在我的中间件中执行并包含在这里。
+that it executed and included over here in my middleware before the next being called.
+
+384
+00:23:48,700 --> 00:23:51,000
+这已经完成了
+this was completed
+
+385
+00:23:51,200 --> 00:23:56,600
+但是因为它的其他部分被阻塞了并且在它之后终止了这个代码
+but because the rest of it was being blocked and it terminated this code after it 
+
+386
+00:23:56,600 --> 00:23:58,500
+明白了。
+Did not fire, got it. 
+
+387
+00:23:58,500 --> 00:23:59,500
+理解了，是的
+ make sense. yeah
+
+388
+00:23:59,800 --> 00:24:05,100
+好了，现在让我们做最后一件事，这样我们就可以得到与使用静态文件相同的语法
+All Right ,So now let's do one last thing just so we can get that same syntax we had with the use static files
+
+389
+00:24:05,400 --> 00:24:10,100
+让我们在一个静态类中放入一个快速助手方法。
+let's just put a quick helper method inside of a Static Class.
+
+390
+00:24:10,100 --> 00:24:12,000
+让我猜猜你接下来要做什么
+So let me  guess what you're going do here well
+
+391
+00:24:12,000 --> 00:24:14,000
+我在这里讲话的时候让你打字
+so let you type while I talk here, sure
+
+392
+00:24:14,800 --> 00:24:20,400
+当然可以，你会输入app.usemiddleware并给他个名称，这都很好
+sure go for it， You had to go in and you have to say app.UseMiddleware  and you had to give it the Generic Name which is OK
+
+393
+00:24:20,400 --> 00:24:23,200
+但它有点烦躁
+but it's it's a little bit fidgety
+
+394
+00:24:23,200 --> 00:24:26,000
+它不像我在其他中间件上看到的那样好和有经验。
+ andit's not as nice and experienced as I see with the other Middleware.
+
+395
+00:24:26,000 --> 00:24:30,100
+我把它连接到App.UseMVC，它自动为我完成，是的！
+I'm wiring up where I say App.Use MVC and it autocompletes for me, yep!
+
+396
+00:24:30,191 --> 00:24:31,001
+是的，你是对的
+yep you're right
+
+397
+00:24:31,000 --> 00:24:34,700
+如果我传递自定义参数
+ and  if I was passing in custom parameters
+
+398
+00:24:34,700 --> 00:24:37,600
+如果我需要传递很多东西来配置它
+as well if I had to pass in a lot of stuff to configure that 
+ 
+
+399
+00:24:37,600 --> 00:24:43,500
+这也是我想要的方法签名，你可以帮我做一些工作让它更简单
+that also that method signature I might want ，you to do some work for me to make it Easier
+
+400
+00:24:43,540 --> 00:24:45,790
+给我一些信息让它自动完成
+Give me some Intelligence make it autocomplete
+
+401
+00:24:45,900 --> 00:24:54,000
+好的，我要把同样的 UseMiddleware EnvironmentMiddleware 提取出来
+ right，So I'm just going to lift that same UseMiddleware EnvironmentMiddleware Statement
+
+402
+00:24:54,520 --> 00:24:56,200
+然后嵌入到这里
+and just embedded over here
+
+403
+00:24:56,300 --> 00:25:01,200
+这样我就可以在这里用一些其他代码来设置这个中间件。
+So that I could put any other code I need to use to set up that middleware right here.
+
+404
+00:25:01,300 --> 00:25:07,300
+所以现在在你的startup中，你可以用app.Use来替换那些app.UseMiddleware的代码。
+so now in your startup you can replace that code that says UseMiddleware with app.Use EnvironmentMiddleware.
+
+405
+00:25:07,841 --> 00:25:08,291
+好了
+There you go 
+
+406
+00:25:09,671 --> 00:25:10,931
+是的，它仍然有效。
+yeah it'll still work.
+
+407
+00:25:11,500 --> 00:25:20,200
+我将运行程序，Hello World！  From development in 24 MS
+so I'll start with the Application. Hello World!
+
+
+408
+00:25:20,681 --> 00:25:21,311
+很酷。
+very cool.
+
+409
+00:25:21,641 --> 00:25:24,401
+这是关于如何编写自定义中间件的。
+So that's a little bit about how to write Custom Middleware.
+
+410
+00:25:25,031 --> 00:25:28,121
+我知道ASP.NET提供了一些示例
+I know the ASP.NET folks have some samples out there for us
+
+411
+00:25:28,400 --> 00:25:34,300
+是的，我只是想展示一些例子当你想要写你自己的自定义中间件时
+yeah I just wanted to show some examples there as you want to as you dig into writing your own Custom Middleware
+
+412
+00:25:34,631 --> 00:25:38,021
+看到一些生产中间件真的很有帮助
+it's really helpful to see some production Shipping Middleware
+
+413
+00:25:38,200 --> 00:25:41,500
+幸运的是，所有这些中间件都在Github上。
+fortunately all this Middleware is out on Github.
+
+414
+00:25:41,891 --> 00:25:44,891
+这里我看到的是基本中间件repo
+So here I'm looking in the BasicMiddleware repo 
+
+415
+00:25:45,300 --> 00:25:47,000
+他们在这里有好几个好东西
+and they've got several good things in here 
+
+416
+00:25:49,400 --> 00:25:55,300
+他们有些项目，比如zipping，你的结果中压缩的东西。
+they've got ones for like zipping for all kinds of you know for compress in your results.
+
+417
+00:25:55,400 --> 00:26:01,700
+是的，我想在这里展示的是Rewrite 中间件
+Yeah! The one I want to show here is the the Rewrite of middleware,
+
+418
+00:26:01,700 --> 00:26:07,000
+这个的简洁之处就在于它允许，你知道的，这是mod Rewrite
+what's neat about this is this allows for. you know, there's the mod Rewrite
+
+
+419
+00:26:07,000 --> 00:26:09,900
+您可以在您的HT Access文件中放入RewriteRules
+the RewriteRules you can put in your HT Access Files.
+
+420
+00:26:10,000 --> 00:26:14,900
+如果你在Apache上使用过，这是一种常见的语法。
+If you've used like on Apache and it's kind of a Common Syntax.
+
+421
+00:26:14,900 --> 00:26:17,200
+他们在这里所做的一切我认为非常平滑
+So what they've done here which i think is really slick
+
+422
+00:26:17,562 --> 00:26:19,902
+他们已经创建了一些自定义中间件
+is they have created some custom middleware
+
+423
+00:26:20,100 --> 00:26:27,900
+这将在ASP.NET core中解析这些Rewrite，因此Kestrel将会理解
+that will parse these and and Rewrite in ASP.NET core. So that Kestrel will now understand
+
+424
+00:26:27,900 --> 00:26:31,000
+我们在Apache上使用的规则也很酷！
+the same rules that we were using on Apache exactly cool!
+
+425
+00:26:31,800 --> 00:26:33,000
+这是相当平滑的。
+which is Pretty Slick.
+
+426
+00:26:33,100 --> 00:26:37,300
+所以在这里它能够真正地理解这些是否只是 RewriteRules
+so here it's able to actually understand if these are just  RewriteRules.
+
+427
+00:26:37,400 --> 00:26:40,900
+你知道它是文本，它也理解一些
+You know it is text， it also understands some
+
+428
+00:26:40,900 --> 00:26:42,600
+这是他们的示例
+this is their sample here showing.
+
+429
+00:26:43,000 --> 00:26:46,000
+你可以添加这些 Rewrites
+you can add these Rewrites in
+
+430
+00:26:46,000 --> 00:26:49,800
+您也可以在这里配置它们，这是非常酷的！
+you can also configure them here in line which is Pretty mean cooll!
+
+431
+00:26:50,000 --> 00:26:54,200
+它了解我们过去使用的IISRewriteRules 
+And it understands the IISRewriteRules that we used to use
+
+432
+00:26:54,400 --> 00:26:56,900
+很好，所以它也把这些都拉进来
+exactly okay. So it pulls those in as well 
+
+433
+00:26:56,900 --> 00:27:02,600
+如果你看一下Rewrite中间件，它本身就是一段代码
+and if you look in at the Rewrite middleware itself it's a bit of code
+
+434
+00:27:02,742 --> 00:27:04,332
+但这并不疯狂
+but it's not crazy
+
+435
+00:27:04,300 --> 00:27:08,200
+就像你知道的，它不是成百上千行代码。
+ like it's you know it's not hundreds and hundreds of lines of code.
+
+436
+00:27:08,200 --> 00:27:14,000
+它是另一个类，然后从一个请求委托开始，就像我们在我的EnvironmentMiddleware中间件中看到的一样
+It's another class， then starts off with a request delegate next just like we saw in my EnvironmentMiddleware
+ 
+
+437
+00:27:14,700 --> 00:27:18,800
+它也包含了些其他的东西比如传入 logger 
+exactly it's taking in a few other things too like passing in a logger 
+
+
+438
+00:27:18,800 --> 00:27:19,800
+以及选项和内容
+and options and stuff
+
+439
+00:27:20,383 --> 00:27:24,253
+但是在这里，他们设置了下一个选项和你做的选择是一样的
+But then it's for in here they set next and options just the same kind of as you did 
+
+440
+00:27:24,500 --> 00:27:28,500
+然后调用就在这里我的意思是它是几行代码
+and then they're invoke is there just I mean it's  a few lines of code
+
+441
+00:27:29,400 --> 00:27:34,400
+但它不是我的，（不是压倒性的）所以这里他们只是在迭代他的规则和应用规则
+But it's not mine bars ,(not overwhelming) and so here they're just iterating  he Rules and Applying the rules 
+
+442
+00:27:34,400 --> 00:27:43,200
+这就是最后的结果，就像你做的那样，他们然后返回了下一个、 传入联系人和委托
+and so That's really and then at the end just as you did they returned next and pass the contacts and the delegate, 
+
+443
+00:27:43,400 --> 00:27:47,800
+非常酷，然后他们也写了这些扩展方法。
+so really cool and then they  also wrote these Extension Methods.
+
+
+444
+00:27:47,800 --> 00:27:52,500
+这样我就可以使用app。这里我用 app.UseRewriter
+So that I can use app.Use here I do app.UseRewriter
+
+445
+00:27:52,500 --> 00:28:00,800
+所以我认为这是一种很好的方式正如你们想要继续的那样,你可能正在写一些超出我们今天所展示的内容的东西
+so I just I think this is a great like as you want to go on as you maybe are writing something that's a little bit beyond  what you have shown us today
+
+446
+00:28:01,100 --> 00:28:02,100
+这里有一些很棒的示例
+ here's some great samples 
+
+447
+00:28:02,100 --> 00:28:03,900
+以及关于如何做到这一点的信息。
+ and information about how to do that.
+
+448
+00:28:04,100 --> 00:28:09,000
+我想指出的另一个地方是中间件上的文档是非常全面的
+one other place I want to point you to is the docs on middleware are pretty comprehensive 
+
+449
+00:28:09,000 --> 00:28:12,400
+他们有一些很好的图表解释，你知道的
+ they've got some great diagrams explaining，you know exactly
+
+450
+00:28:12,400 --> 00:28:20,500
+中间件如何工作，以及如何工作和解释关于编写您自己的自定义中间件的所有事情，太棒了！
+how middleware works and how pass-through works and explaining all kinds of things about writing your own custom middleware， terrific!
+
+451
+00:28:20,500 --> 00:28:23,700
+好了，我们在这个视频中学习了很多关于中间件的知识
+Alright, so we learned a lot about middleware here in this video
+
+
+452
+00:28:23,900 --> 00:28:27,600
+了解了如何配置它，为什么它的顺序是重要的。
+learned about how to configure it， why the order of it is important.
+
+453
+00:28:27,600 --> 00:28:31,700
+我们看到了如何让我们的在外部类中写入中间件
+We saw how we can take our middleware write it in an external class  
+
+454
+00:28:31,800 --> 00:28:33,300
+我们可以把它写在一行上
+we can write it in line 
+
+455
+00:28:33,300 --> 00:28:35,500
+我们在Github上看到了一些很棒的示例
+we saw some great samples on Github
+
+456
+00:28:36,495 --> 00:28:38,355
+非常感谢你加入我们的视频。
+thanks so much for joining us for this video.
+
+457
+00:28:38,655 --> 00:28:41,775
+我们在这里使用ASP.NET Core写一些很有趣的代码。
+We have  a lot of fun writing some code here for ASP.NET Core.
+
+458
+00:28:42,015 --> 00:28:43,365
+我希望你能加入我们的行列。
+I hope you join us for the next one.
+
