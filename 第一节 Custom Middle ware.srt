@@ -341,7 +341,7 @@ you could continue on have something after it but
 
 68
 00:03:09,700 --> 00:03:13,100
-按照惯例，在这之后没有任何事情发生，
+通常，在这之后没有任何事情发生，
 by convention run says there's nothing that occurs after this,
 
 69
