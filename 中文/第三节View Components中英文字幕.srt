@@ -1,0 +1,1062 @@
+0
+00:00:01,080 --> 00:00:01,530
+嘿
+Hey there
+
+1
+00:00:01,560 --> 00:00:04,500
+欢迎回到这个ASP.NET Core视频系列
+welcome back to this ASP.NET Core videos series
+
+2
+00:00:04,600 --> 00:00:06,600
+我叫Jeff Fritz，我是jon galloway，
+my name is Jeff Fritz I'm jon galloway, 
+
+3
+00:00:07,170 --> 00:00:10,440
+你知道Jon，我们花了很多时间写代码
+And you know what Jon, we've spent lot of time writing code
+
+4
+00:00:10,400 --> 00:00:13,800
+写入一些到Razor模板的HTML或Razor页面
+writing some HTML in to Razor templates or razor pages. 
+
+5
+00:00:14,370 --> 00:00:15,900
+这是我要写的一些代码。
+and that's lot of code that I've to write.
+
+6
+00:00:16,350 --> 00:00:18,030
+如果我想要，重用其中的一些呢？
+What if I want to do, re-use some of that?
+
+7
+00:00:18,500 --> 00:00:19,700
+是的，你知道，让我告诉你
+Yeah, you know, let me tell you
+
+8
+00:00:20,000 --> 00:00:23,400
+最近我遇到了这个问题
+recently I ran into this where I was working on 
+
+9
+00:00:23,700 --> 00:00:25,300
+.NET基金会网站
+the .NET foundation website 
+
+10
+00:00:25,440 --> 00:00:25,890
+哦，好的。
+Oh! OK.
+
+11
+00:00:25,950 --> 00:00:29,070
+主页的索引视图有很多信息
+and the index view for the homepage there's a lot of information there
+
+12
+00:00:29,100 --> 00:00:33,300
+有各种各样的东西，有些东西是像一个小的新闻视图。
+There's all kinds of stuff and some parts of it are things like a little News view. 
+
+13
+00:00:33,300 --> 00:00:36,200
+你知道，最近的博客文章列表。
+You know, a little list of recent blogs posts.
+
+14
+00:00:36,200 --> 00:00:38,300
+其中的一些部分令人令人沮丧的
+and some parts of it are things there are some frustrating things with this
+
+15
+00:00:38,300 --> 00:00:40,700
+一个是，我的列表很长
+One is， My view is huge.
+
+16
+00:00:41,000 --> 00:00:44,900
+我在滚动，滚动滚动，才能得到它
+Times are I'm scrolling, scrolling scrolling to get to it 
+
+17
+00:00:45,300 --> 00:00:50,100
+另一个问题——我可以把它分解，但这并不能解决问题。
+Another prob-- and I can break it apart with partials, but it just kind of moves a problem, It doesn't really fix things.
+
+18
+00:00:50,600 --> 00:00:55,400
+另一件事是，我想要组件化，这样我就可以像你说的那样重复使用了。
+another thing is， I want to componentize,，so I can reuse like you said. 
+
+19
+00:00:55,770 --> 00:00:58,920
+我也不想要我的控制器
+and I also don't want my controllers
+
+20
+00:00:58,900 --> 00:01:03,400
+或者我的页面代码必须返回各种各样的复杂的模型。
+or my page code-behinds to have to return to have to return really complex models that have all kinds of. 
+
+21
+00:01:03,720 --> 00:01:08,520
+这里是我的列表，这里是我的博客列表。如果我想在这个网站的其他地方实现它
+I've all kind of-- here is my list in the here is my list of bloggers here is my--
+and then if I want to  implement it somewhere else on this site.
+
+22
+00:01:08,790 --> 00:01:10,140
+这是一种重复的过程。
+It kind of do that all over again.
+
+
+23
+00:01:10,170 --> 00:01:10,620
+是的
+yes
+
+24
+00:01:10,900 --> 00:01:12,200
+这很困难，好的，
+that's difficult yeah,  Ok,
+
+25
+00:01:12,480 --> 00:01:13,500
+那么解决这个问题的办法是什么呢？
+so what's the solution for that?
+
+26
+00:01:13,600 --> 00:01:17,200
+所以我们谈到了这一点，，我认为，我认为它已经找到了一种贯穿整个列表——
+ Well, so we talked about this and  I thought it was find kind of running through the list with a--  
+
+27
+00:01:17,200 --> 00:01:25,200
+你知道，我们正在谈论可以做一部分，回过来说，这有个子行为
+you know, we're talking about like well we could do partial as we could do-- you know back we-- there is a child actions 
+
+28
+00:01:25,200 --> 00:01:29,300
+MVC可用的子行为
+which are available child actions work for them for mvc 
+
+29
+00:01:29,610 --> 00:01:34,260
+有哪些子行为你可以放进控制器
+and with a child action you can  put inside a controller， you can say,
+
+30
+00:01:34,470 --> 00:01:37,530
+你知道的只有部分视图会被这个控制器返回。
+this is just you know for a partial view that's going to be return by this controller.
+
+31
+00:01:38,300 --> 00:01:41,700
+但问题是，它仍然直接与控制器联系在一起，
+But the problem there it's still tied directly to controller, 
+
+32
+00:01:42,330 --> 00:01:42,630
+对的
+right
+
+33
+00:01:43,000 --> 00:01:46,700
+然后你提到标签助手，标签助手是一个很好的解决方案
+ And then you mention tag helpers,and tag helpers is a nice solution
+
+34
+00:01:46,700 --> 00:01:51,300
+我可以——一个标签助手可以——现在我可以创建一个漂亮的小标记
+I can-- a tag helper can-- now I can create a nice little markup 
+
+35
+00:01:51,300 --> 00:01:53,200
+我可以说，把这个写出来。
+and I can say, write this thing out.
+
+36
+00:01:53,200 --> 00:01:56,900
+标签助手的问题是我失去了Razor格式。
+the problem kind of with a the tag helper is I lose a Razor formatting.
+
+37
+00:01:57,480 --> 00:01:57,840
+好的，
+okay,
+
+38
+00:01:58,000 --> 00:02:01,100
+把你所有的代码，所有的在C#（代码）中格式
+ get to write all your code, all your formatting in C#.
+
+39
+00:02:01,200 --> 00:02:01,620
+是的
+yeah
+
+40
+00:02:01,650 --> 00:02:03,300
+用C#,编写标签助手
+A tag helper is written in C#,
+
+41
+00:02:03,300 --> 00:02:07,800
+所以我把字符串格式化成HTML。
+and so I am formatting strings into HTML.
+
+42
+00:02:07,830 --> 00:02:08,790
+那不漂亮！
+That's not beautiful! 
+
+43
+00:02:08,910 --> 00:02:09,240
+没有。
+No.
+
+44
+00:02:09,600 --> 00:02:11,900
+这里的解决方案是视图组件。
+So the solution here is view component.
+
+45
+00:02:12,120 --> 00:02:12,420
+好的，
+ok,
+
+46
+00:02:12,500 --> 00:02:18,400
+视图组件非常酷，因为它允许我做一个小的组件，它是独立的。
+ A view component is really cool,because it allows me to make a small little component. its stand alone. 
+
+47
+00:02:18,800 --> 00:02:23,700
+它不像我在页面或MVC中使用的整个模型绑定那样。
+it doesn't do the whole model binding kind of thing that I would use in.in pages or MVC.
+
+48
+00:02:24,420 --> 00:02:26,970
+但它是某种东西，我可以直接进入任何视图
+But it is something， I can just drop into any view
+
+49
+00:02:27,390 --> 00:02:28,560
+它自己工作。
+it works all by itself.
+
+50
+00:02:28,600 --> 00:02:31,500
+它的好处是他只是一个简单的类，
+and the nice thing with it is there's a simple class, 
+
+51
+00:02:31,860 --> 00:02:35,940
+所有依赖注入都有我所有的服务
+and it has all the thing all dependency injection has all my services available
+
+52
+00:02:36,800 --> 00:02:39,700
+然后它就有了一个相关的razor模板。
+And then it's all got an associated razor template.
+
+53
+00:02:39,870 --> 00:02:42,390
+太酷了！所以我体会到了在Razor的好处
+Very cool!  So I get the benefits of working in Razor?
+
+54
+00:02:42,800 --> 00:02:44,800
+我告诉你，
+I get you know,
+
+55
+00:02:45,360 --> 00:02:48,000
+很好，我可以在一个类中写出漂亮的组件，漂亮的代码。
+nice I can write nice component, nice code in a class.
+
+56
+00:02:48,000 --> 00:02:50,400
+是的！把它扔到永远的地方。酷！让我们看一看。
+Yep！ drop it in where ever. Cool! Lets take a look.  
+
+57
+00:02:50,550 --> 00:02:50,850
+是的
+yeah
+
+58
+00:02:51,300 --> 00:02:53,800
+这里我举个例子
+ So here let me show an example
+
+59
+00:02:53,900 --> 00:02:55,100
+这是页面，我说的是
+This is actually the page .I was talking about
+
+60
+00:02:55,300 --> 00:03:00,300
+这是一个主页例子，可以想象你网站的主页，有很多东西。
+so this is an example homepage. an example homepage think of your home page of your website right and there's tons of different stuff.
+
+61
+00:03:00,570 --> 00:03:03,330
+我在这里滚动，这是左边的新闻列表，
+And just I am scrolling through here is the list of news on the left,
+
+62
+00:03:03,600 --> 00:03:07,000
+右边的事件列表，还有一些其他的东西
+list of the events on the right. So there's-- there some dropping things 
+
+63
+00:03:07,260 --> 00:03:10,470
+如果我再往下看，我有一份最近的帖子列表。
+If I look down at the bottom here again, I have got a list of recent posts.
+
+64
+00:03:10,900 --> 00:03:12,600
+这些都是
+these are things that you know 
+
+65
+00:03:13,230 --> 00:03:15,330
+你可以考虑其他一些事情。
+you may consider some other things like.
+
+66
+00:03:15,570 --> 00:03:18,240
+在文档的这方面，这做的很好。
+and on the doc's which are pretty good for this here.
+
+67
+00:03:18,870 --> 00:03:21,510
+他们列出了一些东西比如你可能有像云标签
+They list some things like you may have something like a Tag cloud
+
+68
+00:03:21,700 --> 00:03:24,900
+或者购物车之类的东西，
+ or Shopping cart something where you know,
+
+69
+00:03:25,650 --> 00:03:27,930
+你想要把它放到一个页面里，这不仅仅是
+you want to drop it into a page and it's not just
+
+70
+00:03:28,300 --> 00:03:31,300
+如果它只是一处标记，我只会使用PowerShell。
+if its just a chunk of mark up I would use just a PowerShell. 
+
+71
+00:03:31,590 --> 00:03:31,890
+当然
+sure
+
+72
+00:03:32,190 --> 00:03:34,080
+但是如果你真的有一些——
+but if it's something where if you've actually got some--
+
+73
+00:03:34,110 --> 00:03:36,660
+一些东西，像购物清单，
+something to populate here like a Shopping cart list,
+
+74
+00:03:37,200 --> 00:03:40,800
+我真的认为以后会有一些代码来做这件事。
+I really do think to make since to have  you know some code behind for it.
+
+75
+00:03:40,800 --> 00:03:43,900
+您需要服务器端代码进行交互。
+you need that server side code to interact.
+
+76
+00:03:44,200 --> 00:03:45,600
+确实如此
+it is Exactly 
+
+77
+00:03:45,630 --> 00:03:45,810
+好的，
+ok,
+
+78
+00:03:46,200 --> 00:03:55,000
+所以我要讲的是，我建议你去看文档，如果你去查看关于视图组件的信息
+so what I'm going to be talking through here，  I refer you to the doc's， if you go to view components  is information about what a view component is and it talk's you through
+
+79
+00:03:55,230 --> 00:03:58,800
+构建一个视图组件实际上在后有一个完整的过程，
+building a view componentand there is actually a whole walkthrough down at the end,
+
+80
+00:03:59,100 --> 00:04:01,400
+创建一个简单的视图组件。
+creating a simple view component. 
+
+81
+00:04:01,980 --> 00:04:04,170
+我实际上是在本地运行的。
+so I've actually got that running locally.
+
+82
+00:04:04,500 --> 00:04:07,500
+让我们来看看代码是什么
+and let's take a look at what the code 
+
+83
+00:04:07,740 --> 00:04:09,300
+代码是怎样的
+you know, how that code looks
+
+84
+00:04:09,780 --> 00:04:10,590
+这里
+so here
+
+85
+00:04:10,860 --> 00:04:13,770
+这是一个标准视图
+we've got actually here's this is a standard view
+
+86
+00:04:14,130 --> 00:04:15,270
+到下面，
+down at the bottom,
+
+87
+00:04:15,900 --> 00:04:20,100
+我们已经在等待InvokeAsync，这是一个优先级列表
+we've got this await  InvokeAsync,and it's a priority list
+
+88
+00:04:20,190 --> 00:04:21,330
+它说InvokeAsync组件
+it says Component InvokeAsync.
+
+89
+00:04:21,400 --> 00:04:25,000
+所以，它以这种方式添加到这个视图组件。
+So, it's pulling in this view Component that way. 
+
+90
+00:04:25,800 --> 00:04:29,200
+如果我们看一下这个视图组件是如何定义的。
+if we look at how that view component  is defined. 
+
+91
+00:04:30,500 --> 00:04:31,700
+我们在这里
+we have here 
+
+92
+00:04:31,800 --> 00:04:34,320
+它是一个从视图组件继承的类
+ it's a class that inherits from view component
+
+93
+00:04:35,400 --> 00:04:37,200
+然后它就有了一个
+and then it just has a 
+
+94
+00:04:37,200 --> 00:04:39,500
+这里有一个GetItemsAsync。
+here's it's got a GetItemsAsync.
+
+95
+00:04:40,499 --> 00:04:41,729
+所以，实际上——
+So, really that's-- 
+
+96
+00:04:41,759 --> 00:04:43,199
+这里没有太多的代码。
+there's not a lot of code here.
+
+97
+00:04:43,529 --> 00:04:45,719
+很好，它能
+what's nice is it's able to
+
+98
+00:04:46,169 --> 00:04:48,539
+它可以在这里使用依赖注入，
+it can use dependency injections here,
+
+99
+00:04:48,700 --> 00:04:52,800
+他们使用的是数据上下文
+they're using a data context 
+
+100
+00:04:52,949 --> 00:04:54,269
+我只是把它注射到那里
+I'm just injecting it there
+
+101
+00:04:54,989 --> 00:04:57,749
+您还可以注入其他服务比如日志等。
+you can also inject other services loggers etc.
+
+102
+00:04:57,809 --> 00:04:58,109
+当然
+sure
+
+103
+00:04:58,300 --> 00:05:01,900
+所有这些都是返回一个列表。
+and so all this is doing is returning a list. 
+
+104
+00:05:02,000 --> 00:05:07,100
+这是async，所以它返回一个列表任务
+So this is async so it's  returning a list of to do items as a task 
+
+105
+00:05:07,900 --> 00:05:11,800
+然后在这个视图与它绑定。
+then in the view for that it's just binding to it.  
+
+106
+00:05:11,939 --> 00:05:13,559
+这是非常简单的绑定
+so this is very simple binding.
+
+107
+00:05:13,859 --> 00:05:15,509
+这里我们有一个IEnumerable
+here we've got an IEnumerable
+
+108
+00:05:15,869 --> 00:05:18,239
+我们只是绑定到一个IEnumerable 
+and we're just binding to that a IEnumerable list.
+
+109
+00:05:19,400 --> 00:05:21,700
+按照惯例
+and there is some convention to this 
+
+110
+00:05:21,800 --> 00:05:24,100
+这被称为default .cshtml 
+this is called default .cshtml 
+
+111
+00:05:24,900 --> 00:05:28,600
+这是命名惯例， 这是你的components
+And the kind of naming convention here is you have components
+
+112
+00:05:28,700 --> 00:05:34,100
+优先级列表，这是一个优先级列表视图组件，被称为default.cshtml
+priority list is that the  it's a priority list view component and then it's called default.cshtml. 
+
+113
+00:05:34,439 --> 00:05:37,679
+这和我们之前看到的文件夹非常相似
+So this is very similar to have we have to views folder above
+
+114
+00:05:38,039 --> 00:05:38,669
+完全正确。
+exactly.
+
+115
+00:05:38,900 --> 00:05:44,900
+这是在 Todo 控制器中的组件的视图。
+and this is the views for a component being hosted inside of a to do control.
+
+116
+00:05:44,999 --> 00:05:45,479
+是的
+yes
+
+117
+00:05:45,700 --> 00:05:50,400
+这个示例展示了多种宿主的方式，所以在这个列表中有一些不同的名字，
+and this this sample shows multiple ways of hosting so there's actually some different names on the list,
+
+118
+00:05:50,400 --> 00:05:59,100
+但这个也是标准的default cshtml，你可以把它放在Share文件夹的或者specific 文件夹
+but this one also is the standard would be default cshtml ，and you can put that either in shared or in the in the view specific one 
+
+119
+00:05:59,219 --> 00:06:01,859
+在specific 控制器中
+in the controller specific one ,controller specific exactly
+
+120
+00:06:01,900 --> 00:06:10,900
+这样我就可以使用相同的组件改变标记，根据不同的控制器需求
+so this way I can use the same component  changed  the   markup  ，slightly  based on like different controllers needs 
+
+121
+00:06:11,000 --> 00:06:17,200
+确切地说，我可以拥有一个标准的shared，然后在其他控制器中我可以进入并标记一点
+exactly so I could have a shared one that's the standard one，  and then within other controllers  I can go in and mark that up a bit.  
+
+122
+00:06:17,400 --> 00:06:17,900
+极好的
+terrific
+
+123
+00:06:17,900 --> 00:06:20,400
+这是非常简单的
+so this really is pretty straightforward now 
+
+124
+00:06:20,500 --> 00:06:26,400
+因为这并不依赖于其他任何东西来显示（视图），我可以把它放到任何Razor视图中
+because this isn't depending on anything else in order to display it I can drop it into any razor view 
+
+125
+00:06:26,800 --> 00:06:30,200
+这是一种简单的注射方式
+So the kind of simple way to inject this
+
+126
+00:06:30,658 --> 00:06:32,848
+简单的意思是默认的标准方式
+simple meaning the default standard way as
+
+127
+00:06:33,100 --> 00:06:35,700
+我在调用Component.InvokeAsync
+I'm doing Component.InvokeAsync
+
+128
+00:06:36,088 --> 00:06:40,138
+由于我没有模型绑定，我实际上是传递的参数
+and then since I don't have model binding I'm actually passing and parameters here.
+
+129
+00:06:40,258 --> 00:06:40,618
+当然
+sure
+
+130
+00:06:40,600 --> 00:06:45,600
+所以我说这是优先考虑的问题，这是显示是否完成。
+so I'm saying this is the priority to take and this is whether show if they're done or not. 
+
+131
+00:06:46,228 --> 00:06:47,488
+因为这是它的To-Do-List
+because this is for it To-Do-List
+
+132
+00:06:47,998 --> 00:06:48,898
+这很好
+this is okay
+
+133
+00:06:48,928 --> 00:06:52,288
+但我更喜欢用Taghelper来共享
+but I actually prefer to share this using a Taghelper.
+
+134
+00:06:52,648 --> 00:06:53,698
+这是非常平滑的
+this is pretty slick
+
+135
+00:06:53,700 --> 00:06:57,400
+因为Taghelpers清理了我们的灰色 razor-mark-up
+because Taghelpers clean-up our gray razor-mark-up
+
+136
+00:06:57,500 --> 00:07:00,200
+他们有，对，这里他们有
+They do, right. Here they've actually got
+
+137
+00:07:01,678 --> 00:07:03,718
+如果写vc：
+If I do vc:
+
+138
+00:07:04,000 --> 00:07:10,100
+它自动地——就像视图组件一样自动变成了Taghelpers
+it automatically--， like  view components  just automatically become  Taghelpers 
+
+139
+00:07:10,348 --> 00:07:10,738
+好的
+ok
+
+140
+00:07:10,900 --> 00:07:13,000
+所以它是内置的
+so it's just built-in so 
+
+141
+00:07:13,378 --> 00:07:15,658
+仅仅通过创建优先级列表
+just by creating priority-list 
+
+142
+00:07:15,800 --> 00:07:21,300
+vc优先级列表会自动生效，我的属性也自动绑定
+vc priority list automatically works and on my properties here also automatically bound for me
+
+143
+00:07:21,500 --> 00:07:26,900
+所以我们在属性名和Taghelper的名称之间得到连字符
+So we are getting the hyphen's between the names of our attributes and the name of of our Taghelper
+
+144
+00:07:27,200 --> 00:07:31,900
+因为这就是大写字母和名称之间的界限
+because that's where the boundary is between the capitalized  word in the name 
+
+145
+00:07:31,978 --> 00:07:33,658
+对我来说也是这样的
+yeah also it does that conversion for me
+
+146
+00:07:33,600 --> 00:07:34,500
+所以
+so
+
+147
+00:07:34,558 --> 00:07:35,698
+这很酷
+so that's pretty cool
+
+148
+00:07:35,700 --> 00:07:41,300
+让我给你们举个例子来回顾一下我是如何使用这个的
+let me show you an example that kind of to run back to how I uses this in mine so
+
+149
+00:07:41,600 --> 00:07:46,500
+我有一些标记要让它看起来像这样，这只是一个分段标记
+I had some mark up for to look like this this is just kind of staging mark up
+
+150
+00:07:46,500 --> 00:07:50,400
+是的，但是我为什么要展示这些新闻，这是
+ right, but so  why I'm showing this news items  and this is
+
+151
+00:07:50,500 --> 00:07:58,600
+它使用bootstrap和使用Holder.js来显示不同类型的标记，比如缩略图。
+it's using bootstrap and using Holder.js to show different kind of mark-up like thumbnails for them.  
+
+152
+00:07:58,600 --> 00:08:04,400
+你知道，在bootstrap 中，有media-heading media-body pull-left ，所有这些东西。
+you know so with bootstrap I've got media-heading media-body pull-left all that kind of stuff.
+
+153
+00:08:04,467 --> 00:08:07,407
+所以我不想在c#中生成这些
+So I would not want to generate this all in C# but
+
+154
+00:08:07,400 --> 00:08:10,500
+但实际上有一些合理的代码
+but there is actually some of reasonable manual code
+
+155
+00:08:10,887 --> 00:08:13,977
+这是拉取，这实际上是把它从IIS和东西中拉取出来。
+There is pulling, this is actually pulling it from IIS feeds and stuff.
+
+156
+00:08:14,487 --> 00:08:17,217
+这里我有一个新闻订阅服务
+So here I've got a NewsFeedService
+
+157
+00:08:17,600 --> 00:08:21,700
+我的新闻订阅服务是
+and my NewsFeedService is it's
+
+158
+00:08:21,700 --> 00:08:26,000
+它运行的是这种后台任务，它实际上是使用一个联合
+it's running this kind of background task, it's actually using a syndication 
+
+159
+00:08:26,277 --> 00:08:31,737
+这些联合feed刚刚在.NET标准中提供，这是非常酷的。
+These Syndication feed which just was made available in-- in .NET standard too recently which is very cool.
+
+160
+00:08:32,157 --> 00:08:34,137
+这是一种运行方式
+So it's kind of running this
+
+161
+00:08:34,167 --> 00:08:36,327
+这是我得到的服务。
+and this is a service that I've got.
+
+162
+00:08:36,800 --> 00:08:39,500
+然后，我已经加入了我的组件
+So then I've-- I've got in my component
+
+163
+00:08:39,700 --> 00:08:41,900
+我可以注入这个。
+I'm able to inject that.
+
+164
+00:08:42,027 --> 00:08:43,587
+所以我给我的服务注入了。
+so I inject my service.
+
+165
+00:08:45,057 --> 00:08:47,517
+你知道，使用构造函数注入，所以我说
+you know. using constructor injection so I said that
+
+166
+00:08:47,700 --> 00:08:51,000
+新闻服务，然后我就叫我的InvokeAsyn
+newsService there and then and then I just call my InvokeAsyn
+
+167
+00:08:51,267 --> 00:08:54,118
+这个比我们要展示的要简单得多，
+This one is simpler than that other one that you todo list we are showing,
+
+168
+00:08:54,400 --> 00:08:58,400
+它并不是在攻击数据库或者其他服务，而是在这里进行的艰苦工作。
+it's not hitting a database or whatever the services doing the-- the hard work here.
+
+169
+00:08:58,900 --> 00:09:03,200
+这样你就知道了，获取feed的内容是在后台和服务背后进行的
+So which just you know getting the feed the feed is cast behind the scenes and the service
+
+170
+00:09:03,800 --> 00:09:10,300
+它抓住了一个量，这个量实际上是在这里传递的
+and it's grabbing a quantity and that quantity is being passed in here  actually
+
+171
+00:09:10,300 --> 00:09:11,800
+它是一个输入参数。
+it's an input parameter.
+
+172
+00:09:11,908 --> 00:09:13,528
+它是一个输入参数。
+it's an input parameter exactly.
+
+173
+00:09:13,918 --> 00:09:16,768
+所以我可以说这是我想要展示的多项新闻。
+so I can say this is many news items I want to show.
+
+174
+00:09:17,600 --> 00:09:24,700
+然后我可以再看一遍，这是我实际上是我如何将它转换成Razor的
+And then I can go over， and here is my actual this is how I converted it into razor.  
+
+175
+00:09:24,700 --> 00:09:27,500
+所以我只是将绑定绑定到IEnumerable的新闻项
+So I just binding am binding to  IEnumerable news items
+
+176
+00:09:28,000 --> 00:09:30,700
+然后我就用我的标准Razor
+and then I'm just using my standard razor
+
+177
+00:09:31,100 --> 00:09:36,300
+你知道我在做一些事情，比如
+you know I'm doing the few things items can take just like for instance
+
+178
+00:09:36,600 --> 00:09:42,700
+有多个与新闻提要相关联的URI，因为还有一个用于评论的RSS提要，诸如此类。
+there is multiple URIs associated with the newsfeed, because there is also an RSS feed for comments and stuff like that.
+
+179
+00:09:42,700 --> 00:09:47,100
+我先把第一个加在这里，然后在这里，在描述中，我取了前50个字符。
+So I'm garbing the first and then here and then here on the description I'm taking the first 50 characters.
+
+180
+00:09:47,279 --> 00:09:47,549
+对的
+right
+
+181
+00:09:47,900 --> 00:09:51,700
+基本上这就是设置这个的全部内容。
+so basically that's all that involved in setting that up. 
+
+182
+00:09:51,959 --> 00:09:53,609
+这就是Razor模板
+So,this is the Razor template
+
+183
+00:09:53,900 --> 00:09:58,900
+你的组件是视图正在呈现。
+that your component is view is rendering with.
+
+184
+00:09:58,900 --> 00:09:59,000
+完全正确
+ exactly 
+
+185
+00:09:59,039 --> 00:09:59,279
+好的
+ok
+
+186
+00:09:59,300 --> 00:10:05,200
+然后，为了证明这是在
+and so then that, just to kind of show whether that goes that is in 
+
+187
+00:10:05,300 --> 00:10:07,900
+让我看看这里的新闻，
+let me see NewsView right there,
+
+
+188
+00:10:08,000 --> 00:10:10,100
+这是Default.cshtml 好的。
+it's a Default.cshtml, ok.
+
+189
+00:10:10,559 --> 00:10:11,639
+就是这样。
+So that's it.
+
+190
+00:10:11,800 --> 00:10:13,700
+非常直接的，
+So really pretty straight forward,  
+
+191
+00:10:13,700 --> 00:10:20,900
+它解决了一个问题，当你遇到它的时候。是的，我的意思是，我希望我能打包。
+it solves a problem that when you run into it. Yes I mean, I wish I can packages up.
+
+192
+00:10:20,939 --> 00:10:21,959
+我不想要
+I don't want to have to
+
+193
+00:10:22,300 --> 00:10:27,800
+如果你发现自己来自一个页面或控制器返回一个非常复杂的模型
+if you find yourself from a page or controller returning a very complex model
+
+194
+00:10:28,049 --> 00:10:31,109
+这里有一个列表，这里是这些和所有这些的列表。
+that has here is a list of these and here is list of those and all that.
+
+195
+00:10:31,400 --> 00:10:35,000
+这是一个信号你可能想把它移到一个组件中
+That's kind of sign that you may want to move that into a component
+
+196
+00:10:35,309 --> 00:10:38,639
+然后如果你有可重用的代码，你就想到复用
+and then if you got re-usable code that you just want to reuse to your side.
+
+197
+00:10:38,789 --> 00:10:39,029
+是的
+yeah
+
+198
+00:10:39,300 --> 00:10:42,800
+所以这是一个真正的结构
+So this is in really a construct
+
+199
+00:10:42,800 --> 00:10:45,200
+像TagHelpers这样的视图结构
+this is in the view structure like TagHelpers
+
+200
+00:10:45,500 --> 00:10:49,300
+他们想要捆绑到一个NuGet包并部署
+they would want to bundle up into a NuGet package and deploy
+
+201
+00:10:49,300 --> 00:10:50,700
+因为我得到了那个Razor模板
+Because of I got that razor template
+
+202
+00:10:51,800 --> 00:10:54,600
+我需要在我的应用程序中适当地部署。
+that I need to deploy appropriately inside my application.
+
+203
+00:10:54,720 --> 00:10:58,320
+我认为这是一种更具体的应用，
+exactly I think this is something where it's more kind of application specific,
+
+204
+00:10:58,350 --> 00:10:59,670
+可能有一些你知道的
+there may be some you know
+
+205
+00:10:59,700 --> 00:11:05,000
+这是超级黑带层做某种路径提供了bla-bla-bla注入它
+it's super black belt layer doing some kind of path provided bla-bla-bla to inject that
+
+206
+00:11:05,300 --> 00:11:14,200
+我认为标准的情况是清理我的标记，并在我的网站上通用的东西，添加到Razor模板里，
+I think the standard case is just go through cleanup my markup and take  common things I'm going to use though my site ，put the razor template there,  
+
+207
+00:11:14,200 --> 00:11:18,700
+把我的一个类，对，我的一个简单的类，然后在我的网站上重复使用
+put my one class ，right ，my one simple class， and then just reuse from my site then
+
+208
+00:11:19,050 --> 00:11:19,620
+好极了。
+terrific.
+
+209
+00:11:20,800 --> 00:11:22,800
+好了，就是这样。
+all right so that's about it. 
+
+210
+00:11:23,280 --> 00:11:24,750
+谢谢你的加入
+thank you for joining us and
+
+211
+00:11:24,800 --> 00:11:28,300
+我们希望你能加入我们的下一个关于ASP.NET Core的视频。
+we hope you join us  the next video on ASP.NET Core. 
