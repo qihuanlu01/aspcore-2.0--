@@ -1,0 +1,1671 @@
+0
+00:00:01,000 --> 00:00:04,300
+嘿，欢迎回到这个关于ASP.NET Core的视频
+Hey there, welcome back to this video about ASP.NET Core 
+
+1
+00:00:04,400 --> 00:00:06,400
+我叫Jeff Fritz，我是Jon Galloway
+my name is Jeff Fritz, I'm Jon Galloway
+
+2
+00:00:06,930 --> 00:00:10,530
+我们在这些视频中讨论了很多关于构建新应用的视频
+and we've been talking a lot in these videos about building new applications and
+
+3
+00:00:10,800 --> 00:00:16,000
+我们可以用它们做什么，然后我们就开始讨论生产和不同的环境。
+what we can do with them ，and then we even got into talking a little bit about production and different environments. 
+
+4
+00:00:16,890 --> 00:00:18,060
+我如何做呢？
+How do I host this ? 
+
+5
+00:00:18,100 --> 00:00:23,400
+把它发布出来，放到一个生产环境 Jon
+actually publish it and put it somewhere in a production space Jon.
+
+6
+00:00:23,400 --> 00:00:25,300
+是的，这是一个很好的问题
+yeah so it's a great question and it's 
+
+7
+00:00:25,400 --> 00:00:29,100
+这里面有很多信息，比如细微差别，对吧？
+it's there's a lot of information a lot of  it， like nuances to this ，right？
+
+8
+00:00:30,500 --> 00:00:34,400
+部署变得更加复杂了
+deploying ，deploying has gotten a little more complicated because 
+
+9
+00:00:34,470 --> 00:00:36,270
+ASP.NE Core到处运行
+ASP.NET Core runs everywhere
+
+10
+00:00:36,330 --> 00:00:36,750
+是的，
+yeah,
+
+11
+00:00:37,020 --> 00:00:38,370
+所以你必须考虑，
+so you have to think about,
+
+12
+00:00:38,550 --> 00:00:38,880
+你知道，
+you know,
+
+13
+00:00:39,030 --> 00:00:41,160
+你的应用程序是如何托管的
+how is your application actually hosted
+
+14
+00:00:41,400 --> 00:00:44,700
+你怎么知道你把它部署到什么地方
+and how are you know where you are deploying it to in the 
+
+15
+00:00:44,800 --> 00:00:47,600
+你可以部署地方之间的细微差别
+slight differences between the places you can deploy to 
+
+16
+00:00:47,910 --> 00:00:48,240
+好的。
+ok.
+
+17
+00:00:48,400 --> 00:00:50,100
+首先
+so to start with 
+
+18
+00:00:50,130 --> 00:00:53,580
+我们要讨论的是如何托管ASP.NET Core
+we're going to talk about actually hosting  ASP.NET Core
+
+19
+00:00:53,900 --> 00:00:56,300
+这里有个有趣的地方
+and you know an interesting thing here 
+
+20
+00:00:56,300 --> 00:01:00,200
+ASP.NET Core实际上是用Kestrel托管的。
+ASP.NET Core is actually hosted using Kestrel.
+
+21
+00:01:00,700 --> 00:01:04,400
+Kestrel是一个轻量级的web服务器包
+and Kestrel is a lightweight web server package 
+
+22
+00:01:04,400 --> 00:01:08,300
+它实际上是一个我添加到应用程序的NuGet包
+it's actually a NuGet package that I add my application 
+
+23
+00:01:08,550 --> 00:01:11,340
+这样就可以打开HTTP服务了。
+that kind of turns on HTTP serving.
+
+24
+00:01:11,600 --> 00:01:15,700
+好的，所以我管理运行在我的应用程序内部的HTTP服务器。
+OK, so I manage HTTP server that lives inside of my application. 
+
+25
+00:01:16,400 --> 00:01:20,600
+所以，对任何环境来说都是很常见
+So, the kind of the common things to any environment is
+
+
+26
+00:01:21,210 --> 00:01:22,350
+你会设置一个主机，
+you'll set up a host,
+
+27
+00:01:22,400 --> 00:01:28,800
+然后一旦你把你的应用发布到一个文件夹，
+and then once you on your publish  you know your application to a folder on there, 
+
+28
+00:01:29,340 --> 00:01:31,590
+你会看到你会有一个进程管理器
+you'll see that you'll have a process manager
+
+29
+00:01:31,800 --> 00:01:35,100
+这将确保我的应用程序继续运行
+that's going to make sure that my application continues running 
+
+30
+00:01:35,700 --> 00:01:40,100
+然后我将会有一个反向代理它会把流量发送给我。
+And then I'm going to have a reverse proxy that's going to send the traffic back to me. 
+
+31
+00:01:40,320 --> 00:01:40,530
+好的
+okay
+
+32
+00:01:40,700 --> 00:01:43,000
+所以关于你的整个事情
+so that whole thing about  you know 
+
+33
+00:01:43,200 --> 00:01:48,800
+我是如何发布的，我的应用程序是如何托管的，
+how I'm actually publishing and I'm how my application is hosting itself is, 
+
+34
+00:01:49,350 --> 00:01:51,120
+这是用kestrel完成的
+this is done using kestrel
+
+35
+00:01:51,100 --> 00:01:55,000
+为了看到这个动作我们来看看一个默认的项目
+so to see this in action let's take a look at a default project
+
+36
+00:01:55,100 --> 00:01:56,600
+这只是文件名项目
+ this is just file name project
+
+37
+00:01:56,700 --> 00:01:56,970
+明白吗？
+okay ?
+
+38
+00:01:57,270 --> 00:01:58,380
+我有
+and I've got
+
+39
+00:01:58,710 --> 00:02:01,140
+如果我看我的NuGet包，
+if I look in my NuGet packages,
+
+40
+00:02:01,500 --> 00:02:04,600
+我有一个AspNetCoreAll meta包。
+I've got the AspNetCoreAll meta package. 
+
+41
+00:02:04,830 --> 00:02:05,100
+当然
+Sure
+
+42
+00:02:05,200 --> 00:02:09,700
+如果我把它展开在这个列表.在某个地方有Kestrel，所以如果我——
+And if I expand this out somewhere in that list  we've got Kestrel. so if I--
+
+43
+00:02:12,100 --> 00:02:15,700
+所以你实际上不需要在你的应用程序中安装kestrel
+so you actually don't need to install kestrel in your application 
+
+44
+00:02:15,700 --> 00:02:19,700
+默认情况下，新web将启用Kestrel
+File New web is going to have Kestrel enabled by default 
+
+45
+00:02:19,890 --> 00:02:20,220
+对的
+right
+
+46
+00:02:20,300 --> 00:02:25,900
+因为这个包包含了aspnetcore，所有的元数据包
+because that package is included AspNetCore.All meta package 
+
+47
+00:02:26,000 --> 00:02:27,900
+所有东西都在这。
+verything in the kitchen-sink. 
+
+48
+00:02:28,080 --> 00:02:28,350
+是的，
+yep,
+
+49
+00:02:28,560 --> 00:02:31,620
+实际上我可以创建一个控制台应用程序，
+and I could actually just create a console application,
+
+50
+00:02:31,920 --> 00:02:33,780
+然后加上这个Kestrel包
+and then add this Kestrel package
+
+51
+00:02:33,840 --> 00:02:35,730
+我的应用程序现在是一个网页应用
+and my application is now a web app
+
+52
+00:02:35,970 --> 00:02:36,630
+很好
+oh cool right
+
+53
+00:02:36,870 --> 00:02:37,830
+这很简洁。
+so that's pretty neat.
+
+54
+00:02:38,520 --> 00:02:39,870
+所以如果我们
+so if we if we
+
+55
+00:02:40,110 --> 00:02:42,840
+如果我们看下我们的Startup
+if we hop back out of there and we look at our Startup,
+
+56
+00:02:43,200 --> 00:02:45,100
+不好意思
+so excuse me are 
+
+57
+00:02:45,390 --> 00:02:46,380
+我们的program CS
+our program CS.
+
+58
+00:02:47,900 --> 00:02:52,400
+我们得到的是实际运行的Kestrel
+what we've got here is  the actual spinning up Kestrel 
+
+59
+00:02:53,000 --> 00:02:58,300
+并且，你提到了你可以启动一个控制台应用程序并将web服务器添加给它。
+and； you mentioned if you could start a console application and  add the web server to it. 
+
+60
+00:02:58,500 --> 00:03:02,500
+对于控制台应用程序来说，这看起来像是一个正常的静态void
+this looks like a normal static void mean for a console application 
+
+61
+00:03:02,550 --> 00:03:03,510
+完全是
+it completely is
+
+62
+00:03:03,800 --> 00:03:07,200
+没有任何花招，这是一个控制台应用
+No trickery at all this is literally a console app
+
+63
+00:03:07,200 --> 00:03:10,400
+添加了一些额外的NuGet包
+that has some additional NuGet packages added
+
+64
+00:03:10,770 --> 00:03:12,030
+正因为如此，
+and because of that,
+
+65
+00:03:12,200 --> 00:03:16,500
+我们得到Microsoft ASPNetCore Hosting
+we've got Microsoft ASPNetCore Hosting
+
+66
+00:03:16,800 --> 00:03:20,600
+这就可以运行Kestrel并托管我们的应用程序，
+and that's able to run Kestrel and host our application，cool
+
+67
+00:03:21,000 --> 00:03:25,200
+在Asp.NetCore2,之前的版本中
+so in previous releases before Asp.NetCore2,
+
+68
+00:03:25,650 --> 00:03:27,270
+这里有更多的代码，
+there was a lot more code in here,
+
+69
+00:03:27,750 --> 00:03:29,280
+这几乎是一种样板
+And it was pretty much boilerplate 
+
+70
+00:03:29,310 --> 00:03:32,610
+你总是做同样的事情，你总是说在这里使用——
+you always did the same things，you always said here use--
+
+71
+00:03:32,640 --> 00:03:35,460
+你知道，使用这些环境设置，然后做这个。
+you know, use these environment settings and do this and do that.
+
+72
+00:03:35,820 --> 00:03:40,320
+所以他们所做的我喜欢这个，这对我来说是非常简单的
+so what they've done and I like this it's definitely simplified things quite a bit for me is
+
+73
+00:03:40,500 --> 00:03:45,900
+他们有一个默认的web主机构建器，你会在这里看到web主机创建默认的构建器。
+they've got a  default web host builder you'll see here web host create default builder. 
+
+74
+00:03:46,620 --> 00:03:48,030
+在很大程度上，
+and for the most part,
+
+75
+00:03:48,360 --> 00:03:51,000
+我可以用这个来继续使用他
+I can just use this and go on about my merry way
+
+76
+00:03:51,630 --> 00:03:54,030
+如果我想要进入并配置一些东西
+if I do want to go in and configure things
+
+77
+00:03:54,330 --> 00:03:57,240
+我可以，你知道只要键入dot，然后我就可以开始了，
+I can you know just type dot and then I can start,
+
+78
+00:03:57,540 --> 00:04:00,330
+你知道我可以进入这里我可以配置细节
+you know I can go in here and I can configure specifics
+
+79
+00:04:00,660 --> 00:04:01,890
+关于工作原理，
+about how things work,
+
+80
+00:04:02,100 --> 00:04:07,100
+但在大多数情况下，我可以从这个默认的web主机构建器开始
+but for the most part I can start with this default  web host builder and 
+
+81
+00:04:07,500 --> 00:04:08,900
+我已经很好了
+I'm pretty set go 
+
+82
+00:04:09,300 --> 00:04:16,500
+如果我想深入了解GitHub上AspNet Hosting仓库中还有什么其他内容
+if I do want to dig into what else is available in the GitHub AspNet Hosting Repo 
+
+83
+00:04:16,900 --> 00:04:21,800
+有一个示例，它有一些额外的主机配置。
+there's a sample, which  has some additional hosting configurations. 
+
+84
+00:04:22,620 --> 00:04:23,070
+所以
+so
+
+85
+00:04:23,100 --> 00:04:26,700
+这里有一个例子，如果我想指出，
+here's one where they show for instance if I want to point, 
+
+86
+00:04:27,690 --> 00:04:29,610
+其他的url，如果我想说，
+other URLs if I want to say,
+
+87
+00:04:29,800 --> 00:04:35,400
+我想让我的应用程序响应5001和5000
+I want my application to respond to, you know  five thousand and five thousand one, 
+
+88
+00:04:35,600 --> 00:04:40,800
+或者你知道，如果我想在https或其他东西上回应他。
+or you know if I want to respond only to this on https or other things. 
+
+89
+00:04:41,100 --> 00:04:43,300
+这是我如何进入这个领域的一个例子
+this is an example of how I could go in and do that 
+
+90
+00:04:43,300 --> 00:04:45,800
+我只是在做加法
+so I'm just doing in adding
+
+91
+00:04:46,110 --> 00:04:48,330
+对WebHostBuilder进行额外的调用
+and making additional calls to the WebHostBuilder
+
+92
+00:04:48,510 --> 00:04:48,870
+酷！
+Cool!
+
+93
+00:04:49,050 --> 00:04:51,120
+再举一个例子。
+and for an example taking this even further.
+
+94
+00:04:51,449 --> 00:04:53,249
+这是其中一个
+this is one where there
+
+95
+00:04:53,900 --> 00:04:57,500
+它是添加额外的配置一的示例
+it's a sample where it's doing all kinds of additional configuration 
+
+96
+00:04:57,569 --> 00:05:00,209
+添加特定的配置步骤
+adding in specific configuration steps
+
+97
+00:05:00,800 --> 00:05:04,100
+我们在做一些事情，比如使用一个特定的ContentRoot
+we're doing things like using a specific ContentRoot 
+
+98
+00:05:04,100 --> 00:05:08,200
+所以这个ContentRoot是我的www根文件夹指向的地方
+so this the ContentRoot is where my www Root folder points to
+
+99
+00:05:08,429 --> 00:05:08,669
+好的
+ok
+
+100
+00:05:08,699 --> 00:05:10,379
+我可以把它指向别的地方
+and I could point this somewhere else
+
+101
+00:05:10,499 --> 00:05:10,829
+对的
+right
+
+102
+00:05:11,699 --> 00:05:16,529
+这里我们要做一些额外的useurl，一个用于HTTP，另一个用于HTTPS。
+Here we're doing some additional UseUrls one for HTTP and one for HTTPS.
+
+
+103
+00:05:17,600 --> 00:05:21,500
+你可以编码，你可以设置一个不同的开发环境，
+You can encode, you could set a different development environment, 
+
+104
+00:05:21,900 --> 00:05:24,200
+你知道的，只是不同的东西。
+and you know it just all kinds of different things. 
+
+105
+00:05:24,539 --> 00:05:27,449
+这里我们在这里配置服务。
+so here we're configuring services in line here.
+
+106
+00:05:27,809 --> 00:05:30,929
+您的服务通常在Startu类中配置
+your services are normally configured in a Startup class
+
+107
+00:05:31,259 --> 00:05:32,489
+但如果你看一下，
+but if you look at it,
+
+108
+00:05:32,549 --> 00:05:34,739
+如果我们回到这里
+if we go back over to it in here
+
+109
+00:05:35,000 --> 00:05:37,200
+当这个调用Startup 
+this when this calls use Startup 
+
+110
+00:05:37,800 --> 00:05:45,300
+这是一种惯例，就像一个很好的方法来清理我的Programs.cs . 所有的代码都不在这里，
+that's actually just a convention for like a nice way to clean up my Programs.cs so all the code isn't in there, 
+
+111
+00:05:45,419 --> 00:05:45,779
+对，
+right,
+
+112
+00:05:46,000 --> 00:05:48,800
+所以我可以在这里配置内联
+so I really could configure inline here
+
+113
+00:05:49,000 --> 00:05:50,300
+如果我需要的话。
+if I had to need to.
+
+114
+00:05:50,900 --> 00:05:53,900
+这是做这类事情的一个例子。
+so this is an example of doing that sort of thing. 
+
+115
+00:05:55,400 --> 00:06:01,000
+在这个例子中，他们使用的是一个假服务器这只是为了测试
+so here in this example they're using a fake server and that's just for testing you know 
+
+116
+00:06:01,000 --> 00:06:05,900
+他们运行的是本地的，还有其他的选项，比如这个HttpSys服务器。
+they're they're running a local one there's other optionsthere's things like this HttpSys server.
+
+117
+00:06:06,328 --> 00:06:06,688
+对的
+right
+
+118
+00:06:06,700 --> 00:06:12,800
+这是在windows http.sys内核模式驱动程序之上构建的
+ so that's built on top of the Http.Sys kernel mode driver  inside of Window
+
+119
+00:06:13,100 --> 00:06:18,700
+这将服务于网络互动的网络关注，
+that will serve  web interactions web concerns from there, 
+
+120
+00:06:19,000 --> 00:06:23,300
+很酷，能给你Windows网络服务的所有功能
+very cool to give you all the power of Windows web serving 
+
+121
+00:06:23,600 --> 00:06:27,900
+使用.NET构建的完全管理的新服务器
+using a new server that's built with .NET completely managed
+
+122
+00:06:28,200 --> 00:06:31,400
+在你的AspNetCore应用中运行。
+and running here inside of your AspNetCore app.
+
+
+123
+00:06:31,978 --> 00:06:32,338
+很酷。
+cool.
+
+124
+00:06:32,668 --> 00:06:34,618
+总结一下我们目前所讲的内容，
+so to summarize what we've covered so far,
+
+125
+00:06:34,978 --> 00:06:37,138
+我们有一个叫做Kestrel的NuGet包
+we've got a NuGet package called Kestrel
+
+126
+00:06:37,400 --> 00:06:42,100
+我们将它导入到我们的应用程序中，它实际上只是一个控制台应用程序
+we are pulling it into our application which really was just a console app 
+
+127
+00:06:42,238 --> 00:06:43,048
+然后我们说。
+and then we said.
+
+128
+00:06:43,258 --> 00:06:44,578
+导入这个新的git包
+pull in this new git package
+
+129
+00:06:44,878 --> 00:06:46,468
+然后配置它，现在
+and then configure it and now
+
+130
+00:06:46,600 --> 00:06:49,900
+我的控制台应用程序作为一个web服务器。
+my console application as a web server. 
+
+131
+00:06:49,948 --> 00:06:50,488
+非常整洁。
+pretty neat.
+
+132
+00:06:50,900 --> 00:06:54,000
+现在我们有了这个，我们可以看一下
+so now that we've got that we can look at 
+
+133
+00:06:54,238 --> 00:06:55,828
+我们也要把它部署到这里。
+where we are going to deploy this too.
+
+134
+00:06:56,700 --> 00:06:58,700
+就像我之前提到的
+and as I mentioned before theirs 
+
+135
+00:06:58,700 --> 00:07:02,500
+这些步骤，第一个是我们的主机设置
+those steps to it, so number one we've got our host setup 
+
+136
+00:07:03,300 --> 00:07:08,700
+还有一些其他的东西，现在我们想要把它放到上面运行
+and then there are other things that， you know ，now we want to get this out onto them and run them
+
+137
+00:07:08,800 --> 00:07:10,900
+我们把它发布到一个文件夹。
+ so we publish to a folder. 
+
+138
+00:07:11,300 --> 00:07:19,500
+如果我在visual studio中右键点击发布，或者我发布了像azure工具之类的东西。
+and you know if I right click  publish in visual studio or if I publish  using that like the azure tools  etc. 
+
+139
+00:07:20,300 --> 00:07:25,700
+很多东西都是为我处理的，但是我需要从命令行来做的就是键入dotnet publish
+a lot of those things are kind of handled for me ，but all I need to do from command line is type dotnet publish
+
+140
+00:07:25,900 --> 00:07:29,700
+这就会发布我想要部署的代码。
+and that's going to publish just the code that I'm going to want to deploy. 
+
+141
+00:07:30,027 --> 00:07:30,417
+好吧
+all right
+
+142
+00:07:31,257 --> 00:07:31,827
+所以
+so
+
+143
+00:07:32,600 --> 00:07:38,600
+好了，在那之后对于不同的环境，有不同的步骤，我的程序是如何被监控的？
+Alright. So after that there's kind of different steps for the different environments as far as， how my process is monitored?
+
+144
+00:07:39,000 --> 00:07:42,300
+反向代理是什么，它实际上是怎样的
+and what the reverse proxy is， how it's actually how 
+
+145
+00:07:43,617 --> 00:07:46,467
+网络服务器把什么东西喂给kestrel
+what the web server is it's kind of feeding things into kestrel
+
+146
+00:07:46,737 --> 00:07:49,767
+对，反向代理就是前端
+right so that reverse proxy is a front-end
+
+147
+00:07:50,000 --> 00:07:54,600
+像apache引擎Nginx或IIS这样的商业级web服务器
+commercial-grade web server like apache engine Nginx or IIS
+
+148
+00:07:55,017 --> 00:07:57,057
+它会接收到这些初始请求。
+that's going to receive those initial request.
+
+149
+00:07:57,297 --> 00:07:59,997
+也许它会处理这些SSL交互。
+maybe it'll handle those SSL interactions.
+
+150
+00:08:00,777 --> 00:08:02,607
+任何其他的安全问题
+any kind of other security concerns
+
+151
+00:08:02,900 --> 00:08:06,200
+然后回过头来把这个请求提交给kestrel
+and then turn around and submit that request back  kestrel 
+
+152
+00:08:06,477 --> 00:08:07,917
+就像人们在——
+much the same way that folks in--
+
+153
+00:08:07,947 --> 00:08:09,777
+在节点环境中使用Express。
+in the node environment use Express.
+
+154
+00:08:09,867 --> 00:08:10,527
+完全正确
+exactly
+
+155
+00:08:10,700 --> 00:08:14,600
+然后你知道我的应用程序只关心http
+and then you know my application is concerned with just serving http 
+
+156
+00:08:14,900 --> 00:08:18,900
+所有这些更高层次的事情
+and all those kind of other higher level things that I may want to do and 
+
+157
+00:08:18,987 --> 00:08:19,287
+你知道
+you know
+
+158
+00:08:19,300 --> 00:08:22,400
+就像你说的一个商业级的网络服务器，我可以在那里处理这些东西。
+like you said a commercial-grade web server I can handle that stuff there.
+
+159
+00:08:22,700 --> 00:08:27,400
+所以当我们进行一些不同的部署时。
+So as we kind of go through some of the  different options for deploying.
+
+160
+00:08:27,700 --> 00:08:34,300
+所以IIS，实际上这是一篇关于设置IIS的很长的文章
+So IIS, there's actually this is a long article here about setting up IIS
+
+161
+00:08:34,600 --> 00:08:37,700
+这方面有相当多的步骤。
+and there are  a decent amount of steps to this. 
+
+162
+00:08:39,000 --> 00:08:42,000
+老实说，我喜欢把它部署到Azure中
+ which is one reason honestly, that I like deploy into Azure
+
+163
+00:08:42,000 --> 00:08:45,600
+因为我可以推到Azure让他们担心这个问题
+ because I can just push  Azure and let them worry about that
+
+164
+00:08:45,600 --> 00:08:50,100
+对你来说，他们把所有这些预定义的默认值作为你的最佳实践，
+for you and they take all those predefined defaults the best practices for you, 
+
+165
+00:08:50,217 --> 00:08:50,547
+是的
+Yea
+
+166
+00:08:51,100 --> 00:08:54,200
+处理一些事情，比如windows更新
+and handle things like you know,  windows update 
+
+167
+00:08:54,447 --> 00:08:55,377
+必须说
+just must say
+
+168
+00:08:55,947 --> 00:09:00,147
+但这些都是例子，这是通过设置IIS来遍历我
+but so these are kind of the examples here ，this is walking through me through setting up IIS
+
+169
+00:09:00,507 --> 00:09:02,487
+有一个ASP NET Core,
+There is an ASP NET Core,
+
+170
+00:09:03,300 --> 00:09:05,800
+所以这是。什么是.NET Core 
+so there's a-- what is it .NET Core 
+
+171
+00:09:05,900 --> 00:09:09,000
+windows服务器托管包，这是一个exe文件
+windows server hosting bundle. and this is an exe
+
+172
+00:09:09,000 --> 00:09:12,500
+这是我在服务器上安装的东西，我的web服务器
+this is something that I would install on my server， my web server
+
+173
+00:09:12,867 --> 00:09:15,657
+它会为我配置一些东西
+and it'll actually go through and configure things for me.
+
+174
+00:09:15,900 --> 00:09:20,400
+如果你在azure中设置一个vm或者你有一个on-prem服务器
+so if you were setting up a vm in azure or if you had an on-prem server 
+
+175
+00:09:20,700 --> 00:09:26,600
+你在配置IIS时也有.NET Core 主机
+that you were configuring IIS on to also have .NET Core hosting
+
+176
+00:09:26,938 --> 00:09:29,787
+你可以使用.NET Core windows服务器托管包
+you would use this .NET Core windows server hosting bundle
+
+177
+00:09:30,000 --> 00:09:35,100
+为了使用ASP.NET Core这些特性，我们需要一个网站，
+to put down those features from ASP.NET Core we need  in order to host a website, 
+
+178
+00:09:35,398 --> 00:09:36,028
+完全正确
+exactly
+
+179
+00:09:36,200 --> 00:09:43,100
+这样方法在我安装后的IIS中它实际上是在使用这个ASP.NET Core模块。
+So the way this is done and in IIS after I've installed  that is it's actually using this ASP.NET Core module.
+
+180
+00:09:43,400 --> 00:09:47,700
+ASP NET Cor模块实际上是为我做代理。
+And the ASP NET Core module is actually doing this proxy for me.
+
+181
+00:09:48,000 --> 00:09:54,500
+所以如果我们看一下这里的互联网IIS就是前端，它实际上有一个正在运行的核心模块
+so if we look at it here's theinternet IIS is that front end and it's actually got this  core module that it's running 
+
+182
+00:09:54,838 --> 00:09:57,898
+这个核心模块正在返回我的应用程序。
+and that core module is calling back into my application.
+
+183
+00:09:58,400 --> 00:10:06,800
+然后我们在这里看到的是我的应用程序它实际上是kestrel作为前端，它在我的应用程序代码中来回调用
+and then as we see here here's my application and it's actually got kestrel as kind of the front end that's calling back and forth into my application code 
+
+184
+00:10:07,198 --> 00:10:07,588
+酷！
+Cool！
+
+185
+00:10:07,600 --> 00:10:13,000
+所以这很有趣当然，这就像我说的，这是安装在服务器上的
+so yeah so this is really interesting and of course  this is like I said this is installed by that server install thing for me
+
+186
+00:10:13,300 --> 00:10:17,100
+这就为我设置了IIS。
+So that will kind of set it up for me with IIS.
+
+187
+00:10:17,900 --> 00:10:22,200
+这就是它的工作原理，这是你要做的主要方式
+so that's how it's done there， and that's kind of the main way that you're going to be doing this 
+
+188
+00:10:22,259 --> 00:10:24,479
+不过，还有一些其他的选择。
+There are some other options available though.
+
+189
+00:10:24,700 --> 00:10:27,800
+在Windows服务中有一个选择
+There's the option to host in a Windows service
+
+190
+00:10:28,139 --> 00:10:29,129
+这很简洁。
+which is pretty neat.
+
+191
+00:10:29,400 --> 00:10:35,700
+所以实际上有一个包，我可以安装它可以设置它。
+so there's actually a package  that  I am,  I'm able to install that can set that up. 
+
+192
+00:10:36,000 --> 00:10:42,400
+这是Microsoft.AspNet.Core.Hosting.WindowsServices包。
+this is the Microsoft.AspNet.Core.Hosting.WindowsServices package. 
+
+193
+00:10:42,900 --> 00:10:50,100
+如果我把它添加到我的应用程序中，
+and so if I add that into my application here ，
+
+194
+00:10:50,429 --> 00:10:51,839
+你会看到这是，这是你知道的
+ so you'll see this is--  this is  you know 
+
+195
+00:10:52,200 --> 00:10:55,600
+把它包含进来，这就开始的时候就很相似了
+got that pulled in and then it's actually pretty similar on start 
+
+196
+00:10:57,100 --> 00:11:03,800
+这里有一些东西，我们在这里是运行它最简单的情况
+There's a few things, we're doing here we're saying the very simplest case is you basically run it  
+
+197
+00:11:03,800 --> 00:11:06,800
+它被配置为一种服务
+and it's it's configured as a service however 
+
+198
+00:11:07,400 --> 00:11:11,600
+很多时候，我想要调试它，然后构建
+a lot of the time I want to actually be able to debug it,  and build 
+
+199
+00:11:11,700 --> 00:11:18,700
+就像我想要的那样——当我在开发我的应用程序时，我希望能够进入代码调试以及所有类似的东西。
+you know， like I want it as I'm-- as I'm developing my application I want to be able to kind of  step into the code debug and all that kind of stuff. 
+
+200
+00:11:19,000 --> 00:11:28,400
+这是文档中的推荐显示设置，它可以让它以双模式运行或者作为一个控制台应用
+So kind of the recommended way and this is shown in the docs is to set it up where you can say allow it to run in dual mode either as a console app allow it to run in duel mode  either as a console app 
+
+201
+00:11:28,500 --> 00:11:29,520
+或者作为一种服务。
+or as a service.
+
+202
+00:11:29,580 --> 00:11:29,910
+好的
+ok
+
+203
+00:11:30,300 --> 00:11:38,700
+这里配置的方式是说如果有一个调试器或者如果我传入命令行参数——控制台
+So the way this is configured here this is saying  if a debugger is attached or if I pass in the command line arguments--console
+
+204
+00:11:38,970 --> 00:11:41,100
+然后设置为false。
+then set this is service to false.
+
+205
+00:11:42,210 --> 00:11:44,730
+然后它的运行稍有不同，如果它说，
+And then it runs slightly differently if it says it's，
+
+206
+00:11:44,800 --> 00:11:50,200
+如果它是一个服务那么它就会设置——为目录路径设置东西，目录路径是不同的
+if it is a service then it kind of sets--  sets things for a directory path， the directory path is different
+
+207
+00:11:50,520 --> 00:11:50,850
+对吧？
+right ?
+
+208
+00:11:51,300 --> 00:11:53,500
+然后还有这个
+and then also there's this 
+
+209
+00:11:53,600 --> 00:11:58,900
+host.RunAsCustomService，这是通过NuGet包所获得的。
+host.RunAsCustomService so this is what's pulled in
+ via that new git package. 
+
+210
+00:11:59,010 --> 00:12:01,110
+这是标准的kestrel运行
+So this is the standard kestrel run
+
+211
+00:12:01,530 --> 00:12:03,660
+但是如果我们是作为服务运行的
+and but if we're running if as service
+
+212
+00:12:03,960 --> 00:12:06,030
+而不是像定制服务那样运行。
+than it does this run as custom service.
+
+213
+00:12:06,150 --> 00:12:06,570
+好的
+ok
+
+214
+00:12:07,100 --> 00:12:11,000
+好的，然后注册的方式是使用这个SC命令
+OK. And then the way that's registered is actually using this SC command 
+
+215
+00:12:11,300 --> 00:12:15,000
+如果我们看一看，我在这里得到了这个，
+So if we take  a look I've actually got this here,
+
+216
+00:12:15,700 --> 00:12:23,000
+跳转到文件夹然后我使用一个批处理文件来设置它
+jump over into folder and I set this up  using a batch file
+
+217
+00:12:23,000 --> 00:12:27,600
+这里有几行代码。
+ and only because this is a few lines of code to type here.
+
+218
+00:12:28,400 --> 00:12:34,600
+如果我们看一下，这就是sc创建
+so if we look, so this is sc create 
+
+219
+00:12:36,000 --> 00:12:39,600
+这就是sc，它是一种注册服务
+so that's sc is the-- the thing to kind of register a service
+
+220
+00:12:39,600 --> 00:12:42,800
+所以我说，sc创建服务的名称，然后是binPath。
+so I say sc create the name of the service and then binPath.
+
+221
+00:12:44,011 --> 00:12:45,091
+有一件事是
+and the one thing that's
+
+222
+00:12:45,100 --> 00:12:48,600
+这很有趣，我用.net发布了
+that's a little interesting this binPath， I've actually used .net publish
+
+223
+00:12:49,100 --> 00:12:52,900
+在我的应用程序中，我从命令行中做了.net publish
+so in my application I  from command-line I did dot net publish 
+
+224
+00:12:53,300 --> 00:12:57,300
+然后我复制了exe被发布到的路径。
+ I-- and then I've copied that path where the exe was published to.
+
+225
+00:12:58,141 --> 00:12:58,471
+好的
+ok
+
+226
+00:12:59,300 --> 00:13:03,900
+好的，现在我要使用这个服务我将以管理员的身份运行
+OK. So now I'm going to take this service and I will do run as administrator
+
+227
+00:13:07,651 --> 00:13:08,941
+现在开始运行了
+and that's now running
+
+228
+00:13:08,900 --> 00:13:11,600
+就像这样，因为它是注册为服务的。
+that's like that cause it's registered as a service. 
+
+229
+00:13:11,900 --> 00:13:17,300
+现在，如果我访问localhost：5,000，我最喜欢的本地主机端口。
+and so now if I go to localhost 5,000,my favorite localhost port.
+
+
+230
+00:13:19,300 --> 00:13:23,800
+因此，他作为一个服务运行——一个Windows服务。
+So there's my service running this isbeing hosted as a service a Windows Service.
+
+231
+00:13:24,000 --> 00:13:30,300
+所以Windows服务是在处理你知道的，让我的进程运行，处理启动/停止所有这些东西。
+So the Windows Service is handling the you know, keeping my process running handling the
+Start/Stop all that kind of stuff.
+
+232
+00:13:30,500 --> 00:13:37,200
+这很像我们如何使用WCF服务进行自包含的部署
+So this is a lot like how we would do those self-contained deployments with WCF services
+
+233
+00:13:38,521 --> 00:13:39,511
+回去。
+back in the past.
+
+234
+00:13:39,600 --> 00:13:40,600
+对，没错
+yep, exactly 
+
+235
+00:13:41,000 --> 00:13:47,700
+所以，如果我在互联网上公开一些东西，我通常会公开我将使用IIS。
+So again if I'm exposing something out on the internet I would generally expose I would use IIS.
+
+236
+00:13:47,761 --> 00:13:48,151
+当然
+Sure
+
+237
+00:13:48,362 --> 00:13:53,312
+但是 我需要在本地托管运行的服务公开一些本地内容，等等。
+but for something that I need to host locally have a service that's running exposed some local content et cetera that's--
+
+238
+00:13:53,642 --> 00:13:55,772
+这就是我的设置的
+that's kind of how I can set that up.
+
+239
+00:13:57,452 --> 00:14:02,222
+是的，那就是，这个示例是和这里的文档联系起来的。
+So yeah and that's-- that sample is out that's actually linked to from the docs here.
+
+240
+00:14:02,400 --> 00:14:12,000
+好的，很简单，当你知道sc运行这个sc服务时，我真的很惊讶。
+OK. So relatively straightforward， and that sc I was honestly kind of surprised when you know, did the sc running through this sc service add.
+
+241
+00:14:12,000 --> 00:14:14,700
+这就像sc创造一样
+and it just kind of worked sc create  
+
+242
+00:14:14,700 --> 00:14:22,700
+最后，你还会想要把它清理干净，删除它，这是一个sc删除
+and then at the end also you'll want to go through and clean it up, remove it and that's there's an sc delete 
+
+243
+00:14:22,800 --> 00:14:24,800
+要做到这一点，你可以停止然后删除它。
+To do that you stop it and delete it.
+
+244
+00:14:25,742 --> 00:14:27,392
+这就是这些。
+so that is those.
+
+245
+00:14:28,352 --> 00:14:30,542
+我还想讲另一件事。
+so the one other thing I kind of wanted to touch on.
+
+246
+00:14:30,700 --> 00:14:36,600
+在开始时，有个更重要的问题我要指出。但这是托管在linux上的
+and this is a bigger thing I'm just going to point you in the direction to get started but is hosting on linux 
+
+247
+00:14:37,900 --> 00:14:42,000
+再次在Linux上托管，您正在配置整个web服务器
+Hosting on Linux again,  you're configuring  an entire web server 
+
+248
+00:14:42,300 --> 00:14:46,900
+你在设置你的进程监视器，你在做反向代理。
+you're you're setting up your process monitor ，and you're doing your reverse proxy.
+
+249
+00:14:47,133 --> 00:14:47,463
+好的，
+ok,
+
+250
+00:14:47,500 --> 00:14:49,100
+这里有几个步骤。
+so there are several steps there. 
+
+251
+00:14:49,473 --> 00:14:50,763
+我想指出的是
+I just want to point out
+
+252
+00:14:50,700 --> 00:14:57,200
+我经历了这个，我想指出一些陷阱和重要的注意事项和一些技巧。
+I ran through this and I just want to point out some gotchas and important things to be aware of. and also some tips. 
+
+253
+00:14:57,200 --> 00:15:03,000
+我在这里做了一个，我创建了一个Ubuntu VM
+so one has I went in and actually did this in the-- I created an Ubuntu VM
+
+254
+00:15:03,600 --> 00:15:11,300
+我在那台机器上做了我的开发，在配置它的时候，他实际上是云壳。
+and I did--  I did my kind of development on that machine as far as kind of configuring it  ，actually is the cloud shell. 
+
+255
+00:15:11,733 --> 00:15:13,053
+所以这个云壳
+So this Cloud Shell you
+
+256
+00:15:13,083 --> 00:15:14,973
+你只要点击这里就可以打开。
+you can just bring up by clicking here.
+
+257
+00:15:15,483 --> 00:15:18,843
+这个启动器终端窗口在底部。
+And this kind of launches ， this little terminal window down at the bottom.
+
+258
+00:15:19,053 --> 00:15:19,383
+好的
+okay
+
+259
+00:15:19,400 --> 00:15:28,400
+这就是我进行配置的地方，为了做到这一点，我ssh到这个盒子里
+So that's actually where I did my configuration， in order to do that I-- I ssh into the box
+
+260
+00:15:28,400 --> 00:15:29,900
+所以我实际上只是复制
+so I actually just you know  copy 
+
+261
+00:15:30,500 --> 00:15:35,800
+在这个方向上，在如何做的过程中但是我ssh到这个盒子里
+ it's in the--in the directions as far as how to do it but I ssh into the box
+
+262
+00:15:36,100 --> 00:15:39,100
+然后他们会带你去安装
+and then they walk you through installing 
+
+263
+00:15:39,200 --> 00:15:41,800
+现在你可以安装完整的sdk了，
+now you can install the full sdk, 
+
+264
+00:15:42,200 --> 00:15:46,500
+但实际上我们推荐的是安装运行时
+but actually what's recommended is to install just the runtime 
+
+265
+00:15:46,500 --> 00:15:50,100
+当然，或者你不想在你的服务器上安装整个sdk，尽管你不需要它。
+Sure or you don't want to install the whole sdk on your server though you don't need it.
+
+266
+00:15:51,200 --> 00:15:54,500
+而且，你想要一个轻量的安装。
+And-- and you want to kind of have a light-tight install right. 
+
+267
+00:15:54,784 --> 00:15:56,974
+所以当你去下载的时候
+so when you go to the downloads
+
+268
+00:15:57,300 --> 00:16:02,900
+默认情况下它会指向你的sdk如果你点击运行时
+and kind of the default  it's going to point you to is  sdk if you click on run time 
+
+269
+00:16:03,400 --> 00:16:08,400
+然后你可以向下滚动，你可以看到linux上安装.NET Core包了
+then you can scroll down and you can see here are linux installing  .NET Core on linux. 
+
+270
+00:16:09,200 --> 00:16:15,600
+然后这里，请注意，你读了版本号，这是。NET核心1.1.4（LTS）。
+and then here.  be careful that you read the Version Number. So this is .NET core 1.1.4 (LTS). 
+
+271
+00:16:15,700 --> 00:16:17,500
+这是长期支持版
+It's long term support right.
+
+272
+00:16:17,945 --> 00:16:21,725
+所以，如果你想要.NET Core 2.0 你要向下滚动到当前。
+So, you actually do if you want .NET Core 2 you want to scroll down to current.
+
+273
+00:16:22,200 --> 00:16:26,400
+对于这些，这是，字面意思是sudo apt-get你知道，
+And then for these it's-- it's literally just sudo apt-get you know, 
+
+274
+00:16:26,495 --> 00:16:28,865
+你首先要考虑的是来源
+you have to consider here the sources for at first
+
+275
+00:16:29,500 --> 00:16:34,700
+这些来源都是标准的
+So those sources are these standard ones here
+
+276
+00:16:35,100 --> 00:16:37,700
+如果你去下载 .NET Core
+So, if you go downloads .NET Core
+
+277
+00:16:38,825 --> 00:16:40,535
+然后你点击linux。
+and then you click on linux.
+
+278
+00:16:42,000 --> 00:16:47,300
+你仍然需要确保无论你的环境是什么，你已经完成了你的apt-get。
+You're still going to need to make sure that for whatever your environment is that，  you've done your apt-get.
+
+279
+00:16:47,500 --> 00:16:50,800
+你知道，你已经为apt-get配置了你的资源
+You know to you like you've configured your sources for apt-get
+
+280
+00:16:51,035 --> 00:16:51,485
+对的
+right
+
+281
+00:16:51,600 --> 00:17:01,200
+我浏览了一下，注册了微软的签名然后apt-get安装
+So I went through and then you know. registered the Microsoft Signature you know go through  and then install-- install the app-get using 
+
+282
+00:17:01,445 --> 00:17:04,055
+但是，当我运行这行代码时
+However, when I got to this line here
+
+283
+00:17:04,200 --> 00:17:06,700
+在哪里，你可以运行整个SDK
+where-- where you would run the entire SDK
+
+284
+00:17:07,085 --> 00:17:08,945
+这就是你安装那个运行时的地方
+that's where instead you install that runtime
+
+285
+00:17:09,185 --> 00:17:09,485
+好的
+okay
+
+286
+00:17:09,755 --> 00:17:10,235
+这是有道理的。
+it makes sense.
+
+287
+00:17:10,535 --> 00:17:10,805
+是的
+yeah
+
+288
+00:17:10,800 --> 00:17:14,300
+这就是部署的主要内容
+so that's that's kind of the main thing as far as how you  deploy 
+
+289
+00:17:14,500 --> 00:17:18,100
+显然，我建议使用连续的部署
+obviously you know I recommend still deploying using continuous 
+
+290
+00:17:18,200 --> 00:17:23,600
+使用一些类似于GitHub的部署或者类似的东西来配置它是一件很好的事情
+integration using some sort of like deploy from GitHub or that kind of thing that's kind of nice to configure that 
+
+291
+00:17:23,600 --> 00:17:26,000
+在开发过程中进行配置
+to configure that When you're in development
+
+292
+00:17:26,500 --> 00:17:34,400
+如果你在Windows上开发，你可以做的一件好事，你可以在Windows上使用Bash Ubuntu。
+one nice thing that you can do if you're developing on Windows you can actually use Bash Ubuntu on Windows. 
+
+293
+00:17:34,500 --> 00:17:44,500
+我的机器上有.NET .NET cd
+So . I went through and  you know locally did this on my machine you know .NET and I actually have .NET cd
+
+294
+00:17:50,700 --> 00:17:52,800
+所以我在这里做了。NET发布，发布，
+and so I did through here .NET publish, publish, 
+
+295
+00:17:57,937 --> 00:18:00,817
+它在一个子目录下，在 bin目录下，cd bin 
+so it's-- it's in a sub-directory off a bin, cd bin 
+
+296
+00:18:00,900 --> 00:18:05,900
+然后在下面进行调试
+and debug and then down underneath 
+
+297
+00:18:05,900 --> 00:18:08,600
+它有几个级别但是有一个是已发布的目录
+its several levels but there's a published directory
+
+298
+00:18:08,707 --> 00:18:08,947
+对的
+right
+
+299
+00:18:09,300 --> 00:18:13,200
+以及如何在你的生产服务器上获取你的文件。
+and then as far as how you get your files out on your production server. 
+
+300
+00:18:13,507 --> 00:18:16,657
+我在开发中所做的是使用scp。
+what I did locally in development is use scp.
+
+301
+00:18:17,017 --> 00:18:19,717
+文档中有关于如何做到这一点的信息。
+there is information in the docs about how to do that.
+
+302
+00:18:20,100 --> 00:18:23,400
+所以基本上rp是递归的
+and so basically rp is recursive
+
+303
+00:18:23,400 --> 00:18:32,400
+我看到他指向一个目录，从本地st scp目录到azure vm目录
+I saw him pointing to a directory I'm st scp from this local directory to  my  my azure  vm directory 
+
+304
+00:18:32,527 --> 00:18:34,567
+我刚刚创建了一个应用程序目录
+and I just created an app directory and did
+
+305
+00:18:34,800 --> 00:18:41,500
+你知道scp只是复制到那个，是的，这是一种标准，你知道，部署或复制文件的方式。
+you know scp just copy to that. Yeah, that's kind of a standard， you know, way to deploy or to copy files up. 
+
+306
+00:18:41,500 --> 00:18:46,500
+一旦我有了这个，那就是我的应用程序运行在那个服务器上。
+so once I had that in place then that's my applications running on that server.  
+
+307
+00:18:46,627 --> 00:18:46,957
+好的，
+ok,
+
+308
+00:18:47,700 --> 00:18:52,200
+然后运行它开始，然后命中你 DLL的名字
+So then to actually run it start and hit  you know and then just the DLL name
+
+309
+00:18:52,327 --> 00:18:52,657
+对的
+right
+
+310
+00:18:52,747 --> 00:18:56,077
+在那之后，尽管你还没做完，因为你必须要经历，
+After that though you're not done because remember you've got to go through,
+
+311
+00:18:56,407 --> 00:18:59,707
+在这里做所有实际的主机步骤，
+and do all the actual hosting steps in here so,
+
+312
+00:19:00,000 --> 00:19:06,200
+实际上，你的应用程序已经复制到那里了但是现在你需要进行监控了
+you're actually just your application has copied up there but now you've got to have  your monitoring 
+
+313
+00:19:06,997 --> 00:19:09,277
+您还需要处理反向代理。
+and you also need to handle your reverse proxy.
+
+314
+00:19:09,847 --> 00:19:11,767
+所以我们现在不打算讲这些了，我只是
+so we're not going to go through all that now I'm just
+
+315
+00:19:11,827 --> 00:19:14,977
+向你们展示了如何开始的基本知识以及如何得到它，
+showing you kind of the basics of how to get started and how to get it,
+
+316
+00:19:15,000 --> 00:19:16,800
+让它运行
+You know get it running
+
+317
+00:19:17,000 --> 00:19:19,700
+还有一个重要的考虑因素
+and an important considerations you've got 
+
+318
+00:19:19,777 --> 00:19:20,137
+当然
+Sure
+
+319
+00:19:20,347 --> 00:19:20,617
+好的
+okay
+
+320
+00:19:21,400 --> 00:19:26,900
+我们已经讲过了应用程序是如何托管的基础知识
+so we have covered starting with the basics of how your application is hosted itself
+
+321
+00:19:27,100 --> 00:19:34,100
+kestrel是如何运行您的应用程序的，或者是在您的应用程序中启用HTTP服务
+How kestrel is running your application or is enabling HTTP serving inside your application
+
+322
+00:19:34,267 --> 00:19:34,537
+对的
+right
+
+323
+00:19:34,688 --> 00:19:38,798
+我们研究了如何配置如何设置不同的kestrel选项
+and we looked at how you configure that how you can set up some of the different kestrel options
+
+324
+00:19:39,300 --> 00:19:46,200
+你已经有了默认的web主机构建器，但是你可以浏览并配置很多不同的东西，我们看了一些示例代码。
+You've got your default web host builder to start with but you can go through and configure a lot of different things and we looked at some sample code for that. 
+
+325
+00:19:46,700 --> 00:19:52,600
+在那之后，我们研究了我们如何部署到几个不同的宿主环境中所以我们看了IIS，
+After that we looked at how we're deploying to a few different  hosting environments so we looked at IIS,
+
+326
+00:19:53,798 --> 00:19:55,988
+我们将本地托管作为一个windows服务，
+we looked at hosting locally as a windows service,
+
+327
+00:19:56,300 --> 00:20:01,200
+我们研究了一些需要注意的事情，让我们意识到部署到Ubuntu上的事情。
+we looked at some kind of things to be aware of for things to be aware of for  deploying to Ubuntu as well. 
+
+328
+00:20:01,358 --> 00:20:01,748
+酷！
+Cool!
+
+329
+00:20:02,858 --> 00:20:03,248
+好吧
+all right
+
+330
+00:20:03,400 --> 00:20:08,400
+好了，我们在那里做了很多介绍，我学到了很多关于托管ASP.NET核心服务器的知识。
+Alright! We covered a lot there, I learned a lot about hosting   an ASP.NET Core Servers.  
+
+331
+00:20:08,400 --> 00:20:11,000
+非常感谢你的加入
+thanks so much for joining us
+
+332
+00:20:11,100 --> 00:20:16,100
+我希望你们能跟上我们的ASP.NET Core系列的其他视频。
+ I hope you follow up with some of the other videos that we have in our ASP.NET Core Series for you.
+
