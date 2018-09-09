@@ -1,0 +1,1247 @@
+WEBVTT
+
+0
+00:00:00.100 --> 00:00:04.200
+Hey welcome back to this
+video series about ASP.NET core.
+
+1
+00:00:04.266 --> 00:00:06.600
+My name is Jeff Fritz
+and I'm John Galloway
+
+2
+00:00:06.666 --> 00:00:10.000
+and John you know what!
+both of Americans
+
+3
+00:00:10.066 --> 00:00:12.366
+and although you tried to be a Canadian,
+
+4
+00:00:12.400 --> 00:00:15.066
+I tried to be a Canadian earlier failed.
+
+5
+00:00:15.100 --> 00:00:18.200
+But I barely speak English well, yeah.
+
+6
+00:00:18.233 --> 00:00:19.666
+and I learn another language
+
+7
+00:00:19.733 --> 00:00:22.233
+and I know a lot of the folks out there
+
+8
+00:00:22.266 --> 00:00:26.100
+I'm sure you don't speak
+English as your first language
+
+9
+00:00:26.133 --> 00:00:28.633
+how do I go about
+localizing and making sure that
+
+10
+00:00:28.700 --> 00:00:32.066
+our ASP.NET core web applications work
+
+11
+00:00:32.100 --> 00:00:36.000
+better for those folks
+who aren't American and aren't English.
+
+12
+00:00:36.033 --> 00:00:38.166
+You know that's a
+great question and it's one that
+
+13
+00:00:38.200 --> 00:00:40.666
+I've been doing ASP.NET presentations
+
+14
+00:00:40.700 --> 00:00:42.233
+for a while and it's one that I've
+
+15
+00:00:42.300 --> 00:00:44.033
+got over the years for previous
+
+16
+00:00:44.066 --> 00:00:45.733
+versions of ASP.NET and I never had a
+
+17
+00:00:45.766 --> 00:00:47.466
+good answer and people would say like
+
+18
+00:00:47.500 --> 00:00:50.333
+hello you're in Germany, you're speaking
+
+19
+00:00:50.400 --> 00:00:53.666
+to me about ASP.NET
+and my sites don't work in German.
+
+20
+00:00:53.700 --> 00:00:54.733
+You know I'm going to say
+
+21
+00:00:54.766 --> 00:00:56.066
+yeah sorry about that.
+
+22
+00:00:56.133 --> 00:00:58.700
+Fortunately with ASP.NET core we've got
+
+23
+00:00:58.766 --> 00:01:00.066
+a good solution for that they've
+
+24
+00:01:00.133 --> 00:01:01.766
+actually thought through this
+
+25
+00:01:02.033 --> 00:01:04.533
+and I'm really pretty happy with
+the level of support for
+
+26
+00:01:04.566 --> 00:01:06.233
+globalization and localization.
+
+27
+00:01:06.266 --> 00:01:11.666
+Here in the docs, the globalization,
+localization in ASP.NET Core doc
+
+28
+00:01:11.700 --> 00:01:15.000
+is there's a lot information here,
+
+29
+00:01:15.033 --> 00:01:18.600
+another thing that I love is just
+looking at the name of contributors.
+
+30
+00:01:18.666 --> 00:01:20.700
+For instance Nadeem and Hisham
+
+31
+00:01:20.766 --> 00:01:23.166
+both folks that are not from the US
+
+32
+00:01:23.200 --> 00:01:27.633
+and our experts in localization
+and have contributed code
+
+33
+00:01:27.666 --> 00:01:29.400
+and documentation to this.
+
+34
+00:01:29.466 --> 00:01:31.766
+So it's exciting to see
+the global community
+
+35
+00:01:32.000 --> 00:01:35.200
+contributing to our
+globalization localization efforts.
+
+36
+00:01:35.266 --> 00:01:38.166
+Awesome! first term as far as
+
+37
+00:01:38.200 --> 00:01:41.433
+globalization
+and localization definitions.
+
+38
+00:01:41.500 --> 00:01:47.233
+So globalization is the process of
+making my application able to
+
+39
+00:01:47.300 --> 00:01:49.300
+speak many languages ok and then
+
+40
+00:01:49.366 --> 00:01:52.133
+localization is the step of actually
+
+41
+00:01:52.200 --> 00:01:54.733
+saying great now let's target it for a
+
+42
+00:01:54.766 --> 00:01:58.033
+a specific culture or language, right!
+
+43
+00:01:58.100 --> 00:02:00.166
+ok. So globalization is opening it up
+
+44
+00:02:00.233 --> 00:02:02.300
+and then localization is focusing it to
+
+45
+00:02:02.333 --> 00:02:04.333
+a list of supported languages alright.
+
+46
+00:02:04.366 --> 00:02:07.233
+Right, so there's a lot of
+different things in here.
+
+47
+00:02:07.266 --> 00:02:08.766
+There's information about
+
+48
+00:02:09.033 --> 00:02:11.166
+how to make my content localizable.
+
+49
+00:02:11.200 --> 00:02:13.566
+The main things that you're going to see
+
+50
+00:02:13.600 --> 00:02:16.500
+is your code behind and your razor right
+
+51
+00:02:16.566 --> 00:02:18.766
+those are your two
+kind of main places. OK.
+
+52
+00:02:19.033 --> 00:02:20.733
+So we'll take a quick look at this
+
+53
+00:02:20.766 --> 00:02:23.266
+this is like I said
+this is a long document
+
+54
+00:02:23.333 --> 00:02:24.600
+and there are some complexities
+
+55
+00:02:24.633 --> 00:02:26.366
+to localizing your applications
+
+56
+00:02:26.433 --> 00:02:30.533
+and so I refer you to the
+docs to really dig into this.
+
+57
+00:02:30.600 --> 00:02:33.233
+But for the time we have to look at
+
+58
+00:02:33.266 --> 00:02:35.566
+this I'm going to show you first of all
+
+59
+00:02:35.600 --> 00:02:38.466
+here is a localization sample.
+
+60
+00:02:38.533 --> 00:02:41.266
+This is prepared, this is
+actually in that doc
+
+61
+00:02:41.300 --> 00:02:44.100
+it goes through and it talk to you
+
+62
+00:02:44.166 --> 00:02:46.433
+through this exact demo here ok.
+
+63
+00:02:46.500 --> 00:02:48.766
+So with some things that are set up here,
+
+64
+00:02:49.000 --> 00:02:52.500
+first of all in my services so I'm
+
+65
+00:02:52.533 --> 00:02:55.366
+running the app right now so I've got a
+
+66
+00:02:55.400 --> 00:02:57.666
+smaller screen available. But in my
+
+67
+00:02:57.700 --> 00:02:59.500
+services we actually as part of
+
+68
+00:02:59.533 --> 00:03:03.600
+configuring services built into that is
+
+69
+00:03:03.666 --> 00:03:09.600
+the ability to say things like here
+are my SupportedCultures right.
+
+70
+00:03:09.633 --> 00:03:13.033
+So I can go through
+and I can say here are the
+
+71
+00:03:13.066 --> 00:03:15.633
+SupportedCultures that my application
+
+72
+00:03:15.700 --> 00:03:20.200
+has so this is the after I've globalized
+
+73
+00:03:20.233 --> 00:03:22.066
+it this is these are the languages I've
+
+74
+00:03:22.133 --> 00:03:24.600
+localized for okay so I can go through
+
+75
+00:03:24.666 --> 00:03:28.233
+and set both SupportedCultures
+and I can also go in and say
+
+76
+00:03:28.300 --> 00:03:30.600
+set a DefaultRequestCulture okay.
+
+77
+00:03:30.633 --> 00:03:34.200
+So if the browser does not
+present a culture it doesn't
+
+78
+00:03:34.233 --> 00:03:37.433
+say the local languages then this is
+
+79
+00:03:37.466 --> 00:03:39.233
+I can go through here and I can specify
+
+80
+00:03:39.300 --> 00:03:41.200
+that and I could even for all these
+
+81
+00:03:41.233 --> 00:03:43.600
+things because they're in code I can go
+
+82
+00:03:43.633 --> 00:03:45.666
+through and run my own custom logic
+
+83
+00:03:45.733 --> 00:03:48.333
+maybe even hit a database. Hmm okay.
+
+84
+00:03:48.400 --> 00:03:51.100
+So that's that part there.
+
+85
+00:03:51.166 --> 00:03:53.766
+Let's take a look at this this app actually,
+
+86
+00:03:54.000 --> 00:03:57.166
+so this is you know
+this is an example application
+
+87
+00:03:57.200 --> 00:03:59.700
+you'll see down in the footer it says
+
+88
+00:03:59.733 --> 00:04:02.666
+language is English and if I drop this
+
+89
+00:04:02.700 --> 00:04:06.566
+down now I'm in French right and so
+
+90
+00:04:06.633 --> 00:04:08.700
+portions of this have been localized
+
+91
+00:04:08.766 --> 00:04:12.133
+this is using the resources.
+
+92
+00:04:12.200 --> 00:04:14.400
+Ok, take a look in a second but this is
+
+93
+00:04:14.433 --> 00:04:16.700
+showing kind of where this comes from.
+
+94
+00:04:16.766 --> 00:04:19.000
+I my French is not so good.
+
+95
+00:04:19.066 --> 00:04:21.466
+So you know but we can look around
+
+96
+00:04:21.500 --> 00:04:23.300
+throughout the site and we see we can
+
+97
+00:04:23.366 --> 00:04:25.033
+see them some things in here.
+
+98
+00:04:25.100 --> 00:04:27.300
+So for instance let's see if we've got
+
+99
+00:04:27.333 --> 00:04:29.766
+our contact page and yes our contact
+
+100
+00:04:30.000 --> 00:04:33.400
+page is localized right. So we can
+
+101
+00:04:33.433 --> 00:04:35.266
+actually take a look at how these
+
+102
+00:04:35.300 --> 00:04:37.766
+resources are set up, one other thing
+
+103
+00:04:38.000 --> 00:04:39.566
+actually Before we jump into that I want
+
+104
+00:04:39.633 --> 00:04:41.433
+to point out just a small funny thing.
+
+105
+00:04:41.466 --> 00:04:44.233
+I wanted to show this off and here they've
+
+106
+00:04:44.266 --> 00:04:46.033
+built in this little drop down for
+
+107
+00:04:46.100 --> 00:04:47.600
+English and French right that's built
+
+108
+00:04:47.633 --> 00:04:49.400
+into the sample. Into the sample.
+
+109
+00:04:49.433 --> 00:04:51.466
+That's not built into ASP.NET Core,
+that's not a standard feature. No!
+
+110
+00:04:51.500 --> 00:04:53.566
+And so I didn't realize that was there.
+
+111
+00:04:53.600 --> 00:04:55.433
+Fortunately for you I'm going to show
+
+112
+00:04:55.500 --> 00:04:58.200
+you something that you can use. So this
+
+113
+00:04:58.266 --> 00:05:00.766
+is an example, this is an extension where
+
+114
+00:05:01.033 --> 00:05:05.466
+I can go in and change
+my language, my culture
+
+115
+00:05:05.500 --> 00:05:07.266
+as I'm sending it back to the browser.
+
+116
+00:05:07.333 --> 00:05:10.333
+So I can actually in here if I set this to
+
+117
+00:05:10.366 --> 00:05:11.533
+French you can use this as
+
+118
+00:05:11.566 --> 00:05:13.533
+your testing your applications this is a
+
+119
+00:05:13.566 --> 00:05:17.033
+a culture switcher right and so you can
+
+120
+00:05:17.100 --> 00:05:19.033
+go through and do that
+in your apps as well.
+
+121
+00:05:19.100 --> 00:05:22.733
+So that will what that culture
+
+122
+00:05:22.766 --> 00:05:25.633
+switcher does is it effectively changes
+
+123
+00:05:25.666 --> 00:05:28.200
+the browser to send that header that
+
+124
+00:05:28.233 --> 00:05:30.166
+says accept the french language
+
+125
+00:05:30.233 --> 00:05:33.700
+information. Exactly! yep, so now let's
+
+126
+00:05:33.766 --> 00:05:36.200
+look at how those
+resources are configured.
+
+127
+00:05:36.266 --> 00:05:38.066
+So these are actually the
+
+128
+00:05:38.100 --> 00:05:40.200
+standard kind of default way that
+
+129
+00:05:40.233 --> 00:05:43.300
+.NET does localization is using
+
+130
+00:05:43.333 --> 00:05:45.766
+resource files. So if I go into one of
+
+131
+00:05:46.000 --> 00:05:50.533
+these there's a these
+are actually .resx files or XML
+
+132
+00:05:50.566 --> 00:05:52.033
+but there is an editor
+
+133
+00:05:52.066 --> 00:05:54.200
+thing for this that I can editor plugin
+
+134
+00:05:54.233 --> 00:05:56.366
+for Visual Studio it's built into the UI
+
+135
+00:05:56.433 --> 00:05:59.066
+right. Yep! so that's kind of the standard
+
+136
+00:05:59.100 --> 00:06:02.000
+way to do this. It is an extensible
+
+137
+00:06:02.066 --> 00:06:06.000
+system where I can kind of I can supply
+
+138
+00:06:06.066 --> 00:06:07.366
+those other ways but this is kind of
+
+139
+00:06:07.433 --> 00:06:09.233
+what the tooling is built in for this
+
+140
+00:06:09.300 --> 00:06:11.600
+and then when I look at how I light this
+
+141
+00:06:11.633 --> 00:06:18.000
+up in a view for instance,
+we use this Localizer.
+
+142
+00:06:18.066 --> 00:06:24.133
+What's neat about this
+Localizer is it actually is the key is
+
+143
+00:06:24.166 --> 00:06:28.133
+my DefaultCulture. So what I can
+
+144
+00:06:28.166 --> 00:06:31.266
+say here is if there's nothing
+
+145
+00:06:31.300 --> 00:06:33.500
+specified or if it's my local culture
+
+146
+00:06:33.566 --> 00:06:36.766
+I'm going to use homepage otherwise I'm
+
+147
+00:06:37.000 --> 00:06:38.766
+going to pull it in I'm going to use
+
+148
+00:06:39.033 --> 00:06:42.000
+that is the key to look up
+what it should be. Alright!
+
+149
+00:06:42.033 --> 00:06:43.266
+That makes sense, if you've
+
+150
+00:06:43.333 --> 00:06:45.700
+used localization in the past it can be
+
+151
+00:06:45.733 --> 00:06:48.766
+frustrating to try and dig through
+
+152
+00:06:49.000 --> 00:06:53.166
+and understand you know it's hard to
+
+153
+00:06:53.200 --> 00:06:56.233
+read localized pages. Because the
+
+154
+00:06:56.266 --> 00:06:59.066
+localized pages themselves can be they
+
+155
+00:06:59.100 --> 00:07:02.333
+can be it's a bunch of keys, it's a bunch
+
+156
+00:07:02.366 --> 00:07:04.033
+of you know strange hard to read things
+
+157
+00:07:04.100 --> 00:07:06.033
+so for instance if we look at this now
+
+158
+00:07:06.100 --> 00:07:07.600
+here if we look at my contact page
+
+159
+00:07:07.633 --> 00:07:10.533
+you'll see that these localized strings
+
+160
+00:07:10.600 --> 00:07:12.566
+say things like Localizer phone, look
+
+161
+00:07:12.633 --> 00:07:17.033
+Localizer support. So it's actually
+pretty readable right
+
+162
+00:07:17.066 --> 00:07:19.666
+and then if I want to look at well what is
+
+163
+00:07:19.700 --> 00:07:21.633
+the localized string for instance
+
+164
+00:07:21.666 --> 00:07:25.266
+support on my contact page. Now I go into
+
+165
+00:07:25.333 --> 00:07:28.766
+contact and I can see here support
+
+166
+00:07:29.000 --> 00:07:33.200
+and you know that's what it's
+pulling in from that one right.
+
+167
+00:07:33.233 --> 00:07:35.266
+So it's actually just
+showing that string there
+
+168
+00:07:35.333 --> 00:07:37.333
+but it's explaining that's
+where it came from.
+
+169
+00:07:37.366 --> 00:07:39.766
+Now I'm seeing a hierarchy and it looks
+
+170
+00:07:40.033 --> 00:07:42.466
+like a naming convention
+for these resource files.
+
+171
+00:07:42.533 --> 00:07:44.600
+Yeah! that's true.
+
+172
+00:07:44.633 --> 00:07:46.333
+So that's how they're being pulled
+
+173
+00:07:46.366 --> 00:07:48.700
+in based on you know exactly here's the
+
+174
+00:07:48.733 --> 00:07:51.633
+views and it actually maps Views -> Home
+
+175
+00:07:51.666 --> 00:07:53.666
+and then down here we've got the same
+
+176
+00:07:53.700 --> 00:07:55.433
+this is Views -> Home. Right.
+
+177
+00:07:55.466 --> 00:08:01.100
+So if i'm in my Home view,
+my home index view page
+
+178
+00:08:01.133 --> 00:08:03.266
+yeah and i'm referencing the localizer
+
+179
+00:08:03.333 --> 00:08:06.033
+and i've specified the home page item
+
+180
+00:08:06.066 --> 00:08:08.666
+in the index were there,
+it's going to reach
+
+181
+00:08:08.733 --> 00:08:12.533
+into the views -> home -> index resource
+
+182
+00:08:12.600 --> 00:08:16.100
+and look for that same home page item.
+
+183
+00:08:16.133 --> 00:08:18.200
+Oh there it is but halfway down
+
+184
+00:08:18.266 --> 00:08:22.366
+okay yep and so there we are this is the
+
+185
+00:08:22.400 --> 00:08:26.333
+Index.fr and then if i had others if
+
+186
+00:08:26.400 --> 00:08:29.133
+I had you know
+Japanese index.jaa.resx. It's better.
+
+187
+00:08:29.166 --> 00:08:31.666
+Okay and you were making the point that
+
+188
+00:08:31.733 --> 00:08:33.500
+it uses my default language
+
+189
+00:08:33.566 --> 00:08:36.733
+as the Index for these keys
+
+190
+00:08:36.766 --> 00:08:39.466
+over here, that way if I'm not an
+
+191
+00:08:39.533 --> 00:08:41.333
+English speaker and I'm writing this
+
+192
+00:08:41.366 --> 00:08:43.500
+and perhaps, I'm French and I'm writing it
+
+193
+00:08:43.533 --> 00:08:45.400
+and I want to preferred
+German translations
+
+194
+00:08:45.466 --> 00:08:48.600
+and whatnot, I can use my native language
+
+195
+00:08:48.633 --> 00:08:52.666
+as the keys to access
+these. Exactly! Fanatstic!
+
+196
+00:08:52.700 --> 00:08:55.200
+and so then your view can be readable
+
+197
+00:08:55.266 --> 00:08:57.533
+by you know whatever your
+
+198
+00:08:57.600 --> 00:09:02.433
+local language is in that case exactly!
+Okay, so that's really handy.
+
+199
+00:09:02.500 --> 00:09:03.666
+So that's kind of the mainthing
+
+200
+00:09:03.733 --> 00:09:05.766
+there's also of course, we're also seeing
+
+201
+00:09:06.033 --> 00:09:09.400
+things like here is my
+for the controller
+
+202
+00:09:09.466 --> 00:09:12.133
+as well, right. So here I've got resources
+
+203
+00:09:12.166 --> 00:09:18.200
+for my HomeController and let's take
+a look in my controllers up here
+
+204
+00:09:18.233 --> 00:09:23.166
+and we'll look in my HomeController
+
+205
+00:09:23.200 --> 00:09:27.233
+and so we've passed in
+this IStringLocalizer.
+
+206
+00:09:27.300 --> 00:09:29.400
+Right and then we're able to
+
+207
+00:09:29.433 --> 00:09:31.766
+it's injected and it's just
+
+208
+00:09:32.033 --> 00:09:34.733
+ViewData message here normally I would
+
+209
+00:09:34.766 --> 00:09:38.066
+just set a string
+instead I use localizer
+
+210
+00:09:38.100 --> 00:09:39.766
+and calling to that service
+
+211
+00:09:40.000 --> 00:09:42.133
+I've injected and then again that key.
+
+212
+00:09:42.166 --> 00:09:44.200
+So my controller the code is still
+
+213
+00:09:44.266 --> 00:09:46.233
+readable by me and my default language
+
+214
+00:09:46.300 --> 00:09:49.166
+in my local language right and then it's
+
+215
+00:09:49.200 --> 00:09:51.233
+actually just going to
+localizer this at runtime.
+
+216
+00:09:51.300 --> 00:09:53.133
+So once again the localizer knows
+
+217
+00:09:53.166 --> 00:09:55.566
+that it's operating inside of
+the HomeController class
+
+218
+00:09:55.633 --> 00:09:59.133
+exactly! We're going to find
+the HomeController resource yep,
+
+219
+00:09:59.166 --> 00:10:02.166
+to inject from yeah I got it okay yeah.
+
+220
+00:10:02.233 --> 00:10:04.233
+So that's really all there is to it.
+
+221
+00:10:04.300 --> 00:10:06.566
+One other cool thing
+I want to show you is
+
+222
+00:10:06.633 --> 00:10:11.166
+resx files are kind of a
+Microsoft localization thing
+
+223
+00:10:11.200 --> 00:10:15.033
+and it works great for
+some people, the tooling
+
+224
+00:10:15.066 --> 00:10:18.100
+is all there and all that. I've talked
+
+225
+00:10:18.133 --> 00:10:19.566
+to some people that do a good amount of
+
+226
+00:10:19.633 --> 00:10:22.766
+localization and PO files are kind of
+
+227
+00:10:23.000 --> 00:10:25.700
+standard outside of the
+Microsoft Dev world. Ok.
+
+228
+00:10:25.733 --> 00:10:28.566
+PO files the format is pretty simple
+
+229
+00:10:28.633 --> 00:10:31.566
+and it can also be easy to
+pass off to a localizer,
+
+230
+00:10:31.633 --> 00:10:34.200
+they can do the work they
+know their PO files it's
+
+231
+00:10:34.266 --> 00:10:36.566
+easy to work with and then they
+can kind of pass it back to you.
+
+232
+00:10:36.633 --> 00:10:39.400
+So do I have to convert
+those PO files to resx!
+
+233
+00:10:39.433 --> 00:10:42.333
+No! so that's a cool thing.
+
+234
+00:10:42.400 --> 00:10:45.666
+So the orchard project or
+Orchard Core, so if I lookup here.
+
+235
+00:10:45.700 --> 00:10:50.433
+Let's go to
+orchardproject.net I believe,
+
+236
+00:10:50.500 --> 00:10:55.133
+so Orchard is a .NET powered CMS ok,
+
+237
+00:10:55.166 --> 00:10:58.766
+and orchard core
+has support for PO file
+
+238
+00:10:59.033 --> 00:11:00.600
+localization. So this is actually
+
+239
+00:11:00.666 --> 00:11:03.466
+in the docs here if we go to you know the
+
+240
+00:11:03.500 --> 00:11:06.333
+docs.microsoft.com,looking in the
+
+241
+00:11:06.366 --> 00:11:08.633
+globalization, localization section.
+
+242
+00:11:08.700 --> 00:11:11.766
+They talk about PO files and recommend
+
+243
+00:11:12.033 --> 00:11:14.166
+using as Orchard core for that.
+
+244
+00:11:14.200 --> 00:11:17.633
+So here, you're seeing
+here is a sample PO file
+
+245
+00:11:17.700 --> 00:11:19.266
+it can be a lot simpler
+
+246
+00:11:19.300 --> 00:11:21.666
+and lighter weight to use a PO file
+
+247
+00:11:21.700 --> 00:11:24.533
+I supposed to a resx file which you know
+
+248
+00:11:24.600 --> 00:11:26.600
+has a lot of XML to it right.
+
+249
+00:11:26.633 --> 00:11:28.666
+So that's kind of the standard for it,
+
+250
+00:11:28.733 --> 00:11:32.366
+for how it looks and then here
+
+251
+00:11:32.400 --> 00:11:37.166
+you'll see inside the application,
+so here we are doing
+
+252
+00:11:37.200 --> 00:11:40.666
+services.AddPortableObjectLocalization.
+
+253
+00:11:40.733 --> 00:11:43.533
+So that's really that lights that up,
+
+254
+00:11:43.600 --> 00:11:45.600
+otherwise we just configure those
+
+255
+00:11:45.666 --> 00:11:47.600
+default and SupportedCultures
+just like
+
+256
+00:11:47.666 --> 00:11:50.733
+we did before. Right, so that's
+
+257
+00:11:50.766 --> 00:11:56.633
+and then the final thing
+I want to show you here is my PO file.
+
+258
+00:11:56.700 --> 00:12:00.133
+Okay, so you know to kind of circle way
+
+259
+00:12:00.166 --> 00:12:02.600
+back, we talked about
+what globalization
+
+260
+00:12:02.666 --> 00:12:04.766
+and localization are. In the process of
+
+261
+00:12:05.033 --> 00:12:06.700
+internationalizing an application
+
+262
+00:12:06.733 --> 00:12:09.166
+globalizing is making
+your application
+
+263
+00:12:09.233 --> 00:12:11.666
+ready to be localized. Localization is
+
+264
+00:12:11.700 --> 00:12:13.133
+where you actually drill down and you
+
+265
+00:12:13.200 --> 00:12:15.033
+say I support the following four
+
+266
+00:12:15.066 --> 00:12:18.100
+languages and you know here's how I turn
+
+267
+00:12:18.166 --> 00:12:20.466
+on the here's how I write those strings.
+
+268
+00:12:20.500 --> 00:12:22.733
+We looked at how you can use the
+
+269
+00:12:22.766 --> 00:12:25.500
+localizer both in views and in my code
+
+270
+00:12:25.566 --> 00:12:29.000
+and my controllers
+or code-behind using
+
+271
+00:12:29.066 --> 00:12:31.200
+that localizer service
+and then finally,
+
+272
+00:12:31.233 --> 00:12:32.700
+we looked at where I can get those
+
+273
+00:12:32.733 --> 00:12:35.066
+strings from and
+we can pull them either
+
+274
+00:12:35.100 --> 00:12:37.633
+from a resx file and that's supported
+
+275
+00:12:37.666 --> 00:12:41.100
+in the Visual Studio tooling
+and it's an XML file
+
+276
+00:12:41.133 --> 00:12:43.000
+if you prefer to use PO files
+
+277
+00:12:43.066 --> 00:12:44.733
+we looked at how Orchard Core
+
+278
+00:12:44.766 --> 00:12:47.200
+supports that and we showed a sample of
+
+279
+00:12:47.233 --> 00:12:48.533
+using that. That's terrific!
+
+280
+00:12:48.600 --> 00:12:51.200
+So I'll circle back finally to if you
+
+281
+00:12:51.233 --> 00:12:53.433
+want to dig deeper into this I highly
+
+282
+00:12:53.466 --> 00:12:55.033
+recommend the docs on this and the
+
+283
+00:12:55.066 --> 00:12:58.366
+sample file again these people
+are worldwide experts on
+
+284
+00:12:58.400 --> 00:13:02.266
+on localization and ASP.NET
+and they've been doing it
+
+285
+00:13:02.300 --> 00:13:06.066
+before ASP.NET Core with the thing.
+These are the people you want to
+
+286
+00:13:06.100 --> 00:13:10.200
+learn from, terrific! Yeah so that's it,
+
+287
+00:13:10.233 --> 00:13:14.066
+that's our look at Globalization
+and Localization in ASP.NET Core.
+
+288
+00:13:14.133 --> 00:13:15.166
+Thank you for joining us
+
+289
+00:13:15.233 --> 00:13:16.266
+and we hope you watch some more of
+
+290
+00:13:16.333 --> 00:13:17.566
+our videos on ASP NET Core.
+
+291
+00:13:17.600 --> 00:13:20.566
+Catch you later.
+
