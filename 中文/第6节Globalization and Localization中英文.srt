@@ -1,0 +1,1153 @@
+﻿1
+00:00:00,900 --> 00:00:04,100
+欢迎回到这个关于ASP.NET Core. 的视频系列。
+hey welcome back to this video series about ASP.NET Core.
+
+2
+00:00:04,470 --> 00:00:05,550
+我的名字是jeff writs
+my name is jeff writs
+
+3
+00:00:05,610 --> 00:00:06,510
+我是jon galloway
+and I'm jon galloway
+
+4
+00:00:07,000 --> 00:00:08,200
+john 你知道吗
+and john. you know what
+
+5
+00:00:08,670 --> 00:00:09,840
+我们都是美国人
+we're both americans
+
+6
+00:00:10,050 --> 00:00:10,650
+而且，
+and,
+
+7
+00:00:10,860 --> 00:00:12,510
+尽管他试图成为加拿大人
+although he tried to be a canadian and
+
+8
+00:00:12,540 --> 00:00:14,100
+我想早点成为加拿大人
+I try to be a canadian earlier
+
+9
+00:00:14,160 --> 00:00:14,820
+失败了，
+failed,
+
+10
+00:00:15,900 --> 00:00:17,820
+但是我的英语说得不好
+But I barely speak English well
+
+11
+00:00:17,880 --> 00:00:19,590
+我学习另一种语言
+and I learn another language
+
+12
+00:00:20,790 --> 00:00:22,290
+我知道很多人都知道
+and I know a lot of the folks out there
+
+13
+00:00:22,300 --> 00:00:25,800
+我相信，你不把英语作为第一语言
+I'm sure you don't speak English as your first language
+
+14
+00:00:26,130 --> 00:00:26,550
+怎么做？
+how do ?
+
+15
+00:00:26,700 --> 00:00:35,700
+我该如何本地化并确保我们的ASP.NET核心web应用程序能够更好地为那些不是美国人，不说英语的人工作。
+how do I go about localizing and making sure that our ASP.NET core web applications  work better  for those folks who  aren't american and aren't English.
+
+16
+00:00:36,100 --> 00:00:41,300
+你知道这是一个很好的问题我已经做了一段时间的ASP.NET演示了
+You know that's a great question and it's one that   I've been doing ASP.NET presentations for a while
+
+17
+00:00:41,640 --> 00:00:46,560
+这是我多年来对以前的ASP.NET版本所做的，我从来没有一个好的答案。
+and it's one that I've got over the years for previous versions of  ASP.NET and I never had a good answer.
+
+18
+00:00:46,830 --> 00:00:47,640
+人们会说
+and people would say like
+
+19
+00:00:47,800 --> 00:00:49,500
+你好，你在德国。
+hello, you're in germany.
+
+20
+00:00:49,800 --> 00:00:54,030
+你跟我说的是关于ASP.NET的我的网站在德语中是行不通的，你知道
+you're speaking to me about to me about ASP.NET and my sites don't work in German.  you know
+
+21
+00:00:54,060 --> 00:00:56,040
+我要对它说抱歉。
+I'm going to say yeah sorry about that.
+
+22
+00:00:56,500 --> 00:01:06,100
+幸运的是，在ASP.NET core中我们有一个很好的解决方案，他们已经考虑过这个问题，我对全球化和本地化的支持程度感到非常满意
+Fortunately with ASP.NET core we've got a good solution for that they've for that they've actually thought through this and I'm really pretty happy with  the level of support for globalization and localization
+
+23
+00:01:06,600 --> 00:01:07,620
+在全球化文档中
+Here in the docs the globalization
+
+24
+00:01:07,900 --> 00:01:14,700
+在ASP.NET核心文档中，本地化有很多信息。
+localization in ASP.NET Core doc is  there's a lot of information here.
+
+25
+00:01:15,300 --> 00:01:18,700
+我喜欢的另一件事是看贡献者的名字。
+another thing that I love is just looking at the name of contributors.
+
+26
+00:01:19,000 --> 00:01:25,100
+例如，nadeam和hisham都不是来自美国的是本地化专家
+for instance nadeam and hisham both folks that are not from the us and are   experts in localization
+
+27
+00:01:25,400 --> 00:01:29,400
+并为这个贡献了代码和文档
+and have contributed  code and documentation to this
+
+28
+00:01:29,600 --> 00:01:35,100
+因此，看到全球社区为我们的全球化本地化工作做出贡献是令人兴奋的
+so it's exciting to see the global community contributing to our globalization localization efforts
+
+29
+00:01:35,310 --> 00:01:35,640
+棒极了！
+Awesome！
+
+30
+00:01:35,700 --> 00:01:41,400
+第一期全球化和本地化定义
+first term as far as globalization and localization definitions
+
+31
+00:01:41,700 --> 00:01:48,400
+所以全球化是让我的应用能够说多种语言的过程，
+so globalization is the process of making my application  able to speak many languages,
+
+32
+00:01:48,510 --> 00:01:48,810
+好的
+ok
+
+33
+00:01:49,000 --> 00:01:52,500
+本地化是实际上说的步骤
+localization is the step of actually saying
+
+34
+00:01:52,860 --> 00:01:53,220
+很好
+great
+
+35
+00:01:53,400 --> 00:01:57,500
+现在让我们把它作为一种特定的文化或语言，
+now let's target it for a specific culture or language,
+
+36
+00:01:57,690 --> 00:01:57,960
+对，
+right,
+
+37
+00:01:58,050 --> 00:01:58,380
+好的
+ok
+
+38
+00:01:58,440 --> 00:02:03,960
+所以全球化集中到一个受支持的本地化把语言列表中。
+So globalization is opening it up and then localization is focusing it to a list of supported languages alright.
+
+39
+00:02:04,050 --> 00:02:04,380
+好吧
+all right
+
+40
+00:02:04,470 --> 00:02:04,680
+对的
+right
+
+41
+00:02:05,100 --> 00:02:07,200
+所以这里有很多不同的东西
+so there's a lot of different things in here
+
+42
+00:02:07,920 --> 00:02:11,220
+这里有关于如何使我的内容本地化的信息。
+there's information about how to make my content localizable.
+
+43
+00:02:11,800 --> 00:02:16,100
+你将看到的主要内容是你的代码和Razor
+the main things that you're going to see is your code behind and your razor
+
+44
+00:02:16,470 --> 00:02:18,300
+这是两个主要地方
+right those are your two kind of main places
+
+45
+00:02:18,600 --> 00:02:21,200
+我们来快速浏览一下，
+so we'll take a quick look at this,
+
+46
+00:02:21,270 --> 00:02:26,430
+这就像我说的，这是一个很长的文档，本地化你的应用程序有一些复杂性。
+this is like I said this is a long document and there are some complexities to localizing your applications.
+
+47
+00:02:27,000 --> 00:02:30,900
+所以我建议你去找文档来深入研究这个问题。
+and so I refer you to the docs to really dig into this.
+
+48
+00:02:31,500 --> 00:02:33,600
+但就目前而言，我们必须考虑这个问题。
+But for the time we have to look at this.
+
+49
+00:02:34,530 --> 00:02:35,820
+我先给你们看一下。
+I'm going to show you first of all.
+
+50
+00:02:36,060 --> 00:02:38,550
+这是一个本地化示例
+here is a localization sample
+
+51
+00:02:38,760 --> 00:02:41,400
+这是在文档中准备的
+this is prepared this is actually in that docs
+
+52
+00:02:41,700 --> 00:02:45,900
+它通过这个Demo来演示
+it goes through and it talk to you through this exact demo here ok.
+
+53
+00:02:46,200 --> 00:02:46,380
+好的
+okay
+
+54
+00:02:46,410 --> 00:02:46,830
+所以
+so
+
+55
+00:02:47,310 --> 00:02:48,960
+在这里设置了一些东西，
+with some things that are set up here,
+
+56
+00:02:49,350 --> 00:02:51,450
+首先是我的服务。
+first of all in my services.
+
+57
+00:02:51,500 --> 00:02:54,600
+我现在运行这个应用程序，
+so I'm running the app now,
+
+58
+00:02:54,800 --> 00:02:57,100
+我有一个更小的屏幕
+so I've got a smaller screen available
+
+59
+00:02:57,400 --> 00:03:01,300
+但在我的服务中，我们实际上是配置服务的一部分，
+but  in my services we actually as part of configuring services，
+
+60
+00:03:01,300 --> 00:03:09,500
+建立在这一点上的能力是说这里是我支持的本地化的，对吧。
+built into that is the ability to say things like here are my Supported Cultures， right.
+
+61
+00:03:09,810 --> 00:03:11,370
+所以我可以通过，我可以说，
+so I can go through and I can say,
+
+62
+00:03:12,000 --> 00:03:15,420
+下面是我的应用程序所支持的本地化
+here are the supported cultures that my application has
+
+63
+00:03:16,500 --> 00:03:23,100
+这是我全球化后的内容这是我本地化的语言
+so this is the  after I've  globalized it this is these are the languages I've localized for
+
+64
+00:03:23,520 --> 00:03:23,790
+好的
+ok
+
+65
+00:03:23,900 --> 00:03:30,100
+所以我可以通过设置两个SupportedCultures 我也可以进入并说设置一个DefaultRequestCulture
+so I can go through and set both SupportedCultures and I can also go in and say  set a DefaultRequestCulture
+
+66
+00:03:30,300 --> 00:03:35,700
+因此，如果浏览器不呈现本地化的语言，
+So if the browser does not present a culture that doesn't say the local languages,
+
+67
+00:03:36,000 --> 00:03:42,800
+这是我可以在这里写的，我可以指定它，甚至所有这些东西，因为它们在代码中。
+then this  is  I can go through here and I can  specify that and I could even  for all these things because they're in code.
+
+68
+00:03:43,200 --> 00:03:47,500
+我可以运行我自己的自定义逻辑，甚至可以访问它的数据库。
+I can go through and run my own custom logic may be even hit it database.
+
+69
+00:03:48,060 --> 00:03:48,390
+好的
+okay
+
+70
+00:03:49,200 --> 00:03:51,100
+这就是这一部分。
+so that's that part there.
+
+71
+00:03:51,600 --> 00:03:53,700
+让我们来看看这个应用，
+let's take a look at this this app actually,
+
+72
+00:03:54,600 --> 00:04:01,600
+你会在页脚看到的例子应用程序的语言是英语。
+so this is you know this is an example application you'll see down in the footer. it says language is english.
+
+73
+00:04:02,010 --> 00:04:03,300
+如果我下拉
+if I drop this down.
+
+74
+00:04:04,710 --> 00:04:06,000
+现在我是法国人
+now I'm in french right
+
+75
+00:04:06,200 --> 00:04:12,100
+所以这部分是本地化的
+and so portions of this have been localized  this is using the  resources
+
+76
+00:04:12,200 --> 00:04:14,000
+好的，请大家看一看
+OK  take a look in a second
+
+77
+00:04:14,000 --> 00:04:16,700
+但这表明了他来自哪里
+but this is showing kind of where this comes from.
+
+78
+00:04:17,100 --> 00:04:20,700
+我的法语不太好，但是我们可以
+I my french is not so good so I'm you know but we can
+
+79
+00:04:20,900 --> 00:04:24,900
+我们可以在这个网站上四处看看，我们可以看到这里的一些东西。
+we can look around through out the site and we see we can see them some things in here.
+
+80
+00:04:25,200 --> 00:04:28,500
+举个例子，让我们看看我们是否有一个联系页面
+so for instance let's see if we've got a contact page
+
+81
+00:04:28,500 --> 00:04:31,600
+是的，我们的联系页面是本地化的
+and yes our contact pages  is localized right
+
+82
+00:04:32,000 --> 00:04:36,500
+所以我们可以看看这些资源是如何建立起来的
+so so we can actually take a look at how these resources are set up
+
+83
+00:04:36,900 --> 00:04:38,000
+当另一件事
+when one other thing
+
+84
+00:04:38,099 --> 00:04:41,459
+实际上，在我们讲这个之前我想指出一点有趣的事情
+actually before we jump into that I want to point out just a small funny thing
+
+85
+00:04:41,789 --> 00:04:43,169
+我想展示一下
+I wanted to show this off
+
+86
+00:04:43,229 --> 00:04:43,649
+并且
+and
+
+87
+00:04:43,829 --> 00:04:47,009
+在这里，他们已经在这个小的下拉菜单中使用了英语和法语。
+here they've built in this little dropdown for english and french.
+
+88
+00:04:47,069 --> 00:04:48,659
+这是在示例中建立的
+that's built into the sample
+
+89
+00:04:48,719 --> 00:04:51,629
+同样的，这并不是在ASP.NET核心中构建的，这不是一个标准的特性
+into the same ，That's not built into ASP.NET Core,that's not a standard feature
+
+90
+00:04:51,869 --> 00:04:53,789
+所以我没有意识到那是真的。
+And so I didn't realize that was there.
+
+91
+00:04:53,999 --> 00:04:57,269
+幸运的是，我将向你们展示一些你们可以使用的东西。
+fortunately for you I'm going to show you something that you can use.
+
+92
+00:04:57,800 --> 00:05:05,500
+这是一个例子，这个扩展我可以进入并改变我的语言，我的文化
+so this is an example， this is an extension where I can go in and change  my  language， my culture
+
+93
+00:05:05,700 --> 00:05:09,500
+当我把它发送回浏览器时，我可以在这里
+as I'm sending it back to the browser ，so I can actually in here
+
+94
+00:05:09,599 --> 00:05:12,959
+如果我把它设置为法语，你可以在测试应用程序时使用它。
+if I set this to french and you can use this as you're testing your applications.
+
+95
+00:05:13,200 --> 00:05:16,000
+这是个本地化开关
+this is a culture switcher
+
+96
+00:05:16,139 --> 00:05:16,439
+对的
+right
+
+97
+00:05:16,469 --> 00:05:18,838
+所以你也可以在你的应用中做这个
+and so you can go through and do that in your apps as well
+
+98
+00:05:19,300 --> 00:05:31,500
+本地化转换器所做的事情就是让浏览器发送法语内容
+So that will what that culture switcher does is it effectively changes the browser to send that header that says accept the french language information
+
+99
+00:05:31,700 --> 00:05:32,800
+对，没错。
+exactly, yeah.
+
+100
+00:05:33,298 --> 00:05:36,208
+现在让我们看看这些资源是如何配置的。
+so now let's look at how those resources are configured.
+
+101
+00:05:36,600 --> 00:05:44,300
+这些实际上是标准的默认方式。NET本地化是使用资源文件。
+so these are actually the standard kind of default way that  .NET localization is using resource files.
+
+102
+00:05:44,758 --> 00:05:46,288
+如果我进入其中一个
+so if I go into one of these
+
+103
+00:05:46,600 --> 00:05:50,600
+这些实际上是.resx文件或XML
+these are actually .resx files or XML
+
+104
+00:05:51,028 --> 00:05:53,038
+但是这里有一个编辑器
+but there is an editor thing for this
+
+105
+00:05:53,098 --> 00:05:56,788
+我可以为visual studio编辑插件，它内置在菜单UI中
+that I can editor plugin for visual studio， it's built in to the menu UI
+
+106
+00:05:56,800 --> 00:05:57,500
+是的，是的
+right, yeah
+
+107
+00:05:57,900 --> 00:06:00,500
+这是一种标准的做法
+so that's kind of the standard way to do this
+
+108
+00:06:00,600 --> 00:06:06,800
+这是一个可扩展的系统，可以提供其他的方式
+it is an extensible system where I can kind of， I can supply those other ways
+
+109
+00:06:06,800 --> 00:06:09,400
+但这是一种内置的工具
+but this is kind of with the tooling as is built into this
+
+110
+00:06:09,800 --> 00:06:14,200
+然后看我如何在一个视图中点亮这个。
+and then when I look at how I light this up in  a view for instance.
+
+111
+00:06:16,438 --> 00:06:17,938
+我们使用这个本地化器。
+we use this Localizer.
+
+112
+00:06:18,298 --> 00:06:20,698
+这个本地化的简洁之处就在于它
+what's neat about this localized is it
+
+113
+00:06:20,900 --> 00:06:26,100
+它实际上是关键，是我的默认语言
+it actually is the key，  is  my default culture.
+
+114
+00:06:26,700 --> 00:06:28,800
+那么，我想说的是
+so what ? what I can say here is
+
+115
+00:06:30,000 --> 00:06:36,000
+如果没有指定的内容或者是我的本地文化，我将使用主页
+if there's nothing specified or if it's my local culture.  I'm going to use homepage
+
+116
+00:06:36,058 --> 00:06:37,828
+否则我就把它放进来。
+otherwise I'm going to pull it in.
+
+117
+00:06:38,398 --> 00:06:41,158
+我将用它来查找它应该是什么。
+I'm going to use that is the key to look up what it should be.
+
+118
+00:06:41,698 --> 00:06:42,328
+动态感觉
+dynamic sense
+
+119
+00:06:42,928 --> 00:06:45,400
+如果你在过去使用过本地化
+if you've used localization in the past
+
+120
+00:06:45,400 --> 00:06:45,418
+尝试深入并理解，这是令人沮丧的，
+it can be frustrating to try and dig through and and am  understand,
+如果你在过去使用过本地化
+if you've used localization in the past
+
+121
+00:06:45,418 --> 00:06:51,400
+尝试深入并理解，这是令人沮丧的，
+it can be frustrating to try and dig through and and am  understand,
+
+122
+00:06:51,900 --> 00:06:54,500
+你知道很难读懂本地化的页面
+you know it's hard to read localized  pages
+
+123
+00:06:55,500 --> 00:06:59,700
+因为本地化的页面本身可以是这样的。
+because the localized pages themselves can be  that  they can be.
+
+124
+00:07:00,537 --> 00:07:01,887
+它们可以是一串钥匙
+they can be it's a bunch of keys
+
+125
+00:07:01,977 --> 00:07:04,077
+这是一堆你知道的奇怪的难读的东西。
+it's a bunch of you know strange hard read things.
+
+126
+00:07:04,257 --> 00:07:08,067
+举个例子，如果我们看这里如果我们看一下我的联系页面，
+so for instance if we look at this now here if we look at my contact page,
+
+127
+00:07:08,500 --> 00:07:13,900
+你会发现这些本地化的字符串会让你的手机本地化，比如本地化支持。
+you'll see that these localized strings say things like localize your phone， look  Localizer support.
+
+128
+00:07:14,100 --> 00:07:16,300
+所以这是很容易读懂的
+So it's actually pretty readable right
+
+129
+00:07:16,407 --> 00:07:16,827
+对吧？
+right？
+
+130
+00:07:17,100 --> 00:07:23,700
+如果我想看一下，在我的联系页面上支持的本地化字符串是什么。
+and then if I want to look at  well what is the localized string for for instance support on my contact page.
+
+131
+00:07:24,200 --> 00:07:26,600
+现在我进入联系人
+Now I go into contact
+
+132
+00:07:27,147 --> 00:07:29,247
+我可以看到这里的支持
+and I can see here support
+
+133
+00:07:29,600 --> 00:07:32,700
+你知道这就是它从那个方向下拉出来的。
+and you know that's what it's pulling in from that one right.
+
+134
+00:07:32,817 --> 00:07:33,087
+对。
+right.
+
+135
+00:07:33,267 --> 00:07:35,157
+所以它实际上只是显示了那个字符串
+so it actually just showing that string there
+
+136
+00:07:35,547 --> 00:07:37,287
+但它解释了它的来源。
+but it's explaining that's where it came from.
+
+137
+00:07:37,400 --> 00:07:42,500
+现在我看到了一个层次结构，它看起来就像是这些资源文件的命名约定。
+Now I'm seeing a hierarchy and it looks like like a naming convention for these resource files.
+
+138
+00:07:42,700 --> 00:07:44,400
+是啊，没错。
+yeah Yeah! that's true.
+
+139
+00:07:44,400 --> 00:07:49,400
+这就是视图被拉进来的方式，
+so that's that's how they're being pulled in based on you know exactly here's the views
+
+140
+00:07:49,700 --> 00:07:52,000
+它实际上映射了views->home
+and it actually maps views->home
+
+141
+00:07:52,257 --> 00:07:54,987
+然后在下面得到了相同的Views ->Home，对。
+and then down here we've got the same this is Views -> Home. Right.
+
+142
+00:07:55,400 --> 00:07:58,000
+如果我在我的home视图中
+so if I'm  in my home view
+
+143
+00:07:58,700 --> 00:08:00,900
+我的主索引视图页面。
+my home index view page.
+
+144
+00:08:01,167 --> 00:08:01,377
+是的
+yeah
+
+145
+00:08:01,407 --> 00:08:03,200
+我指的是本地化的
+and I'm referencing the localized
+
+146
+00:08:03,200 --> 00:08:03,237
+我已经指定了主页项
+and I've specified the home page  item
+我指的是本地化的
+and I'm referencing the localized
+
+147
+00:08:03,237 --> 00:08:06,000
+我已经指定了主页项
+and I've specified the home page  item
+
+148
+00:08:06,207 --> 00:08:07,437
+在索引中。
+in the index are there.
+
+149
+00:08:07,900 --> 00:08:16,100
+它会进入视图主页索引资源并寻找相同的主页项
+it's going to reach into the views  home  index resource  and look for  that same home page  item
+
+150
+00:08:16,167 --> 00:08:17,907
+哦，这是在半路上
+oh there it is about halfway down
+
+151
+00:08:18,600 --> 00:08:19,500
+好的。
+okay yeah.
+
+152
+00:08:20,000 --> 00:08:25,100
+这就是index.fr
+and so there we are  this is the Index.fr
+
+153
+00:08:25,200 --> 00:08:29,800
+如果我有其他的，如果我有日本的索引。jaa.resx会更好。
+and then if I had others if I had you know japanese index.jaa.resx  It's better.
+
+154
+00:08:29,967 --> 00:08:30,297
+对的
+right
+
+155
+00:08:30,357 --> 00:08:31,796
+你说的是
+and you were making the point that
+
+156
+00:08:32,100 --> 00:08:37,200
+它使用我的默认语言作为这些键的索引器
+it uses my default language as the indexer for these for these keys over here
+
+157
+00:08:37,400 --> 00:08:41,300
+这样的话，如果我不是一个说英语的人写这个
+that way  if I'm not an english speaker and am writing this
+
+158
+00:08:41,600 --> 00:08:46,100
+也许我是法国人，我在写，我想提供德语翻译之类的东西。
+and perhaps I'm french and I'm writing it and I want to provide german translations and whatnot.
+
+159
+00:08:46,700 --> 00:08:51,500
+我可以使用我的母语，作为访问这些语言的关键
+I can use my native language, as the keys  to  access these
+
+160
+00:08:51,500 --> 00:08:52,500
+完全正确！
+exactly！ Fanatstic！
+
+161
+00:08:52,600 --> 00:09:00,400
+这样一来，你的视图就可以被你的本地语言所读取
+and so then your view can be readable by you know  whatever your local language  is in that case
+
+162
+00:09:00,447 --> 00:09:01,107
+完全正确。
+exactly.
+
+163
+00:09:01,347 --> 00:09:02,457
+这真的很方便。
+so that's really handy.
+
+164
+00:09:02,667 --> 00:09:05,847
+所以这是主要的事情当然我们也看到了
+so that's kind of the main thing there's also of course we're also seeing
+
+165
+00:09:06,100 --> 00:09:10,000
+像这样，这也是我的控制器。
+things like, here is my  for the controller as well.
+
+166
+00:09:10,077 --> 00:09:10,407
+对的
+right
+
+167
+00:09:10,677 --> 00:09:13,497
+这里我有我的主页控制器的资源
+so here I've got resources for my home controller
+
+168
+00:09:13,947 --> 00:09:16,287
+让我们看一下我的控制器
+and let's take a look in my controllers
+
+169
+00:09:17,517 --> 00:09:18,207
+在上面，
+up here,
+
+170
+00:09:19,677 --> 00:09:21,147
+我们来看看我的主控制器。
+and we'll look at my home controller.
+
+171
+00:09:24,300 --> 00:09:27,900
+我们已经通过了这个IStringLocalizer。
+and so we've passed in this IStringLocalizer.
+
+172
+00:09:28,017 --> 00:09:28,317
+对吧？
+right ?
+
+173
+00:09:28,600 --> 00:09:37,800
+然后我们就可以进行注入了，它只是在这里查看数据信息，通常我只是设置一个字符串而不是使用本地化器
+and then we're able to its injected and it's just  view data  message here normally I would just set a string instead I use localizer
+
+174
+00:09:38,400 --> 00:09:42,100
+调用这个服务，我已经注入了这个键。
+and calling to that service I've injected and then again  that key.
+
+175
+00:09:42,507 --> 00:09:46,437
+所以我的控制器代码仍然可以读取我的默认语言
+so my controller the code is still readable by me and my default language
+
+176
+00:09:46,467 --> 00:09:48,177
+我的当地语言，对吗？
+might my local language ，right
+
+177
+00:09:48,508 --> 00:09:51,328
+然后它会在运行时本地化
+and then it's actually just going to localizer this at runtime
+
+178
+00:09:51,448 --> 00:09:55,768
+再一次是本地化的或者知道它在主控制器类内部操作
+so once again the localized or knows that its operating inside of the home controller class
+
+179
+00:09:55,828 --> 00:09:58,708
+没错，我们会找到主控制器资源
+exactly. we are going to find the home controller resource
+
+180
+00:09:58,858 --> 00:09:59,128
+请说
+yep
+
+181
+00:09:59,188 --> 00:10:00,268
+注射
+to inject from
+
+182
+00:10:00,688 --> 00:10:01,258
+我明白了，
+i got it,
+
+183
+00:10:01,400 --> 00:10:02,100
+好的，是的
+ok ，yeah
+
+184
+00:10:02,278 --> 00:10:04,138
+这就是它的全部内容。
+so that's that's really all there is to it.
+
+185
+00:10:04,400 --> 00:10:11,700
+另一个很酷的东西我想给你们看的是resx文件，是微软本地化的东西
+One other cool thing I want to show you is resx files ，are kind of a Microsoft localization thing
+
+186
+00:10:12,000 --> 00:10:17,300
+它对一些人来说很有用，工具就在那里，所有这些
+and it works great for some people ，the tooling is all there and all that
+
+187
+00:10:17,600 --> 00:10:25,100
+我已经和一些做了很多本地化的人谈过，Po文件是微软之外的一种标准
+I've talked to some people that do a good amount of localization and Po files are kind of standard outside of the microsoft Dev world
+
+188
+00:10:25,200 --> 00:10:25,400
+好的
+ok
+
+189
+00:10:25,400 --> 00:10:28,500
+PO文件格式非常简单
+PO files the format is pretty simple
+
+190
+00:10:28,700 --> 00:10:32,800
+它也可以很容易地传递给本地化者，他们可以做他们知道的工作
+and it can also be easy to pass off to a localizer, they can do the work they know their
+
+191
+00:10:34,000 --> 00:10:39,500
+PO文件很容易处理，然后他们可以把它传递给你，所以我必须把这些PO文件转换成resx！
+PO files it's easy to work with and then they can kind of pass it back to you.   So do I have to convert those PO files to resx!
+
+192
+00:10:39,500 --> 00:10:41,500
+这是很酷的一件事
+now, so that's a cool thing
+
+193
+00:10:41,500 --> 00:10:50,300
+orchard project or Orchard Core，如果我在这里查找，我们去orchardproject.net，我相信，
+So the orchard project or Orchard Core, so if I lookup here. Let's go to orchardproject.net I believe,
+
+194
+00:10:50,700 --> 00:10:54,800
+Orchard NET 提供的CMS，
+so Orchard is a .NET powered CMS ok,
+
+195
+00:10:54,899 --> 00:10:55,200
+好的
+ok
+
+196
+00:10:55,200 --> 00:10:55,229
+而orchard core支持PO文件本地化。
+and orchard core has support for PO file localization.
+好的
+ok
+
+197
+00:10:55,229 --> 00:10:59,600
+而orchard core支持PO文件本地化。
+and orchard core has support for PO file localization.
+
+198
+00:10:59,819 --> 00:11:01,799
+这是在文档中
+so this is actually in the docs
+
+199
+00:11:01,800 --> 00:11:08,600
+如果我们去看docs.microsoft.com 的全球化，本地化部分中寻找。
+here if we go to you know the  the docs.microsoft.com looking in the looking in the globalization, localization section.
+
+200
+00:11:08,900 --> 00:11:14,100
+他们谈论的是PO文件，并建议使用orchard core
+they talk about PO files and recommend using s  are orchard core for that.
+
+201
+00:11:14,600 --> 00:11:17,500
+这里你看到的是一个示例
+so here you're seeing here is a sample profile.
+
+202
+00:11:18,059 --> 00:11:20,789
+它可以更简单，重量更轻，
+it can be a lot simpler and lighter weight to use,
+
+203
+00:11:20,900 --> 00:11:25,800
+使用po文件而不是resx文件你知道它有很多xml文件
+use a po file as opposed to resx file which  you know has a lot of xml to it
+
+204
+00:11:26,789 --> 00:11:28,799
+这就是它的标准，
+So that's kind of the standard for it,
+
+205
+00:11:29,300 --> 00:11:40,900
+至于它的外观，然后你会看到应用程序内部，这里我们要做的是Services.AddPortableObjectLocalization
+for how it looks and then here you'll see inside the application,  so here we're doing Services.AddPortableObjectLocalization
+
+206
+00:11:41,669 --> 00:11:43,589
+这就是点亮的东西
+so that's really that lights that up
+
+207
+00:11:43,949 --> 00:11:48,509
+否则我们就会像之前那样，配置默认的和受支持的本地化，
+otherwise we'd just configure those default and supported cultures just like we did before,
+
+208
+00:11:49,109 --> 00:11:49,400
+对的
+right
+
+209
+00:11:49,400 --> 00:11:49,439
+这是最后一件事我想给你们展示的是我的PO文件。
+so that's and then the final thing I want to show you here is my PO file.
+对的
+right
+
+210
+00:11:49,439 --> 00:11:56,500
+这是最后一件事我想给你们展示的是我的PO文件。
+so that's and then the final thing I want to show you here is my PO file.
+
+211
+00:11:57,299 --> 00:11:57,659
+好的
+ok
+
+212
+00:11:57,700 --> 00:12:03,900
+好了，你们知道，我们讨论了全球化的问题
+Okay, so you know to kind of circle way back, we talked about what globalization
+
+213
+00:12:04,200 --> 00:12:10,500
+在国际化的过程中，全球化使你的应用程序本地化
+In the process of internationalizing an applicatio globalizing is making your application ready to be localized
+
+214
+00:12:10,800 --> 00:12:15,600
+本地化是你真正深入的地方，你说我支持以下四种语言
+Localization is where you actually drill down ，and you say I support the following four languages
+
+215
+00:12:16,000 --> 00:12:20,100
+你们知道我是如何打开ie的，这是我写这些字符串的方式，
+and you know here's how I turn on the ie here's how I write those strings,
+
+216
+00:12:21,300 --> 00:12:30,200
+我们研究了如何使用定位器，无论是在视图还是在我的代码中
+We looked at how you can use the localizer， both in views and in my code
+
+217
+00:12:30,600 --> 00:12:33,660
+最后我们看了一下从哪里可以得到这些字符串
+and then finally we looked at where I can get those strings from
+
+218
+00:12:33,700 --> 00:12:36,300
+我们可以从resx文件中提取它们
+and we can pull them either from a resx file
+
+219
+00:12:36,600 --> 00:12:41,100
+这在visual studio工具中得到了支持，它是一个xml文件。
+and that's supported in the  in the visual studio tooling and it's an xml file.
+
+220
+00:12:41,300 --> 00:12:47,700
+如果你喜欢使用po文件，我们用orchard core支持集，我们展示了一个使用它们的例子，
+if you prefer to use po files we looked at how orchard core support set and we showed a sample of using them,
+
+221
+00:12:47,910 --> 00:12:48,600
+太棒了
+that's terrific
+
+222
+00:12:48,630 --> 00:12:50,940
+最后我也会回到这里
+so I'll circle back finally too
+
+223
+00:12:50,970 --> 00:12:52,830
+如果你想深入研究这个问题
+if you want to dig deeper into this I
+
+224
+00:12:52,900 --> 00:13:00,400
+强烈推荐这些文档和示例，这些人是全球本地化和ASP.NETCore的专家
+highly recommend the docs on this and the sample file again these people are worldwide experts on localization and ASP.NET  Core
+
+225
+00:13:00,500 --> 00:13:06,900
+他们在ASP.NET Core之前就已经做过了，这些人是你想要学习的人
+and they've been doing it before ASP.NET Core with the thing. These are the people you want to learn from
+
+226
+00:13:07,021 --> 00:13:07,711
+极好的
+terrific
+
+227
+00:13:09,000 --> 00:13:13,800
+这就是我们对全球化和本地化和ASPNET Core的看法。
+so that's it that's our look at globalization and localization and  ASPNET Core.
+
+228
+00:13:14,251 --> 00:13:17,821
+感谢您的加入，我们希望您能在我们的视频中看到更多的视频。
+thank you for joining us and we hope you watch some more of our videos on aspinet core.
+
+229
+00:13:18,271 --> 00:13:18,901
+待会儿见。
+catch you later.
+

@@ -1,0 +1,1272 @@
+WEBVTT
+
+0
+00:00:00.910 --> 00:00:04.240
+Hi! Welcome back to this video series
+on ASP.NET Core.
+
+1
+00:00:04.450 --> 00:00:06.750
+I'm Jon Galloway and I'm Jeff Fritz.
+
+2
+00:00:07.200 --> 00:00:09.440
+So we're going to be talking here about
+
+3
+00:00:09.520 --> 00:00:11.860
+configuring and working
+with multiple environments.
+
+4
+00:00:12.220 --> 00:00:16.580
+Yeah, we've-- we've kicked around this
+notion of production and development.
+
+5
+00:00:16.860 --> 00:00:20.590
+It's funny ASP.NET Core actually knows
+
+6
+00:00:20.640 --> 00:00:24.180
+what these things mean and we can
+light up different features
+
+7
+00:00:24.300 --> 00:00:27.230
+based on which environment
+we're operating it.
+
+8
+00:00:27.390 --> 00:00:29.530
+You know that's-- that's
+one of those things where
+
+9
+00:00:29.870 --> 00:00:32.680
+when you think back about it
+we're always working with
+
+10
+00:00:32.750 --> 00:00:35.570
+like you said there's development
+there's staging or test
+
+11
+00:00:35.630 --> 00:00:40.440
+and there's production and you know
+and-- and it's nice to have the web framework
+
+12
+00:00:40.530 --> 00:00:42.930
+understand that and know about
+that and work with me.
+
+13
+00:00:42.990 --> 00:00:46.590
+Absolutely, I like being able to
+enable and disable features
+
+14
+00:00:46.800 --> 00:00:49.610
+based on where I am, great!
+Let's take a look.
+
+15
+00:00:50.290 --> 00:00:52.450
+So here I am in Visual Studio.
+
+16
+00:00:52.830 --> 00:00:54.650
+I'm going to start up a new project
+
+17
+00:00:55.760 --> 00:00:59.480
+and I'll choose to build
+a new ASP.NET Core Application.
+
+18
+00:00:59.680 --> 00:01:01.830
+I'm going to put it in my dev folder
+
+19
+00:01:01.950 --> 00:01:04.390
+and we will call this environment.
+
+20
+00:01:07.330 --> 00:01:09.590
+Now, I'm going to create an empty project
+
+21
+00:01:09.660 --> 00:01:11.810
+because I want to focus
+on the different things
+
+22
+00:01:11.880 --> 00:01:13.790
+that are available in the environments.
+
+23
+00:01:16.480 --> 00:01:18.830
+So it's created very quickly for me
+
+24
+00:01:18.920 --> 00:01:22.600
+and I'll bring up my program cs to start.
+
+25
+00:01:22.750 --> 00:01:26.590
+And you could see here all that
+we're doing right from the get-go is
+
+26
+00:01:26.810 --> 00:01:28.250
+create my default builder
+
+27
+00:01:28.350 --> 00:01:30.680
+use my startup class and build.
+
+28
+00:01:30.960 --> 00:01:36.910
+Well, that start up class has just a few
+things configured in our first feature
+
+29
+00:01:37.020 --> 00:01:39.470
+that's only enabled in
+development environment
+
+30
+00:01:39.530 --> 00:01:42.930
+is right here on line 23 to 26,
+
+31
+00:01:43.190 --> 00:01:46.670
+where it says if the
+environment is development
+
+32
+00:01:47.080 --> 00:01:49.250
+then use the developer exception page.
+
+33
+00:01:49.330 --> 00:01:51.680
+And that's great for when I'm debugging
+
+34
+00:01:51.770 --> 00:01:54.010
+and I want to be able to see
+
+35
+00:01:54.090 --> 00:01:56.880
+the exact stack trace
+of it what happened
+
+36
+00:01:57.030 --> 00:01:58.350
+inside of my application.
+
+37
+00:01:59.080 --> 00:02:01.130
+When I want to deploy this
+
+38
+00:02:01.270 --> 00:02:04.990
+to my production space I'd rather use
+a more friendly error handler,
+
+39
+00:02:05.160 --> 00:02:08.680
+that shows some nice
+information to my visitors.
+
+40
+00:02:08.990 --> 00:02:11.520
+So they don't get to see that
+ugly stack trace.
+
+41
+00:02:11.790 --> 00:02:15.330
+I tell you Jon was the
+scariest thing when I at an airport
+
+42
+00:02:15.510 --> 00:02:17.870
+and one of those display screens
+
+43
+00:02:17.910 --> 00:02:19.790
+showing the departure times
+for all the flights
+
+44
+00:02:19.850 --> 00:02:23.010
+was showing the old ASP.NET error page.
+
+45
+00:02:23.050 --> 00:02:25.210
+Oh! The yellow screen of that,
+the old yellow screen oh,
+
+46
+00:02:25.270 --> 00:02:27.870
+no you don't want to see that
+anywhere but especially not at
+
+47
+00:02:27.920 --> 00:02:29.840
+the airport and not at the airport.
+
+48
+00:02:29.910 --> 00:02:31.510
+So this is a good comfort thing
+
+49
+00:02:31.630 --> 00:02:33.930
+to only show that
+developer exception page
+
+50
+00:02:33.990 --> 00:02:35.400
+when you're in development mode.
+
+51
+00:02:35.710 --> 00:02:38.110
+You know, it improves confidence.
+
+52
+00:02:38.670 --> 00:02:43.990
+So this configure method runs
+when I configure my pipeline
+
+53
+00:02:44.030 --> 00:02:47.990
+write my HTTP pipeline
+on a normal application
+
+54
+00:02:48.070 --> 00:02:49.960
+and I have this one startup class.
+
+55
+00:02:50.280 --> 00:02:53.040
+And if I navigate to this right
+
+56
+00:02:53.080 --> 00:02:58.000
+and I'm just going to throw
+an exception here right,
+
+57
+00:03:00.090 --> 00:03:05.910
+that was an error and I'm going to run this.
+
+58
+00:03:15.720 --> 00:03:19.010
+So when I run this now
+from my command line
+
+59
+00:03:19.830 --> 00:03:22.190
+you'll see it's going to do the compile
+
+60
+00:03:22.970 --> 00:03:26.170
+and it's going to come back and say that it's
+running in the development environment,
+
+61
+00:03:26.240 --> 00:03:30.610
+and it's listening on this
+web address and port. OK.
+
+62
+00:03:30.680 --> 00:03:33.910
+Let me copy that and I'm going
+to navigate there with my browser.
+
+63
+00:03:36.530 --> 00:03:40.070
+And write this is that-- that error message
+
+64
+00:03:40.160 --> 00:03:43.910
+that I was expecting to see right,
+this is the developer exception page.
+
+65
+00:03:44.070 --> 00:03:46.090
+Because, you're in development
+you want to say that
+
+66
+00:03:46.130 --> 00:03:47.040
+so we can fix it.
+
+67
+00:03:47.280 --> 00:03:50.760
+So I can fix that right. So my
+hosting environment is development
+
+68
+00:03:50.990 --> 00:03:53.710
+and I get my
+development feature enabled.
+
+69
+00:03:53.930 --> 00:03:57.650
+Now I can change that and I can turn on
+
+70
+00:03:57.730 --> 00:04:02.460
+a different environment by setting
+an environment variable and infact
+
+71
+00:04:02.540 --> 00:04:05.330
+Visual Studio did that for me
+
+72
+00:04:05.420 --> 00:04:08.800
+when I Configured the application.
+Check this out. I'm going to go to
+
+73
+00:04:08.860 --> 00:04:13.060
+Project, Properties and I will look at
+
+74
+00:04:13.150 --> 00:04:20.770
+Debug and right here
+in the middle of my screen,
+
+75
+00:04:20.860 --> 00:04:26.420
+there we go. It sets up
+an environment variable when I launch
+
+76
+00:04:26.510 --> 00:04:27.800
+from within Visual Studio that
+
+77
+00:04:27.880 --> 00:04:30.350
+says ASPNETCORE_ENVIRONMENT
+
+78
+00:04:30.440 --> 00:04:33.350
+is development. So, whenever I'm debugging
+
+79
+00:04:33.420 --> 00:04:35.690
+from Visual Studio, I'm going to get all
+
+80
+00:04:35.800 --> 00:04:39.040
+those development features
+that I've Configured inside of
+
+81
+00:04:39.130 --> 00:04:42.240
+my application. But, I'm not running
+
+82
+00:04:42.350 --> 00:04:44.040
+from within Visual Studio, I'm running from
+
+83
+00:04:44.150 --> 00:04:49.110
+my command line. The next feature
+that Visual Studio lit up for me is
+
+84
+00:04:49.200 --> 00:04:51.280
+inside of my properties of the Project
+
+85
+00:04:51.370 --> 00:04:52.730
+it generated a file called
+
+86
+00:04:52.820 --> 00:04:55.460
+launch settings and this is a bunch of
+
+87
+00:04:55.550 --> 00:04:57.200
+settings that are used when you're
+
+88
+00:04:57.310 --> 00:04:59.690
+launching your application to set the
+
+89
+00:04:59.820 --> 00:05:03.330
+various things that actually
+we saw in a previous video
+
+90
+00:05:03.420 --> 00:05:05.420
+around how to host your application,
+
+91
+00:05:05.510 --> 00:05:07.840
+what is the application URL
+
+92
+00:05:07.970 --> 00:05:10.250
+that you're listening on and even some
+
+93
+00:05:10.330 --> 00:05:12.440
+environment variables right here.
+
+94
+00:05:12.530 --> 00:05:15.770
+So, we've got hard-coded into this-- into this
+
+95
+00:05:15.840 --> 00:05:18.260
+configuration that were in
+development mode.
+
+96
+00:05:18.330 --> 00:05:21.080
+So, because I ran from the command line,
+
+97
+00:05:21.170 --> 00:05:24.400
+it actually ran this set
+
+98
+00:05:24.510 --> 00:05:27.230
+of configuration options
+into my project,
+
+99
+00:05:27.370 --> 00:05:30.650
+so that I was listening on 63 for 39 and it
+
+100
+00:05:30.750 --> 00:05:33.150
+set my environment to development.
+
+101
+00:05:33.260 --> 00:05:37.080
+Nice! OK! So if I want that to not be set
+
+102
+00:05:37.150 --> 00:05:40.860
+by default from inside of this file I can
+
+103
+00:05:40.950 --> 00:05:44.510
+clear that out, I'll clear this and now
+
+104
+00:05:44.570 --> 00:05:48.470
+if I execute dotnet run, so I executed
+
+105
+00:05:48.570 --> 00:05:50.600
+dotnet run and you see it's now saying
+
+106
+00:05:50.680 --> 00:05:53.310
+the hosting environment is production.
+
+107
+00:05:53.420 --> 00:05:56.550
+So, when I don't specify an
+ASPNETCORE_ENVIRONMENT,
+
+108
+00:05:56.620 --> 00:05:57.950
+it defaults to thinking it's
+
+109
+00:05:58.020 --> 00:05:59.930
+running in production, which means all
+
+110
+00:06:00.000 --> 00:06:02.530
+those places where we said,
+if this is development
+
+111
+00:06:02.600 --> 00:06:04.310
+putting these extra features,
+
+112
+00:06:04.400 --> 00:06:07.970
+those things go away
+and it'll behave more like a
+
+113
+00:06:08.080 --> 00:06:09.770
+production server, where we'll start
+
+114
+00:06:09.880 --> 00:06:11.600
+turning on some features
+
+115
+00:06:11.710 --> 00:06:14.200
+that make it a little bit more secure,
+
+116
+00:06:14.310 --> 00:06:18.280
+it hardens ASP.NET Core and makes it feel
+
+117
+00:06:18.420 --> 00:06:22.370
+more production ready.
+So now let me go back to my website
+
+118
+00:06:22.460 --> 00:06:24.380
+and when I refresh,
+
+119
+00:06:24.510 --> 00:06:27.170
+I don't get my error. There was nothing
+
+120
+00:06:27.260 --> 00:06:29.510
+to return it through the error and infact
+
+121
+00:06:29.600 --> 00:06:34.080
+that error is here inside my log
+but it didn't finish
+
+122
+00:06:34.170 --> 00:06:36.640
+and to prevent any of that information
+
+123
+00:06:36.710 --> 00:06:40.660
+from leaking outside my application,
+it didn't return a things,
+
+124
+00:06:40.750 --> 00:06:42.200
+it made-- it kept the screen blank
+
+125
+00:06:42.310 --> 00:06:45.110
+nothing happened here. Great! So if
+
+126
+00:06:45.220 --> 00:06:47.660
+I did have an error check in there
+
+127
+00:06:47.750 --> 00:06:49.610
+I could go route appropriately to some
+
+128
+00:06:49.730 --> 00:06:53.750
+other location. So I'm pretty
+professional-looking error page
+
+129
+00:06:53.860 --> 00:06:56.150
+absolute, that fits in with
+the rest of my application
+
+130
+00:06:56.240 --> 00:06:57.800
+and isn't it a yellow screen
+
+131
+00:06:57.930 --> 00:06:59.510
+of doom like I saw at the airport, maybe
+
+132
+00:06:59.620 --> 00:07:02.220
+something like an animated gif
+of a man with a shovel,
+
+133
+00:07:02.280 --> 00:07:06.310
+like a construction something
+1996 website
+
+134
+00:07:06.400 --> 00:07:11.040
+called "John we want you back".
+Alright, so that's how you can
+
+135
+00:07:11.110 --> 00:07:12.770
+Configure your web, how you can light up
+
+136
+00:07:12.860 --> 00:07:14.410
+that development feature but there's
+
+137
+00:07:14.510 --> 00:07:16.760
+also some other things we can do here
+
+138
+00:07:16.840 --> 00:07:19.700
+as we build our application to actually
+
+139
+00:07:19.800 --> 00:07:22.020
+pivot and bring in different features
+
+140
+00:07:22.110 --> 00:07:24.230
+and Configure for different environments.
+
+141
+00:07:24.330 --> 00:07:27.420
+So we know there's an
+IsDevelopment method,
+
+142
+00:07:27.570 --> 00:07:36.510
+there's also IsProduction or IsStaging
+
+143
+00:07:36.600 --> 00:07:38.470
+and those tests to see if the
+
+144
+00:07:38.570 --> 00:07:40.610
+environment is named Production
+
+145
+00:07:40.710 --> 00:07:43.370
+or Staging? That kind of makes sense.
+
+146
+00:07:43.440 --> 00:07:45.440
+But this last one here
+that I want to point out
+
+147
+00:07:45.510 --> 00:07:47.540
+IsEnvironment. This is the
+
+148
+00:07:47.640 --> 00:07:49.820
+interesting one because I can provide
+
+149
+00:07:49.910 --> 00:07:53.510
+my own string name for an environment
+that I want to test against.
+
+150
+00:07:53.640 --> 00:07:56.440
+So Development, Production, Staging,
+
+151
+00:07:56.550 --> 00:07:57.970
+those might not be the terms
+
+152
+00:07:58.080 --> 00:08:00.170
+that you use with your organization.
+
+153
+00:08:00.260 --> 00:08:01.800
+You might use a different name like
+
+154
+00:08:01.910 --> 00:08:06.430
+Test or Integration, alright?
+
+155
+00:08:06.570 --> 00:08:09.330
+or write whatever your organization
+
+156
+00:08:09.440 --> 00:08:12.880
+uses, for your environment names
+you can create
+
+157
+00:08:13.000 --> 00:08:14.750
+and put those same tests in here
+
+158
+00:08:14.860 --> 00:08:17.330
+to verify that you're operating in
+
+159
+00:08:17.440 --> 00:08:19.440
+that environment before you light up
+
+160
+00:08:19.550 --> 00:08:23.120
+different features. Now that's one thing
+
+161
+00:08:23.220 --> 00:08:26.370
+to pivot and put in if-statements
+to verify and Configure things.
+
+162
+00:08:26.440 --> 00:08:31.160
+However you'd like,
+but you can actually go even
+
+163
+00:08:31.280 --> 00:08:36.040
+a step further where
+I have a Startup class here
+
+164
+00:08:36.150 --> 00:08:38.210
+I can actually change my
+
+165
+00:08:38.330 --> 00:08:41.060
+Configure Services, so that it triggers
+
+166
+00:08:41.150 --> 00:08:43.660
+a Configure Services that exists and is
+
+167
+00:08:43.750 --> 00:08:45.710
+written for my development environment
+
+168
+00:08:45.800 --> 00:08:49.970
+by calling it
+Configure Services Development.
+
+169
+00:08:50.060 --> 00:08:52.950
+And because I've put the name
+of my environment,
+
+170
+00:08:53.060 --> 00:08:54.470
+at the knee-- at the end
+
+171
+00:08:54.600 --> 00:08:57.330
+of that method name, it'll find this
+
+172
+00:08:57.420 --> 00:09:00.440
+and execute this, when it's in
+development mode.
+
+173
+00:09:00.530 --> 00:09:02.600
+Now you'd probably going to want to have
+
+174
+00:09:02.730 --> 00:09:04.480
+a Configure Services method
+
+175
+00:09:04.570 --> 00:09:06.620
+hanging around also in case it can't
+
+176
+00:09:06.750 --> 00:09:08.840
+find an environment name that matches
+
+177
+00:09:08.930 --> 00:09:10.630
+one of your overrides that you have here.
+
+178
+00:09:10.730 --> 00:09:12.860
+You can use that same trick with the
+
+179
+00:09:13.000 --> 00:09:15.320
+Configure mode
+with the Configure method,
+
+180
+00:09:15.440 --> 00:09:18.600
+I'm sorry, in order to provide a feature
+
+181
+00:09:18.710 --> 00:09:21.570
+that's specific to being in
+that environment.
+
+182
+00:09:21.660 --> 00:09:23.770
+So, tell you what let me just
+
+183
+00:09:23.860 --> 00:09:28.060
+copy this and I'm going to go down here
+
+184
+00:09:28.150 --> 00:09:32.420
+and add another method
+and this time I'll call it
+
+185
+00:09:32.510 --> 00:09:38.350
+Configure Development
+
+186
+00:09:38.440 --> 00:09:41.750
+and instead of configuring all that
+other stuff in the pipeline
+
+187
+00:09:41.820 --> 00:09:49.140
+I'm actually just going to say
+app.Run async context
+
+188
+00:09:49.240 --> 00:09:54.460
+right and that I will say
+await context.Response
+
+189
+00:09:54.550 --> 00:09:59.420
+WriteAsync, Hello from Development
+
+190
+00:09:59.510 --> 00:10:04.370
+semicolon good, now let me
+
+191
+00:10:04.480 --> 00:10:07.680
+rerun that application.
+
+192
+00:10:11.280 --> 00:10:15.070
+So now it thinks I'm in production,
+
+193
+00:10:15.170 --> 00:10:18.000
+I'll refresh and I still get my blank page.
+
+194
+00:10:18.130 --> 00:10:22.200
+So now let's cancel this let me set
+my ASPNETCORE ENVIRONMENT
+
+195
+00:10:22.330 --> 00:10:26.770
+to development,
+
+196
+00:10:26.860 --> 00:10:29.240
+and rerun the application,
+
+197
+00:10:30.880 --> 00:10:34.860
+and now it thinks I'm in the
+development environment, so,
+
+198
+00:10:34.970 --> 00:10:37.820
+I'll go back, refresh and it says
+
+199
+00:10:37.910 --> 00:10:41.260
+Hello from Development. So I can embed
+
+200
+00:10:41.370 --> 00:10:43.910
+different configuration methods
+
+201
+00:10:43.970 --> 00:10:46.350
+that point to
+and Configure my application
+
+202
+00:10:46.440 --> 00:10:48.260
+differently depending on which
+
+203
+00:10:48.350 --> 00:10:50.420
+environment I'm in. So those are options
+
+204
+00:10:50.480 --> 00:10:54.060
+that you can choose to use
+as you're building out your application.
+
+205
+00:10:54.170 --> 00:10:56.610
+One last trick with that,
+that I want to make sure
+
+206
+00:10:56.710 --> 00:10:58.490
+you see, I'm going to go back into my code
+
+207
+00:10:58.600 --> 00:11:03.730
+here and besides having a
+Configure Development method
+
+208
+00:11:03.820 --> 00:11:06.260
+right, I'll get rid of that
+
+209
+00:11:06.350 --> 00:11:07.490
+I can actually have a different
+
+210
+00:11:07.600 --> 00:11:10.350
+Startup class sitting here as well.
+
+211
+00:11:10.440 --> 00:11:12.940
+So check this out, if I create public class
+
+212
+00:11:13.080 --> 00:11:17.450
+Startup Development right,
+
+213
+00:11:17.550 --> 00:11:20.570
+I need a Configure services
+and a Configure method in there.
+
+214
+00:11:20.660 --> 00:11:27.240
+So I will just start off by
+copying these, alright
+
+215
+00:11:28.550 --> 00:11:39.350
+and in this one I will do the exact same
+app.Run async context
+
+216
+00:11:41.730 --> 00:11:46.130
+await context.Response
+
+217
+00:11:46.260 --> 00:11:48.890
+Write and this time we will say
+
+218
+00:11:49.020 --> 00:11:54.550
+Hello from Startup Development.
+
+219
+00:11:56.370 --> 00:12:00.020
+Alright. Sem it, it will finish it.
+
+220
+00:12:00.080 --> 00:12:02.150
+Now in order for me to be able to use
+
+221
+00:12:02.210 --> 00:12:05.520
+this Startup class and I have it
+detecting use the Startup class
+
+222
+00:12:05.580 --> 00:12:07.170
+that I want based on the
+
+223
+00:12:07.230 --> 00:12:09.080
+environment name, I need to make a slight
+
+224
+00:12:09.140 --> 00:12:11.660
+change here from where
+it says UseStartup
+
+225
+00:12:11.720 --> 00:12:14.100
+and specifies
+a specific Startup class.
+
+226
+00:12:14.160 --> 00:12:19.400
+I need to tell it instead, what
+
+227
+00:12:19.460 --> 00:12:22.620
+assembly to go search for this Startup
+
+228
+00:12:22.680 --> 00:12:25.270
+class in and run the appropriate one.
+
+229
+00:12:25.330 --> 00:12:28.450
+So my assembly is called environments,
+
+230
+00:12:28.510 --> 00:12:31.450
+so I will just call it environments
+
+231
+00:12:31.510 --> 00:12:34.500
+and it will go find the
+appropriate Startup class
+
+232
+00:12:34.560 --> 00:12:38.250
+for me to run. So I will cancel this
+
+233
+00:12:39.110 --> 00:12:46.230
+I'll dotnet run again, so it thinks I'm
+
+234
+00:12:46.290 --> 00:12:47.920
+running in the development environment
+
+235
+00:12:47.980 --> 00:12:50.850
+I'll refresh from over here and it says
+
+236
+00:12:50.910 --> 00:12:53.820
+Hello from StartupDevelopment.
+
+237
+00:12:53.880 --> 00:12:56.250
+so we written a little bit of code that is
+
+238
+00:12:56.310 --> 00:12:59.320
+able to interpret, what
+environment we are on
+
+239
+00:12:59.380 --> 00:13:02.010
+use different features around the
+
+240
+00:13:02.070 --> 00:13:03.930
+Startup class as needed for those
+
+241
+00:13:03.990 --> 00:13:06.670
+different environments and trigger
+
+242
+00:13:06.730 --> 00:13:09.550
+different configurations as needed. Ok!
+
+243
+00:13:09.610 --> 00:13:12.000
+This is a great configuration
+option for folks,
+
+244
+00:13:12.060 --> 00:13:13.620
+who have different needs
+
+245
+00:13:13.680 --> 00:13:15.870
+in different environments,
+maybe you're in a
+
+246
+00:13:15.930 --> 00:13:17.250
+regulated environment and your
+
+247
+00:13:17.310 --> 00:13:20.570
+production space is
+governed by HIPAA rules
+
+248
+00:13:20.630 --> 00:13:22.000
+and there's certain things that you
+
+249
+00:13:22.060 --> 00:13:24.180
+only want to light up in development.
+
+250
+00:13:24.240 --> 00:13:27.080
+That can never get into production, you
+
+251
+00:13:27.140 --> 00:13:28.980
+can do things around writing a start up
+
+252
+00:13:29.040 --> 00:13:31.830
+production class that excludes all of
+
+253
+00:13:31.890 --> 00:13:33.690
+those development things
+that nobody can
+
+254
+00:13:33.750 --> 00:13:35.790
+change and you can make sure is the one
+
+255
+00:13:35.850 --> 00:13:38.050
+that runs every time when
+you get into production.
+
+256
+00:13:38.110 --> 00:13:39.900
+I can see all kinds of users like you
+
+257
+00:13:39.960 --> 00:13:42.350
+showed the development exception page.
+
+258
+00:13:42.410 --> 00:13:44.270
+I may want to have some sample data
+
+259
+00:13:44.330 --> 00:13:46.170
+maybe when I'm running in development
+
+260
+00:13:46.230 --> 00:13:47.880
+mode I want to have a ton of data that's
+
+261
+00:13:47.940 --> 00:13:49.770
+going to because
+I'm all on a local network
+
+262
+00:13:49.830 --> 00:13:51.270
+and I want my developers to feel the
+
+263
+00:13:51.330 --> 00:13:53.430
+pain of loading a large page or you know,
+
+264
+00:13:53.490 --> 00:13:56.100
+whatever it is and or I may want to show,
+
+265
+00:13:56.160 --> 00:13:58.650
+it was pretty common to show profiling
+
+266
+00:13:58.710 --> 00:14:01.170
+information on my page in development.
+
+267
+00:14:01.230 --> 00:14:03.870
+Right and I can see like what is my page
+
+268
+00:14:03.930 --> 00:14:06.080
+running and loading quickly that
+
+269
+00:14:06.140 --> 00:14:07.950
+kind of profiling and then when I'm in
+
+270
+00:14:08.010 --> 00:14:09.750
+production I may want to dial all that down
+
+271
+00:14:09.810 --> 00:14:11.520
+So, all I love that you showed
+
+272
+00:14:11.580 --> 00:14:13.320
+all those different ways
+and then how I can
+
+273
+00:14:13.380 --> 00:14:15.700
+use those custom Startup classes to
+
+274
+00:14:15.760 --> 00:14:18.970
+kind of formalize that.
+Yep the last thing
+
+275
+00:14:19.030 --> 00:14:21.770
+the Visual Studio browser link tool is
+
+276
+00:14:21.830 --> 00:14:23.130
+enabled by default using that
+
+277
+00:14:23.190 --> 00:14:25.050
+same mechanism where it checks if its
+
+278
+00:14:25.110 --> 00:14:26.700
+development mode in the default
+
+279
+00:14:26.760 --> 00:14:29.150
+application templates
+as well. You know that's
+
+280
+00:14:29.210 --> 00:14:30.850
+one other thing you pointed out, there is
+
+281
+00:14:30.910 --> 00:14:32.400
+that I can set breakpoints
+
+282
+00:14:32.580 --> 00:14:34.320
+and I can actually step through and say
+
+283
+00:14:34.380 --> 00:14:35.790
+like is in development or whatever
+
+284
+00:14:35.850 --> 00:14:38.750
+that's a neat thing there
+is that code is actually
+
+285
+00:14:38.810 --> 00:14:41.470
+it's code. So I can debug it, I can
+
+286
+00:14:41.530 --> 00:14:44.600
+you know change their or work with
+
+287
+00:14:44.660 --> 00:14:47.480
+it as I'm developing. Yep!So thank
+
+288
+00:14:47.540 --> 00:14:49.580
+so much for joining us for this video
+
+289
+00:14:49.640 --> 00:14:51.770
+about different environments that you
+
+290
+00:14:51.830 --> 00:14:54.500
+may be working on. We have a couple more
+
+291
+00:14:54.560 --> 00:14:56.870
+videos about ASP.NET core for you, I hope
+
+292
+00:14:56.930 --> 00:14:59.800
+you come back and join us.
+
